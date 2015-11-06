@@ -2,7 +2,9 @@
 
 #include "PoKeIt.h"
 #include "PlayerPoker.h"
-int chips;
+
+public:
+	int chips;
 
 PlayerPoker::PlayerPoker()
 {
