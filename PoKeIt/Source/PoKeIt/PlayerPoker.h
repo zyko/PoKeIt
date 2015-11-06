@@ -8,8 +8,14 @@
 class POKEIT_API PlayerPoker
 {
 public:
+	//int chips;
+
 	PlayerPoker();
 	~PlayerPoker();
 
 	void receiveCard();
+	void callRound();
+	void checkRound();
+	void raiseRound();
+	void foldRound();
 };

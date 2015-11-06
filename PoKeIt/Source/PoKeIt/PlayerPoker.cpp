@@ -2,11 +2,7 @@
 
 #include "PoKeIt.h"
 #include "PlayerPoker.h"
-
-
-public int pokerChips;
-
-
+int chips;
 
 PlayerPoker::PlayerPoker()
 {
@@ -18,7 +14,7 @@ PlayerPoker::~PlayerPoker()
 
 
 
-PlayerPoker::public void receiveCard()
+void PlayerPoker::receiveCard()
 {
 
 }
@@ -27,23 +23,23 @@ PlayerPoker::public void receiveCard()
 #pragma region actions
 
 
-PlayerPoker::public void call()
+void PlayerPoker::callRound()
 {
 
 }
 
-PlayerPoker::public void check()
+void PlayerPoker::checkRound()
 {
 
 }
 
-PlayerPoker::public void raise()
+void PlayerPoker::raiseRound()
 {
 
 }
 
-PlayerPoker::public void fold()
-{
+void PlayerPoker::foldRound()
+{ 
 
 }
 
