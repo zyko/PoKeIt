@@ -4,7 +4,7 @@
 	<ItemGroup>
 		<None Include="..\..\PoKeIt.uproject" />
 		<Filter Include="Source">
-			<UniqueIdentifier>{EAD56654-866E-4589-8F12-8C5D39ADEF1A}</UniqueIdentifier>
+			<UniqueIdentifier>{4D8B3C44-2005-4773-A2CF-7EAD7856865C}</UniqueIdentifier>
 		</Filter>
 		<None Include="..\..\Source\PoKeIt.Target.cs">
 			<Filter>Source</Filter>
@@ -13,7 +13,7 @@
 			<Filter>Source</Filter>
 		</None >
 		<Filter Include="Config">
-			<UniqueIdentifier>{16F0F3E6-BABC-40D1-AC55-26BCCF8C8F44}</UniqueIdentifier>
+			<UniqueIdentifier>{A7CED514-D7C3-4150-8B85-03006034E644}</UniqueIdentifier>
 		</Filter>
 		<None Include="..\..\Config\DefaultEditor.ini">
 			<Filter>Config</Filter>
@@ -25,8 +25,14 @@
 			<Filter>Config</Filter>
 		</None >
 		<Filter Include="Source\PoKeIt">
-			<UniqueIdentifier>{220E2F20-AC95-424C-B7EC-E7D94AC0343B}</UniqueIdentifier>
+			<UniqueIdentifier>{87BCC146-5CEB-43BC-AC88-7F7AD4025FD0}</UniqueIdentifier>
 		</Filter>
+		<ClCompile Include="..\..\Source\PoKeIt\PlayerPoker.cpp">
+			<Filter>Source\PoKeIt</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\PoKeIt\PlayerPoker.h">
+			<Filter>Source\PoKeIt</Filter>
+		</ClInclude >
 		<None Include="..\..\Source\PoKeIt\PoKeIt.Build.cs">
 			<Filter>Source\PoKeIt</Filter>
 		</None >

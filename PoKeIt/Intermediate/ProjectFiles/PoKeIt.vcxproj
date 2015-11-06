@@ -257,6 +257,8 @@
 		<None Include="..\..\Config\DefaultEditor.ini" />
 		<None Include="..\..\Config\DefaultEngine.ini" />
 		<None Include="..\..\Config\DefaultGame.ini" />
+		<ClCompile Include="..\..\Source\PoKeIt\PlayerPoker.cpp" />
+		<ClInclude Include="..\..\Source\PoKeIt\PlayerPoker.h" />
 		<None Include="..\..\Source\PoKeIt\PoKeIt.Build.cs" />
 		<ClCompile Include="..\..\Source\PoKeIt\PoKeIt.cpp" />
 		<ClInclude Include="..\..\Source\PoKeIt\PoKeIt.h" />
