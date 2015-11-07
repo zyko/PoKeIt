@@ -1,27 +1,28 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "PoKeIt.h"
 #include "PlayerPoker.h"
-int chips;
+#include "Card.h"
 
 PlayerPoker::PlayerPoker()
 {
+
 }
 
 PlayerPoker::~PlayerPoker()
 {
+
 }
 
+/*
+Card* PlayerPoker::getHand()
+{
+	return hand*;
+}
+*/
 
-
-void PlayerPoker::receiveCard()
+void PlayerPoker::receiveCards()
 {
 
 }
-
-
-#pragma region actions
-
 
 void PlayerPoker::callRound()
 {
@@ -42,5 +43,3 @@ void PlayerPoker::foldRound()
 { 
 
 }
-
-#pragma endregion

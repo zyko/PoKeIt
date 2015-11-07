@@ -1,21 +1,21 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+#ifndef PLAYERPOKER.H
+#define PLAYERPOKER.H
 
-#pragma once
-
-/**
- * 
- */
 class POKEIT_API PlayerPoker
 {
 public:
-	//int chips;
-
 	PlayerPoker();
 	~PlayerPoker();
+	// Card* getHand() const;
 
-	void receiveCard();
+private:
+	// Card hand[2];
+	int chips;
+
+	void receiveCards();
 	void callRound();
 	void checkRound();
 	void raiseRound();
 	void foldRound();
 };
+#endif
