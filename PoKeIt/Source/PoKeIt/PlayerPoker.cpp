@@ -1,6 +1,12 @@
 #include "PoKeIt.h"
 #include "PlayerPoker.h"
+<<<<<<< HEAD
 #include "Card.h"
+=======
+
+public:
+	int chips;
+>>>>>>> origin/master
 
 PlayerPoker::PlayerPoker()
 {
