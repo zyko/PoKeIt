@@ -9,17 +9,57 @@
 #include "PoKeIt.generated.dep.h"
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodePoKeIt() {}
+	void APlayerPoker::StaticRegisterNativesAPlayerPoker()
+	{
+	}
+	IMPLEMENT_CLASS(APlayerPoker, 1355868158);
 	void APoKeItGameMode::StaticRegisterNativesAPoKeItGameMode()
 	{
 	}
 	IMPLEMENT_CLASS(APoKeItGameMode, 3368625035);
 #if USE_COMPILED_IN_NATIVES
 // Cross Module References
+	ENGINE_API class UClass* Z_Construct_UClass_APlayerController();
 	ENGINE_API class UClass* Z_Construct_UClass_AGameMode();
 
+	POKEIT_API class UClass* Z_Construct_UClass_APlayerPoker_NoRegister();
+	POKEIT_API class UClass* Z_Construct_UClass_APlayerPoker();
 	POKEIT_API class UClass* Z_Construct_UClass_APoKeItGameMode_NoRegister();
 	POKEIT_API class UClass* Z_Construct_UClass_APoKeItGameMode();
 	POKEIT_API class UPackage* Z_Construct_UPackage_PoKeIt();
+	UClass* Z_Construct_UClass_APlayerPoker_NoRegister()
+	{
+		return APlayerPoker::StaticClass();
+	}
+	UClass* Z_Construct_UClass_APlayerPoker()
+	{
+		static UClass* OuterClass = NULL;
+		if (!OuterClass)
+		{
+			Z_Construct_UClass_APlayerController();
+			Z_Construct_UPackage_PoKeIt();
+			OuterClass = APlayerPoker::StaticClass();
+			if (!(OuterClass->ClassFlags & CLASS_Constructed))
+			{
+				UObjectForceRegistration(OuterClass);
+				OuterClass->ClassFlags |= 0x20900284;
+
+
+				OuterClass->ClassConfigName = FName(TEXT("Game"));
+				OuterClass->StaticLink();
+#if WITH_METADATA
+				UMetaData* MetaData = OuterClass->GetOutermost()->GetMetaData();
+				MetaData->SetValue(OuterClass, TEXT("HideCategories"), TEXT("Collision Rendering Utilities|Transformation"));
+				MetaData->SetValue(OuterClass, TEXT("IncludePath"), TEXT("PlayerPoker.h"));
+				MetaData->SetValue(OuterClass, TEXT("ModuleRelativePath"), TEXT("PlayerPoker.h"));
+#endif
+			}
+		}
+		check(OuterClass->GetClass());
+		return OuterClass;
+	}
+	static FCompiledInDefer Z_CompiledInDefer_UClass_APlayerPoker(Z_Construct_UClass_APlayerPoker, TEXT("APlayerPoker"));
+	DEFINE_VTABLE_PTR_HELPER_CTOR(APlayerPoker);
 	UClass* Z_Construct_UClass_APoKeItGameMode_NoRegister()
 	{
 		return APoKeItGameMode::StaticClass();
@@ -62,8 +102,8 @@ void EmptyLinkFunctionForGeneratedCodePoKeIt() {}
 			ReturnPackage = CastChecked<UPackage>(StaticFindObjectFast(UPackage::StaticClass(), NULL, FName(TEXT("/Script/PoKeIt")), false, false));
 			ReturnPackage->PackageFlags |= PKG_CompiledIn | 0x00000000;
 			FGuid Guid;
-			Guid.A = 0x650B8742;
-			Guid.B = 0x5113A605;
+			Guid.A = 0x216CBA9E;
+			Guid.B = 0x7E428EEA;
 			Guid.C = 0x00000000;
 			Guid.D = 0x00000000;
 			ReturnPackage->SetGuid(Guid);

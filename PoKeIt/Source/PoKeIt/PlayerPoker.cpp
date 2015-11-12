@@ -1,51 +1,46 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #include "PoKeIt.h"
 #include "PlayerPoker.h"
-<<<<<<< HEAD
 #include "Card.h"
-=======
 
-public:
-	int chips;
->>>>>>> origin/master
 
-PlayerPoker::PlayerPoker()
-{
+int chips;
 
-}
 
-PlayerPoker::~PlayerPoker()
-{
-
-}
+// since UE 4.6 constructor is not needed anymore
 
 /*
 Card* PlayerPoker::getHand()
 {
-	return hand*;
+return hand*;
 }
 */
 
-void PlayerPoker::receiveCards()
+void receiveCards()
 {
 
 }
 
-void PlayerPoker::callRound()
+void callRound()
 {
 
 }
 
-void PlayerPoker::checkRound()
+void checkRound()
 {
 
 }
 
-void PlayerPoker::raiseRound()
+void raiseRound()
 {
 
 }
 
-void PlayerPoker::foldRound()
-{ 
+void foldRound()
+{
 
 }
+
+
+

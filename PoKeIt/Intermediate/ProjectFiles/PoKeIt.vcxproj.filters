@@ -4,7 +4,7 @@
 	<ItemGroup>
 		<None Include="..\..\PoKeIt.uproject" />
 		<Filter Include="Source">
-			<UniqueIdentifier>{C3BE0C5B-1F5A-43A3-937D-7DC9F8881C97}</UniqueIdentifier>
+			<UniqueIdentifier>{3D606154-9FEA-49F4-ABB3-3BBDD3D5568F}</UniqueIdentifier>
 		</Filter>
 		<None Include="..\..\Source\PoKeIt.Target.cs">
 			<Filter>Source</Filter>
@@ -13,7 +13,7 @@
 			<Filter>Source</Filter>
 		</None >
 		<Filter Include="Config">
-			<UniqueIdentifier>{037C464D-F4C1-4D4A-BA21-4EFF81513A55}</UniqueIdentifier>
+			<UniqueIdentifier>{E65BCDEF-F3F6-4E0F-8540-0338C6380A0B}</UniqueIdentifier>
 		</Filter>
 		<None Include="..\..\Config\DefaultEditor.ini">
 			<Filter>Config</Filter>
@@ -25,7 +25,7 @@
 			<Filter>Config</Filter>
 		</None >
 		<Filter Include="Source\PoKeIt">
-			<UniqueIdentifier>{5E0F3CC9-8F81-4D50-91A7-66BBF6CC078A}</UniqueIdentifier>
+			<UniqueIdentifier>{A3E6F689-0C7A-4501-AD45-2D1510DE6EA1}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\PoKeIt\Card.cpp">
 			<Filter>Source\PoKeIt</Filter>

@@ -1,6 +1,3 @@
-#ifndef CARD.H
-#define CARD.H
-
 class POKEIT_API Card
 {
 private:
@@ -34,4 +31,3 @@ public:
 	Card(const int, const int);
 	~Card();
 };
-#endif

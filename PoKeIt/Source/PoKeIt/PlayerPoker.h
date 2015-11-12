@@ -1,12 +1,17 @@
-#ifndef PLAYERPOKER.H
-#define PLAYERPOKER.H
+// Fill out your copyright notice in the Description page of Project Settings.
 
-class POKEIT_API PlayerPoker
+#pragma once
+
+#include "GameFramework/PlayerController.h"
+#include "PlayerPoker.generated.h"
+
+/**
+ * 
+ */
+UCLASS()
+class POKEIT_API APlayerPoker : public APlayerController
 {
-public:
-	PlayerPoker();
-	~PlayerPoker();
-	// Card* getHand() const;
+	GENERATED_BODY()
 
 private:
 	// Card hand[2];
@@ -17,5 +22,9 @@ private:
 	void checkRound();
 	void raiseRound();
 	void foldRound();
+
+	
+	
+	
+	
 };
-#endif
