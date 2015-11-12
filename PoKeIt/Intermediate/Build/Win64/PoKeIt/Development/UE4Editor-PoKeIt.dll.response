@@ -1,5 +1,6 @@
 "C:\GitHub\PoKeIt\PoKeIt\Intermediate\Build\Win64\UE4Editor\Development\PoKeIt\PoKeIt.h.obj"
 "C:\GitHub\PoKeIt\PoKeIt\Intermediate\Build\Win64\UE4Editor\Development\PoKeIt\Card.cpp.obj"
+"C:\GitHub\PoKeIt\PoKeIt\Intermediate\Build\Win64\UE4Editor\Development\PoKeIt\PlayerPoker.cpp.obj"
 "C:\GitHub\PoKeIt\PoKeIt\Intermediate\Build\Win64\UE4Editor\Development\PoKeIt\PoKeIt.cpp.obj"
 "C:\GitHub\PoKeIt\PoKeIt\Intermediate\Build\Win64\UE4Editor\Development\PoKeIt\PoKeItGameMode.cpp.obj"
 "C:\GitHub\PoKeIt\PoKeIt\Intermediate\Build\Win64\UE4Editor\Development\PoKeIt\PoKeIt.generated.cpp.obj"
@@ -33,3 +34,5 @@
 "C:\Program Files\Unreal\Epic Games\4.9\Engine\Intermediate/Build/Win64\UE4Editor\Development\UE4Editor-Core.lib"
 "C:\Program Files\Unreal\Epic Games\4.9\Engine\Intermediate/Build/Win64\UE4Editor\Development\UE4Editor-CoreUObject.lib"
 "C:\Program Files\Unreal\Epic Games\4.9\Engine\Intermediate/Build/Win64\UE4Editor\Development\UE4Editor-InputCore.lib"
+"C:\Program Files\Unreal\Epic Games\4.9\Engine\Intermediate/Build/Win64\UE4Editor\Development\UE4Editor-RHI.lib"
+"C:\Program Files\Unreal\Epic Games\4.9\Engine\Intermediate/Build/Win64\UE4Editor\Development\UE4Editor-SlateCore.lib"

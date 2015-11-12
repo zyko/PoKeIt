@@ -6,7 +6,7 @@ public class PoKeIt : ModuleRules
 {
 	public PoKeIt(TargetInfo Target)
 	{
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "RHI", "SlateCore" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

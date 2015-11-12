@@ -12,7 +12,7 @@ void EmptyLinkFunctionForGeneratedCodePoKeIt() {}
 	void APlayerPoker::StaticRegisterNativesAPlayerPoker()
 	{
 	}
-	IMPLEMENT_CLASS(APlayerPoker, 1355868158);
+	IMPLEMENT_CLASS(APlayerPoker, 2797026894);
 	void APoKeItGameMode::StaticRegisterNativesAPoKeItGameMode()
 	{
 	}
@@ -45,6 +45,9 @@ void EmptyLinkFunctionForGeneratedCodePoKeIt() {}
 				OuterClass->ClassFlags |= 0x20900284;
 
 
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+				UProperty* NewProp_chips = new(EC_InternalUseOnlyConstructor, OuterClass, TEXT("chips"), RF_Public|RF_Transient|RF_Native) UIntProperty(CPP_PROPERTY_BASE(chips, APlayerPoker), 0x0000000000000005);
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
 				OuterClass->ClassConfigName = FName(TEXT("Game"));
 				OuterClass->StaticLink();
 #if WITH_METADATA
@@ -52,6 +55,8 @@ void EmptyLinkFunctionForGeneratedCodePoKeIt() {}
 				MetaData->SetValue(OuterClass, TEXT("HideCategories"), TEXT("Collision Rendering Utilities|Transformation"));
 				MetaData->SetValue(OuterClass, TEXT("IncludePath"), TEXT("PlayerPoker.h"));
 				MetaData->SetValue(OuterClass, TEXT("ModuleRelativePath"), TEXT("PlayerPoker.h"));
+				MetaData->SetValue(NewProp_chips, TEXT("Category"), TEXT("damage"));
+				MetaData->SetValue(NewProp_chips, TEXT("ModuleRelativePath"), TEXT("PlayerPoker.h"));
 #endif
 			}
 		}
@@ -102,7 +107,7 @@ void EmptyLinkFunctionForGeneratedCodePoKeIt() {}
 			ReturnPackage = CastChecked<UPackage>(StaticFindObjectFast(UPackage::StaticClass(), NULL, FName(TEXT("/Script/PoKeIt")), false, false));
 			ReturnPackage->PackageFlags |= PKG_CompiledIn | 0x00000000;
 			FGuid Guid;
-			Guid.A = 0x216CBA9E;
+			Guid.A = 0x2A0EAAB8;
 			Guid.B = 0x7E428EEA;
 			Guid.C = 0x00000000;
 			Guid.D = 0x00000000;
