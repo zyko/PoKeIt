@@ -11,8 +11,9 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodePoKeIt() {}
 	void APlayerPoker::StaticRegisterNativesAPlayerPoker()
 	{
+		FNativeFunctionRegistrar::RegisterFunction(APlayerPoker::StaticClass(),"anyFunc",(Native)&APlayerPoker::execanyFunc);
 	}
-	IMPLEMENT_CLASS(APlayerPoker, 2797026894);
+	IMPLEMENT_CLASS(APlayerPoker, 1133381040);
 	void APoKeItGameMode::StaticRegisterNativesAPoKeItGameMode()
 	{
 	}
@@ -22,11 +23,29 @@ void EmptyLinkFunctionForGeneratedCodePoKeIt() {}
 	ENGINE_API class UClass* Z_Construct_UClass_APlayerController();
 	ENGINE_API class UClass* Z_Construct_UClass_AGameMode();
 
+	POKEIT_API class UFunction* Z_Construct_UFunction_APlayerPoker_anyFunc();
 	POKEIT_API class UClass* Z_Construct_UClass_APlayerPoker_NoRegister();
 	POKEIT_API class UClass* Z_Construct_UClass_APlayerPoker();
 	POKEIT_API class UClass* Z_Construct_UClass_APoKeItGameMode_NoRegister();
 	POKEIT_API class UClass* Z_Construct_UClass_APoKeItGameMode();
 	POKEIT_API class UPackage* Z_Construct_UPackage_PoKeIt();
+	UFunction* Z_Construct_UFunction_APlayerPoker_anyFunc()
+	{
+		UObject* Outer=Z_Construct_UClass_APlayerPoker();
+		static UFunction* ReturnFunction = NULL;
+		if (!ReturnFunction)
+		{
+			ReturnFunction = new(EC_InternalUseOnlyConstructor, Outer, TEXT("anyFunc"), RF_Public|RF_Transient|RF_Native) UFunction(FObjectInitializer(), NULL, 0x04020401, 65535);
+			ReturnFunction->Bind();
+			ReturnFunction->StaticLink();
+#if WITH_METADATA
+			UMetaData* MetaData = ReturnFunction->GetOutermost()->GetMetaData();
+			MetaData->SetValue(ReturnFunction, TEXT("Category"), TEXT("chips"));
+			MetaData->SetValue(ReturnFunction, TEXT("ModuleRelativePath"), TEXT("PlayerPoker.h"));
+#endif
+		}
+		return ReturnFunction;
+	}
 	UClass* Z_Construct_UClass_APlayerPoker_NoRegister()
 	{
 		return APlayerPoker::StaticClass();
@@ -44,10 +63,12 @@ void EmptyLinkFunctionForGeneratedCodePoKeIt() {}
 				UObjectForceRegistration(OuterClass);
 				OuterClass->ClassFlags |= 0x20900284;
 
+				OuterClass->LinkChild(Z_Construct_UFunction_APlayerPoker_anyFunc());
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 				UProperty* NewProp_chips = new(EC_InternalUseOnlyConstructor, OuterClass, TEXT("chips"), RF_Public|RF_Transient|RF_Native) UIntProperty(CPP_PROPERTY_BASE(chips, APlayerPoker), 0x0000000000000005);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
+				OuterClass->AddFunctionToFunctionMap(Z_Construct_UFunction_APlayerPoker_anyFunc()); // 1588378574
 				OuterClass->ClassConfigName = FName(TEXT("Game"));
 				OuterClass->StaticLink();
 #if WITH_METADATA
@@ -55,8 +76,9 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 				MetaData->SetValue(OuterClass, TEXT("HideCategories"), TEXT("Collision Rendering Utilities|Transformation"));
 				MetaData->SetValue(OuterClass, TEXT("IncludePath"), TEXT("PlayerPoker.h"));
 				MetaData->SetValue(OuterClass, TEXT("ModuleRelativePath"), TEXT("PlayerPoker.h"));
-				MetaData->SetValue(NewProp_chips, TEXT("Category"), TEXT("damage"));
+				MetaData->SetValue(NewProp_chips, TEXT("Category"), TEXT("chips"));
 				MetaData->SetValue(NewProp_chips, TEXT("ModuleRelativePath"), TEXT("PlayerPoker.h"));
+				MetaData->SetValue(NewProp_chips, TEXT("ToolTip"), TEXT("UPROPERTY and UFUNCTIONE make the variables and functions to appear in blueprints"));
 #endif
 			}
 		}
@@ -107,8 +129,8 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 			ReturnPackage = CastChecked<UPackage>(StaticFindObjectFast(UPackage::StaticClass(), NULL, FName(TEXT("/Script/PoKeIt")), false, false));
 			ReturnPackage->PackageFlags |= PKG_CompiledIn | 0x00000000;
 			FGuid Guid;
-			Guid.A = 0x2A0EAAB8;
-			Guid.B = 0x7E428EEA;
+			Guid.A = 0xE04871E0;
+			Guid.B = 0x38239E90;
 			Guid.C = 0x00000000;
 			Guid.D = 0x00000000;
 			ReturnPackage->SetGuid(Guid);

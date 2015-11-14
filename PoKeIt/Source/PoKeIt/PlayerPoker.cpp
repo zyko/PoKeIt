@@ -18,33 +18,34 @@ return hand*;
 }
 */
 
-void setChips()
+void APlayerPoker::anyFunc()
 {
-	chips = 740;
+
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "debug msg");
 
 }
 
-void receiveCards()
-{
-
-}
-
-void callRound()
+void APlayerPoker::receiveCards()
 {
 
 }
 
-void checkRound()
+void APlayerPoker::callRound()
 {
 
 }
 
-void raiseRound()
+void APlayerPoker::checkRound()
 {
 
 }
 
-void foldRound()
+void APlayerPoker::raiseRound()
+{
+
+}
+
+void APlayerPoker::foldRound()
 {
 
 }

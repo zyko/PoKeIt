@@ -7,10 +7,6 @@
 #include "GameFramework/PlayerController.h"
 #include "PlayerPoker.generated.h"
 
-
-
-
-
 /**
  * 
  */
@@ -18,37 +14,31 @@ UCLASS()
 class POKEIT_API APlayerPoker : public APlayerController
 {
 	GENERATED_BODY()
-		
-		//UFUNCTION(BlueprintCallable, Category = "chips")
-		//void setChips();
-
-
-		
+			
 
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "damage")
+	/**
+	* UPROPERTY and UFUNCTIONE make the variables and functions to appear in blueprints
+	*/
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
 		int32 chips;
 
-	//UFUNCTION(BlueprintCallable, Category = "chips")
-	void setChips();
+	UFUNCTION(BlueprintCallable, Category = "chips")
+		void anyFunc();
 
 
 	// Card hand[2];
 
-	//UFUNCTION(BlueprintCallable, Category = "receivingCards")
 	void receiveCards();
 
-	//UFUNCTION(BlueprintCallable, Category = "callRound")
 	void callRound();
 
-	//UFUNCTION(BlueprintCallable, Category = "checkRound")
 	void checkRound();
 
-	//UFUNCTION(BlueprintCallable, Category = "raiseRound")
 	void raiseRound();
 
-	//UFUNCTION(BlueprintCallable, Category = "foldRound")
 	void foldRound();
 
 
