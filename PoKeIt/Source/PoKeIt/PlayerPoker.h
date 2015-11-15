@@ -25,6 +25,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
 		int32 chips;
 
+	APlayerPoker();
+
+
 	UFUNCTION(BlueprintCallable, Category = "chips")
 		void anyFunc();
 

@@ -5,22 +5,30 @@
 #include "PlayerPoker.h"
 #include "Card.h"
 
-int chips = 900;
+int chips;
 
 
 
-// since UE 4.6 constructor is not needed anymore
+
 
 /*
-Card* PlayerPoker::getHand()
+Card* APlayerPoker::getHand()
 {
 return hand*;
 }
 */
 
+// since UE 4.6, constructor is not needed anymore
+APlayerPoker::APlayerPoker()
+{
+	chips = 1337;
+}
+
+
 void APlayerPoker::anyFunc()
 {
-
+	
+	chips += 1337;
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "debug msg");
 
 }
