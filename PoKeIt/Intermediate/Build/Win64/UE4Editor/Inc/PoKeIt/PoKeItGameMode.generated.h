@@ -13,8 +13,24 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define POKEIT_PoKeItGameMode_generated_h
 
-#define PoKeIt_Source_PoKeIt_PoKeItGameMode_h_14_RPC_WRAPPERS
-#define PoKeIt_Source_PoKeIt_PoKeItGameMode_h_14_RPC_WRAPPERS_NO_PURE_DECLS
+#define PoKeIt_Source_PoKeIt_PoKeItGameMode_h_14_RPC_WRAPPERS \
+ \
+	DECLARE_FUNCTION(execdebugFunc) \
+	{ \
+		P_FINISH; \
+		this->debugFunc(); \
+	}
+
+
+#define PoKeIt_Source_PoKeIt_PoKeItGameMode_h_14_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execdebugFunc) \
+	{ \
+		P_FINISH; \
+		this->debugFunc(); \
+	}
+
+
 #define PoKeIt_Source_PoKeIt_PoKeItGameMode_h_14_INCLASS_NO_PURE_DECLS \
 	private: \
 	static void StaticRegisterNativesAPoKeItGameMode(); \
@@ -39,7 +55,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 #define PoKeIt_Source_PoKeIt_PoKeItGameMode_h_14_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
-	NO_API APoKeItGameMode(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+	NO_API APoKeItGameMode(const FObjectInitializer& ObjectInitializer); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(APoKeItGameMode) \
 	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, APoKeItGameMode); \
 DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(APoKeItGameMode); \
@@ -50,15 +66,13 @@ public:
 
 
 #define PoKeIt_Source_PoKeIt_PoKeItGameMode_h_14_ENHANCED_CONSTRUCTORS \
-	/** Standard constructor, called after all reflected properties have been initialized */ \
-	NO_API APoKeItGameMode(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) : Super(ObjectInitializer) { }; \
 private: \
 	/** Private copy-constructor, should never be used */ \
 	NO_API APoKeItGameMode(const APoKeItGameMode& InCopy); \
 public: \
 	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, APoKeItGameMode); \
 DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(APoKeItGameMode); \
-	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(APoKeItGameMode)
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(APoKeItGameMode)
 
 
 #define PoKeIt_Source_PoKeIt_PoKeItGameMode_h_11_PROLOG

@@ -29,7 +29,7 @@ public:
 
 
 	UFUNCTION(BlueprintCallable, Category = "chips")
-		void anyFunc();
+		void increaseChips();
 
 
 	// Card hand[2];

@@ -3,11 +3,10 @@
 
 #include "PoKeIt.h"
 #include "PlayerPoker.h"
+#include "PoKeItGameMode.h"
 #include "Card.h"
 
 int chips;
-
-
 
 
 
@@ -22,14 +21,14 @@ return hand*;
 APlayerPoker::APlayerPoker()
 {
 	chips = 1337;
+	//APoKeItGameMode * p = new APoKeItGameMode();
 }
 
-
-void APlayerPoker::anyFunc()
+void APlayerPoker::increaseChips()
 {
 	
-	chips += 1337;
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "debug msg");
+	chips += 1000;
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "int chips was increased by 1000");
 
 }
 

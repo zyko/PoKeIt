@@ -13,6 +13,11 @@ class POKEIT_API APoKeItGameMode : public AGameMode
 {
 	GENERATED_BODY()
 	
+public:
+	APoKeItGameMode();
+
+	UFUNCTION(BlueprintCallable, Category = "GameMode")
+		void debugFunc();
 	
 	
 	
