@@ -259,8 +259,10 @@
 		<None Include="..\..\Config\DefaultGame.ini" />
 		<ClCompile Include="..\..\Source\PoKeIt\Card.cpp" />
 		<ClInclude Include="..\..\Source\PoKeIt\Card.h" />
-		<ClCompile Include="..\..\Source\PoKeIt\PlayerPoker.cpp" />
-		<ClInclude Include="..\..\Source\PoKeIt\PlayerPoker.h" />
+		<ClCompile Include="..\..\Source\PoKeIt\PlayerControllerP.cpp" />
+		<ClInclude Include="..\..\Source\PoKeIt\PlayerControllerP.h" />
+		<ClCompile Include="..\..\Source\PoKeIt\PlayerP.cpp" />
+		<ClInclude Include="..\..\Source\PoKeIt\PlayerP.h" />
 		<None Include="..\..\Source\PoKeIt\PoKeIt.Build.cs" />
 		<ClCompile Include="..\..\Source\PoKeIt\PoKeIt.cpp" />
 		<ClInclude Include="..\..\Source\PoKeIt\PoKeIt.h" />

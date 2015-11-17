@@ -5,8 +5,11 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-#ifndef POKEIT_PlayerPoker_generated_h
-	#include "PlayerPoker.h"
+#ifndef POKEIT_PlayerP_generated_h
+	#include "PlayerP.h"
+#endif
+#ifndef POKEIT_PlayerControllerP_generated_h
+	#include "PlayerControllerP.h"
 #endif
 #ifndef POKEIT_PoKeItGameMode_generated_h
 	#include "PoKeItGameMode.h"

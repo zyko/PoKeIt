@@ -8,7 +8,7 @@
 
 APoKeItGameMode::APoKeItGameMode()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "PoKeItGameMode was created");
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "PoKeItGameMode was created");
 }
 
 void APoKeItGameMode::debugFunc()
