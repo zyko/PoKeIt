@@ -14,6 +14,7 @@ public:
 	// Sets default values for this actor's properties
 	APlayerP();
 
+	void debugFunc();
 
 	/*
 	// Called when the game starts or when spawned

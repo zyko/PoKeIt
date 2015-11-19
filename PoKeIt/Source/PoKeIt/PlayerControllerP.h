@@ -7,7 +7,7 @@
 #include "PlayerControllerP.generated.h"
 
 
-class PlayerP;
+//class APlayerP;
 
 /**
  * 
@@ -27,13 +27,24 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
 		int32 chips;
 
-	/*
-	// PlayerP players[8];
-	//UFUNCTION(BlueprintCallable, Category = "chips")
-	void createPlayers(int);
-	*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "players")
+		int32 amountOfPlayers;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "players")
+		int32 currentPlayer=0;
+
+
+	UFUNCTION(BlueprintCallable, Category = "players")
+		void spawnPlayers(int32 numberOfPlayers);
+
+	UFUNCTION(BlueprintCallable, Category = "playerAction")
+		void foldRound();
+
+	APlayerP* players [8];
+	
 
 	APlayerControllerP();
+
 
 
 	UFUNCTION(BlueprintCallable, Category = "chips")
@@ -50,7 +61,7 @@ public:
 
 	void raiseRound();
 
-	void foldRound();
+//	void foldRound();
 
 
 	

@@ -17,6 +17,12 @@ APlayerP::APlayerP()
 }
 
 
+void APlayerP::debugFunc()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "PlayerP's debug Func was called");
+}
+
+
 /*
 // Called when the game starts or when spawned
 void APlayerP::BeginPlay()

@@ -30,16 +30,54 @@ void APlayerControllerP::increaseChips()
 
 }
 
-/*
-void APlayerControllerP::createPlayers(int playerNumber)
+
+void APlayerControllerP::spawnPlayers(int numberOfPlayers)
 {
-	for (int i = 0; i <= playerNumber; ++i)
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "spawnPlayers was called");
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("playernumber is: %i"), numberOfPlayers));
+
+	UWorld* const World = GetWorld();
+	
+	if (World)
 	{
-		players.get(i) = new PlayerP();
+		//APlayerP* SpawnedPlayer = GWorld()->SpawnActor(APlayerP::StaticClass());
+
+		for (int i = 0; i < numberOfPlayers; ++i)
+		{
+			FVector position = FVector(500, 100, 30);
+			FRotator rotator(0, 0, 0);
+
+			APlayerP* spawnedPlayer = World->SpawnActor<APlayerP>(APlayerP::StaticClass(), position, rotator);
+
+			players[i] = spawnedPlayer;
+			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "for loop entered");
+		}
+	}	
+	
+}
+
+void APlayerControllerP::foldRound()
+{
+	/*
+	for (APlayerP * P : players)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "player P found");
+	}
+	*/
+	/*
+	for (int i = 0; i < 8; ++i)
+	{
+
+		
+
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("%i"), i));
+		//players[i]->debugFunc();
 	}
 
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("playernumber is: %i"), playersI));
+	*/
 }
-*/
+
 
 void APlayerControllerP::receiveCards()
 {
@@ -60,12 +98,4 @@ void APlayerControllerP::raiseRound()
 {
 
 }
-
-void APlayerControllerP::foldRound()
-{
-
-}
-
-
-
 
