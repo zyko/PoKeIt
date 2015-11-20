@@ -50,7 +50,7 @@ void APlayerControllerP::spawnPlayers(int numberOfPlayers)
 			APlayerP* spawnedPlayer = World->SpawnActor<APlayerP>(APlayerP::StaticClass(), position, rotator);
 
 			players[i] = spawnedPlayer;
-			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "for loop entered");
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "for loop entered");
 		}
 	}	
 	
@@ -64,18 +64,16 @@ void APlayerControllerP::foldRound()
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "player P found");
 	}
 	*/
-	/*
+
+	
 	for (int i = 0; i < 8; ++i)
 	{
-
-		
-
 		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("%i"), i));
-		//players[i]->debugFunc();
+		players[i]->debugFunc();
 	}
 
 	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("playernumber is: %i"), playersI));
-	*/
+	
 }
 
 
