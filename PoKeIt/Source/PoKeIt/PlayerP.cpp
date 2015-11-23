@@ -4,11 +4,13 @@
 #include "PlayerP.h"
 
 
+int chips;
+
 // Sets default values
 APlayerP::APlayerP()
 {
 
-
+	chips = 1000;
 
 	/*
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -16,10 +18,29 @@ APlayerP::APlayerP()
 	*/
 }
 
+void APlayerP::increaseChips()
+{
+
+	chips += 500;
+
+}
+
+
+int APlayerP::getChips()
+{
+
+	return chips;
+
+}
 
 void APlayerP::debugFunc()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "PlayerP's debug Func was called");
+	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Red, "PlayerP's debug Func was called");
+}
+
+void APlayerP::fold()
+{
+
 }
 
 

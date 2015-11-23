@@ -16,6 +16,12 @@ public:
 
 	void debugFunc();
 
+	void fold();
+
+	void increaseChips();
+
+	int getChips();
+
 	/*
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

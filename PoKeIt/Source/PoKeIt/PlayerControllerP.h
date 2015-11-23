@@ -27,20 +27,29 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
 		int32 chips;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "players")
-		int32 amountOfPlayers;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
+		int32 currentPlayersChips=0;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "players")
+	//	int32 amountOfPlayers;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "players")
 		int32 currentPlayer=0;
 
 
 	UFUNCTION(BlueprintCallable, Category = "players")
-		void spawnPlayers(int32 numberOfPlayers);
+		void spawnPlayers(int32 amountOfPlayersSelected);
 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void foldRound();
 
-	APlayerP* players [8];
+
+	void updateCurrentPlayersChips();
+
+	void finishTurn();
+
+
+//	APlayerP* players [8];
 	
 
 	APlayerControllerP();
