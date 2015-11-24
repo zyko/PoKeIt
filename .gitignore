@@ -53,7 +53,13 @@ PoKeIt/!Build/**/*.ico
 PoKeIt/Saved/*
 
 # Compiled source files for the engine to use
-PoKeIt/Intermediate/*
+PoKeIt/Intermediate/Build/*
+PoKeIt/Intermediate/Config/*
+PoKeIt/Intermediate/ReimportCache/*
+PoKeIt/Intermediate/Shaders/*
+
+
+
 
 # Cache files for the editor to use
 PoKeIt/DerivedDataCache/*
