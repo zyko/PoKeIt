@@ -13,5 +13,5 @@ APoKeItGameMode::APoKeItGameMode()
 
 void APoKeItGameMode::debugFunc()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "debugFunc was called");
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "GameMode.cpp debugFunc was called");
 }

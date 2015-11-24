@@ -43,6 +43,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void foldRound();
 
+	UFUNCTION(BlueprintCallable, Category = "playerAction")
+		void betRaise(APlayerP* p1, APlayerP* p2);
+
 
 	void updateCurrentPlayersChips();
 
@@ -68,7 +71,7 @@ public:
 
 	void checkRound();
 
-	void raiseRound();
+	
 
 //	void foldRound();
 
