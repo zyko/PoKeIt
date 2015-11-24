@@ -1,3 +1,7 @@
+
+#pragma once
+
+
 class POKEIT_API Card
 {
 private:
@@ -30,4 +34,7 @@ public:
 	Card();
 	Card(const int, const int);
 	~Card();
+
+	int getColor();
+	int getValue();
 };

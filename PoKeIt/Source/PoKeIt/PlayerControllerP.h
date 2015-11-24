@@ -3,11 +3,11 @@
 #pragma once
 
 #include "GameFramework/PlayerController.h"
-#include "PlayerP.h"
+#include "MyPlayerP.h"
+#include "Card.h"
+#include "RoundManager.h"
 #include "PlayerControllerP.generated.h"
 
-
-//class APlayerP;
 
 /**
  * 
@@ -36,45 +36,56 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "players")
 		int32 currentPlayer=0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "round management")
+		int32 potSize=0;
+
+
+
 
 	UFUNCTION(BlueprintCallable, Category = "players")
 		void spawnPlayers(int32 amountOfPlayersSelected);
+
+
 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void foldRound();
 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
-		void betRaise(APlayerP* p1, APlayerP* p2);
+		void betRaise(int32 amountToBet);
+
+	UFUNCTION(BlueprintCallable, Category = "playerAction")
+		void checkRound();
 
 
-	void updateCurrentPlayersChips();
+	UFUNCTION(BlueprintCallable, Category = "playerAction")
+		void getCurrentPlayerCards();
+
+
+	void updateHUD();
 
 	void finishTurn();
 
 
-//	APlayerP* players [8];
-	
+	MyPlayerP* players[8];
+	RoundManager* roundManager;
+	Card* currentPlayersHand[2];
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 cardColor0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 cardValue0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 cardColor1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 cardValue1;
+
 
 	APlayerControllerP();
-
-
-
-	UFUNCTION(BlueprintCallable, Category = "chips")
-		void increaseChips();
-
-
-	// Card hand[2];
+	
 
 	void receiveCards();
 
 	void callRound();
-
-	void checkRound();
-
-	
-
-//	void foldRound();
-
-
 	
 };

@@ -21,8 +21,8 @@ APlayerP::APlayerP()
 void APlayerP::increaseChips()
 {
 
-	chips += 500;
-
+	chips += 100;
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "PlayerP's chips were increased by 100 ");
 }
 
 
