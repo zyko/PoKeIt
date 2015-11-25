@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+	// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PoKeIt.h"
 #include "RoundManager.h"
@@ -37,11 +37,69 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 	 */
 	amountOfPlayersRemaining = 8;
 	
+	roundState = PREFLOP;
 	smallBlind = 250;
 	bigBlind = 500;
 	currentMaxBet = bigBlind;
+	playersDidActions = 0;
 
 	settingBlinds();
+}
+
+void RoundManager::roundStateSwitch()
+{
+	if (roundState == PREFLOP)
+	{
+		flop[0] = new Card(FMath::RandRange(0, 3), FMath::RandRange(0, 12));
+		flop[1] = new Card(FMath::RandRange(0, 3), FMath::RandRange(0, 12));
+		flop[2] = new Card(FMath::RandRange(0, 3), FMath::RandRange(0, 12));
+	}
+	else if (roundState == FLOP)
+	{
+		turn = new Card(FMath::RandRange(0, 3), FMath::RandRange(0, 12));
+
+	}
+	else if (roundState == TURN)
+	{
+		river = new Card(FMath::RandRange(0, 3), FMath::RandRange(0, 12));
+
+	}
+	else if (roundState == RIVER)
+	{
+		roundOver();
+	}
+
+	roundState++;
+}
+
+void RoundManager::checkForCommunityCards()
+{
+	playersDidActions++;
+
+	if (playersDidActions >= amountOfPlayersRemaining)
+	{
+		bool everyPlayerOnSameBet = false;
+		for (int i = 0; i < amountOfPlayersRemaining; ++i)
+		{
+			if (players[i]->getBetThisRound() == currentMaxBet)
+			{
+				everyPlayerOnSameBet = true;
+			}
+		}
+		if (everyPlayerOnSameBet)
+		{
+			roundStateSwitch();
+		}
+	}
+}
+
+void RoundManager::roundOver()
+{
+	flop[0]->~Card();
+	flop[1]->~Card();
+	flop[2]->~Card();
+	turn->~Card();
+	river->~Card();
 }
 
 void RoundManager::settingBlinds()
@@ -75,6 +133,8 @@ void RoundManager::checkRound()
 		FString s = "not enough bet to check this round";
 		playerController->debugMessage(s);
 	}
+
+
 }
 
 void RoundManager::betRaise(int amount)
@@ -95,8 +155,14 @@ void RoundManager::betRaise(int amount)
 	}
 }
 
+void RoundManager::fold()
+{
+
+}
+
 void RoundManager::finishTurn()
 {
+	checkForCommunityCards();
 	currentPlayerIndex = ++currentPlayerIndex % amountOfPlayersRemaining;
 	playerController->finishTurn();
 }

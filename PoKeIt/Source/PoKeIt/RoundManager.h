@@ -22,10 +22,20 @@ public:
 	int currentPlayerIndex;
 	int currentMaxBet;
 	int amountOfPlayersRemaining;
+	int playersDidActions;
+
+	int roundState;
+	enum Roundstages
+	{
+		PREFLOP,
+		FLOP,
+		TURN,
+		RIVER,
+	};
 
 	Card* flop[3];
-	Card turn;
-	Card river;
+	Card* turn;
+	Card* river;
 	MyPlayerP* players[8];
 
 
@@ -34,9 +44,16 @@ public:
 	void settingBlinds();
 	void increasePot(int amount);
 	int getPot();
-	void checkRound();
+	
+	void checkForCommunityCards();
 	void finishTurn();
+
+	void checkRound();
 	void betRaise(int amount);
+	void fold();
+
+	void roundStateSwitch();
+	void roundOver();
 
 	APlayerControllerP* playerController;
 
