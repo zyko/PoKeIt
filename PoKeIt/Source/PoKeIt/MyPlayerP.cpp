@@ -10,6 +10,7 @@
 MyPlayerP::MyPlayerP(int givenChips)
 {
 	chips = givenChips;
+	betThisRound = 0;
 }
 
 void MyPlayerP::setCards()
@@ -41,6 +42,15 @@ void MyPlayerP::decreaseChips(int amount)
 	chips -= amount;
 }
 
+void MyPlayerP::increaseBetThisRound(int amount)
+{
+	betThisRound += amount;
+}
+
+int MyPlayerP::getBetThisRound()
+{
+	return betThisRound;
+}
 
 int MyPlayerP::getChips()
 {
@@ -55,6 +65,11 @@ void MyPlayerP::debugFunc()
 void MyPlayerP::fold()
 {
 
+}
+
+void MyPlayerP::initializeNewRound()
+{
+	betThisRound = 0;
 }
 
 MyPlayerP::~MyPlayerP()

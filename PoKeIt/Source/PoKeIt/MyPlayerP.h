@@ -14,11 +14,17 @@ public:
 
 	// variables:
 
+	int betThisRound;
 	int chips;
 	Card* cards[2];
 
 
 	// functions: 
+
+
+	void increaseBetThisRound(int amount);
+	void initializeNewRound();
+	int getBetThisRound();
 
 	void debugFunc();
 

@@ -3,9 +3,9 @@
 #include "PoKeIt.h"
 #include "PlayerControllerP.h"
 #include "PoKeItGameMode.h"
-#include "PlayerP.h"
 #include "Card.h"
 #include "MyPlayerP.h"
+#include <string>
 
 
 int amountOfPlayers;
@@ -29,7 +29,7 @@ void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 		players[i] = spawnedPlayer;
 	}
 
-	roundManager = new RoundManager(players);
+	roundManager = new RoundManager(players, this);
 
 
 	updateHUD();
@@ -107,6 +107,12 @@ void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 	
 }
 
+// still needs to be called by either winning calculation or playercontroller.
+void APlayerControllerP::roundFinished()
+{
+	roundManager->~RoundManager();
+}
+
 void APlayerControllerP::updateHUD()
 {
 	currentPlayersChips = players[currentPlayer]->getChips();
@@ -137,6 +143,7 @@ void APlayerControllerP::betRaise(int atb)
 {
 	int amountToBet = atb;
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("APC betRaise was called with: %i"), amountToBet));
+	roundManager->betRaise(atb);
 
 }
 
@@ -158,6 +165,15 @@ void APlayerControllerP::callRound()
 void APlayerControllerP::checkRound()
 {
 	roundManager->checkRound();
+}
+
+void APlayerControllerP::debugMessage(FString s)
+{
+
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(s));
+
+
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, s);
 
 }
 

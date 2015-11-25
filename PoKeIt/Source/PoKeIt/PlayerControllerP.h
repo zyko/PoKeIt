@@ -2,12 +2,15 @@
 
 #pragma once
 
+
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerP.h"
 #include "Card.h"
 #include "RoundManager.h"
 #include "PlayerControllerP.generated.h"
 
+
+class RoundManager;
 
 /**
  * 
@@ -24,9 +27,11 @@ public:
 	* UPROPERTY and UFUNCTION make the variables and functions to appear in blueprints
 	*/
 
+
+	// variables:
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
 		int32 chips;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
 		int32 currentPlayersChips=0;
 
@@ -39,38 +44,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "round management")
 		int32 potSize=0;
 
-
-
-
-	UFUNCTION(BlueprintCallable, Category = "players")
-		void spawnPlayers(int32 amountOfPlayersSelected);
-
-
-
-	UFUNCTION(BlueprintCallable, Category = "playerAction")
-		void foldRound();
-
-	UFUNCTION(BlueprintCallable, Category = "playerAction")
-		void betRaise(int32 amountToBet);
-
-	UFUNCTION(BlueprintCallable, Category = "playerAction")
-		void checkRound();
-
-
-	UFUNCTION(BlueprintCallable, Category = "playerAction")
-		void getCurrentPlayerCards();
-
-
-	void updateHUD();
-
-	void finishTurn();
-
-
-	MyPlayerP* players[8];
-	RoundManager* roundManager;
-	Card* currentPlayersHand[2];
-
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
 		int32 cardColor0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
@@ -81,11 +54,49 @@ public:
 		int32 cardValue1;
 
 
-	APlayerControllerP();
-	
 
+
+	MyPlayerP* players[8];
+	RoundManager* roundManager;
+	Card* currentPlayersHand[2];
+
+
+	// functions:
+
+	UFUNCTION(BlueprintCallable, Category = "players")
+		void spawnPlayers(int32 amountOfPlayersSelected);
+
+	UFUNCTION(BlueprintCallable, Category = "playerAction")
+		void foldRound();
+
+	UFUNCTION(BlueprintCallable, Category = "playerAction")
+		void betRaise(int32 amountToBet);
+
+	UFUNCTION(BlueprintCallable, Category = "playerAction")
+		void checkRound();
+
+	UFUNCTION(BlueprintCallable, Category = "playerAction")
+		void getCurrentPlayerCards();
+
+
+	void updateHUD();
+
+	void finishTurn();
+
+	void roundFinished();
+
+	void debugMessage(FString s);
+	
 	void receiveCards();
 
 	void callRound();
-	
+
+
+
+
+
+
+	APlayerControllerP();
+
+
 };

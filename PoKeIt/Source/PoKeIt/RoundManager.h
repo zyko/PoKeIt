@@ -2,12 +2,11 @@
 
 #pragma once
 
-
-
 #include "Card.h"
 #include "MyPlayerP.h"
-//#include "PlayerControllerP.h"
+#include "PlayerControllerP.h"
 
+class APlayerControllerP;
 
 /**
  * 
@@ -19,23 +18,29 @@ public:
 	int smallBlind;
 	int bigBlind;
 	int pot;
+	int dealerIndex;
+	int currentPlayerIndex;
+	int currentMaxBet;
+	int amountOfPlayersRemaining;
+
 	Card* flop[3];
 	Card turn;
 	Card river;
-	int dealerIndex;
-	int currentPlayerIndex;
 	MyPlayerP* players[8];
 
+
+	// functions:
 
 	void settingBlinds();
 	void increasePot(int amount);
 	int getPot();
 	void checkRound();
 	void finishTurn();
+	void betRaise(int amount);
 
-//	APlayerControllerP* playerController;
+	APlayerControllerP* playerController;
 
-	RoundManager(MyPlayerP* playersOfThisRound[8]);
+	RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc);
 	~RoundManager();
 
 	
