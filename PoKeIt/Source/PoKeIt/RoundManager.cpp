@@ -6,19 +6,16 @@
 #include "UnrealString.h"
 
 
-RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc)
+RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int ampr)
 {
 	playerController = pc;
-	for (int i = 0; i < 8; ++i)
+	amountOfPlayersRemaining = ampr;
+
+	for (int i = 0; i < amountOfPlayersRemaining; ++i)
 	{
 		players[i] = playersOfThisRound[i];
-		//players[i]->initializeNewRound();
+		players[i]->initializeNewRound();
 	}
-
-
-	// missing: reset the betThisRound int from player.
-	// following line doesn't work. for whatever reason:
-	//for (int i = 0; i < 8; ++i){players[i]->initializeNewRound();}
 
 
 	/*
@@ -30,16 +27,9 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 
 	currentPlayerIndex = 0;
 	pot = 0;
-
-	/*	
-	 *	should be given by PlayerController.
-	 *	set to 8 for debugging reasons.
-	 */
-	amountOfPlayersRemaining = 8;
-	
 	roundState = PREFLOP;
-	smallBlind = 250;
-	bigBlind = 500;
+	smallBlind = 0; // 250
+	bigBlind = 0;	// 500
 	currentMaxBet = bigBlind;
 	playersDidActions = 0;
 
@@ -69,6 +59,7 @@ void RoundManager::roundStateSwitch()
 		roundOver();
 	}
 
+	playersDidActions = 0;
 	roundState++;
 }
 
@@ -85,16 +76,25 @@ void RoundManager::checkForCommunityCards()
 			{
 				everyPlayerOnSameBet = true;
 			}
+			else
+			{
+				everyPlayerOnSameBet = false;
+			}
 		}
 		if (everyPlayerOnSameBet)
 		{
 			roundStateSwitch();
+			FString s = "roundStateSwitch() was triggered ! ";
+			playerController->debugMessage(s);
+
 		}
 	}
 }
 
 void RoundManager::roundOver()
 {
+	//calculateWinning();
+	// destroy cards of players;
 	flop[0]->~Card();
 	flop[1]->~Card();
 	flop[2]->~Card();
@@ -133,8 +133,6 @@ void RoundManager::checkRound()
 		FString s = "not enough bet to check this round";
 		playerController->debugMessage(s);
 	}
-
-
 }
 
 void RoundManager::betRaise(int amount)
@@ -157,6 +155,14 @@ void RoundManager::betRaise(int amount)
 
 void RoundManager::fold()
 {
+	/*
+	1. reduce amountOfPlayeresRemaining--
+	2. adjust array to fill the gaps
+	3. destroy player's cards
+	4. check if theres more than 1 available
+	5. if so, keep going
+	6. if not, trigger roundOver();
+	*/
 
 }
 
@@ -165,6 +171,27 @@ void RoundManager::finishTurn()
 	checkForCommunityCards();
 	currentPlayerIndex = ++currentPlayerIndex % amountOfPlayersRemaining;
 	playerController->finishTurn();
+}
+
+Card* RoundManager::getFlop(int index)
+{
+	if (roundState >= FLOP)
+		return flop[index];
+	else return NULL;
+}
+
+Card* RoundManager::getTurn()
+{
+	if (roundState >= TURN)
+		return turn;
+	else return NULL;
+}
+
+Card* RoundManager::getRiver()
+{
+	if (roundState >= RIVER)
+		return river;
+	else return NULL;
 }
 
 RoundManager::~RoundManager()

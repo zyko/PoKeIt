@@ -44,6 +44,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "round management")
 		int32 potSize=0;
 
+#pragma region card variables for HUD
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
 		int32 cardColor0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
@@ -53,7 +55,30 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
 		int32 cardValue1;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 flopCard0Color;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 flopCard0Value;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 flopCard1Color;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 flopCard1Value;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 flopCard2Color;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 flopCard2Value;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 turnColor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 turnValue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 riverColor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "cards")
+		int32 riverValue;
+
+#pragma endregion
 
 
 	MyPlayerP* players[8];
@@ -75,8 +100,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void checkRound();
 
+	//todo: why is this UFUNCTION? 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
-		void getCurrentPlayerCards();
+		void updateHUDcards();
 
 
 	void updateHUD();
@@ -87,8 +113,6 @@ public:
 
 	void debugMessage(FString s);
 	
-	void receiveCards();
-
 	void callRound();
 
 

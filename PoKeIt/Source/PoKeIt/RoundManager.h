@@ -41,6 +41,10 @@ public:
 
 	// functions:
 
+	Card* getFlop(int index);
+	Card* getTurn();
+	Card* getRiver();
+
 	void settingBlinds();
 	void increasePot(int amount);
 	int getPot();
@@ -57,7 +61,7 @@ public:
 
 	APlayerControllerP* playerController;
 
-	RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc);
+	RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining);
 	~RoundManager();
 
 	
