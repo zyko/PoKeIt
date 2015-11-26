@@ -11,7 +11,9 @@
 int amountOfPlayers;
 // default = 5
 
-
+//todo:
+/* gotta update player HUD from players directly
+*/
 // since UE 4.6, constructor is not needed anymore
 APlayerControllerP::APlayerControllerP()
 {

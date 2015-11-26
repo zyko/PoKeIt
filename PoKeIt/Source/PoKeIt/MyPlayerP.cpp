@@ -74,4 +74,6 @@ void MyPlayerP::initializeNewRound()
 
 MyPlayerP::~MyPlayerP()
 {
+	cards[0]->~Card();
+	cards[1]->~Card();
 }

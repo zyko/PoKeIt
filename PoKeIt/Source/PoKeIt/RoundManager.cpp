@@ -155,6 +155,22 @@ void RoundManager::betRaise(int amount)
 
 void RoundManager::fold()
 {
+	amountOfPlayersRemaining--;
+
+	players[currentPlayerIndex]->~MyPlayerP();
+
+	if (amountOfPlayersRemaining > 1)
+	{
+		for (int i = currentPlayerIndex; i < amountOfPlayersRemaining; ++i)
+		{
+			players[i] = players[i + 1];
+		}
+	}
+	else
+	{
+		roundOver();
+	}
+
 	/*
 	1. reduce amountOfPlayeresRemaining--
 	2. adjust array to fill the gaps
