@@ -34,11 +34,13 @@ public:
 		int32 chips;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
 		int32 currentPlayersChips=0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "player")
+		FString currentPlayerName;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "players")
 	//	int32 amountOfPlayers;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "players")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "player")
 		int32 currentPlayer=0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "round management")

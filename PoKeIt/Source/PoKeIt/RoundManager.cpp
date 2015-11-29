@@ -2,7 +2,6 @@
 
 #include "PoKeIt.h"
 #include "RoundManager.h"
-#include <string>
 #include "UnrealString.h"
 
 
@@ -84,9 +83,8 @@ void RoundManager::checkForCommunityCards()
 		if (everyPlayerOnSameBet)
 		{
 			roundStateSwitch();
-			FString s = "roundStateSwitch() was triggered ! ";
-			playerController->debugMessage(s);
-
+			FString a = "roundStateSwitch() was triggered ! ";
+			playerController->debugMessage(a);
 		}
 	}
 }
@@ -110,11 +108,6 @@ void RoundManager::settingBlinds()
 	players[dealerIndex + 2]->increaseBetThisRound(bigBlind);
 
 	increasePot(smallBlind + bigBlind);
-}
-
-int RoundManager::getPot()
-{
-	return pot;
 }
 
 void RoundManager::increasePot(int amount)
@@ -165,6 +158,9 @@ void RoundManager::fold()
 		{
 			players[i] = players[i + 1];
 		}
+		playersDidActions--;
+		checkForCommunityCards();
+		playerController->updateHUD();
 	}
 	else
 	{
@@ -208,6 +204,16 @@ Card* RoundManager::getRiver()
 	if (roundState >= RIVER)
 		return river;
 	else return NULL;
+}
+
+int RoundManager::getPot()
+{
+	return pot;
+}
+
+int RoundManager::getAmountOfPlayersRemaining()
+{
+	return amountOfPlayersRemaining;
 }
 
 RoundManager::~RoundManager()

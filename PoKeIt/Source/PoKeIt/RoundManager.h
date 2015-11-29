@@ -13,7 +13,7 @@ class APlayerControllerP;
  */
 class POKEIT_API RoundManager
 {
-public:
+private:
 
 	int smallBlind;
 	int bigBlind;
@@ -36,6 +36,11 @@ public:
 	Card* flop[3];
 	Card* turn;
 	Card* river;
+
+
+public:
+
+	// must be public
 	MyPlayerP* players[8];
 
 
@@ -48,6 +53,7 @@ public:
 	void settingBlinds();
 	void increasePot(int amount);
 	int getPot();
+	int getAmountOfPlayersRemaining();
 	
 	void checkForCommunityCards();
 	void finishTurn();

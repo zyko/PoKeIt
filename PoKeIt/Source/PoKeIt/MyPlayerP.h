@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Card.h"
+#include "UnrealString.h"
 
 /**
  * 
@@ -14,6 +15,7 @@ public:
 
 	// variables:
 
+	FString playerName;
 	int betThisRound;
 	int chips;
 	Card* cards[2];
@@ -25,6 +27,8 @@ public:
 	void increaseBetThisRound(int amount);
 	void initializeNewRound();
 	int getBetThisRound();
+
+	FString getName();
 
 	void debugFunc();
 
@@ -40,6 +44,6 @@ public:
 	int getChips();
 
 
-	MyPlayerP(int givenChips);
+	MyPlayerP(int givenChips, FString nameGiven);
 	~MyPlayerP();
 };

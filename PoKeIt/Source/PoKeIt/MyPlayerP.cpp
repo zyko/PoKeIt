@@ -2,13 +2,14 @@
 
 #include "PoKeIt.h"
 #include "MyPlayerP.h"
+#include "UnrealString.h"
 
 
 
 
-
-MyPlayerP::MyPlayerP(int givenChips)
+MyPlayerP::MyPlayerP(int givenChips, FString nameGiven)
 {
+	playerName = nameGiven;
 	chips = givenChips;
 	betThisRound = 0;
 }
@@ -70,6 +71,11 @@ void MyPlayerP::fold()
 void MyPlayerP::initializeNewRound()
 {
 	betThisRound = 0;
+}
+
+FString MyPlayerP::getName()
+{
+	return playerName;
 }
 
 MyPlayerP::~MyPlayerP()

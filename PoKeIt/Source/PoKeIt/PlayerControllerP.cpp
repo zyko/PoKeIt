@@ -5,7 +5,7 @@
 #include "PoKeItGameMode.h"
 #include "Card.h"
 #include "MyPlayerP.h"
-#include <string>
+//#include "UnrealString.h"
 
 // todo:
 int amountOfPlayers;
@@ -26,7 +26,8 @@ void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 
 	for (int i = 0; i < amountOfPlayers; ++i)
 	{
-		MyPlayerP *spawnedPlayer = new MyPlayerP(10000);
+		FString nameTMP = "Player " + FString::FromInt(i);
+		MyPlayerP *spawnedPlayer = new MyPlayerP(10000, nameTMP);
 		spawnedPlayer->setCards();
 		players[i] = spawnedPlayer;
 	}
@@ -45,21 +46,22 @@ void APlayerControllerP::roundFinished()
 
 void APlayerControllerP::updateHUD()
 {
-	currentPlayersChips = players[currentPlayer]->getChips();
+	currentPlayersChips = roundManager->players[currentPlayer]->getChips();
+	currentPlayerName = roundManager->players[currentPlayer]->getName();
 	potSize = roundManager->getPot();
 	updateHUDcards();
 }
 
 void APlayerControllerP::finishTurn()
 {
-	currentPlayer = ++currentPlayer % amountOfPlayers;
+	currentPlayer = ++currentPlayer % roundManager->getAmountOfPlayersRemaining();
 	updateHUD();
 }
 
 void APlayerControllerP::updateHUDcards()
 {
-	currentPlayersHand[0] = players[currentPlayer]->getCard0();
-	currentPlayersHand[1] = players[currentPlayer]->getCard1();
+	currentPlayersHand[0] = roundManager->players[currentPlayer]->getCard0();
+	currentPlayersHand[1] = roundManager->players[currentPlayer]->getCard1();
 
 	cardColor0 = currentPlayersHand[0]->getColor();
 	cardValue0 = currentPlayersHand[0]->getValue();
