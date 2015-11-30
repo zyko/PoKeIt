@@ -1,0 +1,5 @@
+ToDo:
+
+- deck (currently everything is random)
+- destructors
+- winning Calculator

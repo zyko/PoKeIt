@@ -206,6 +206,11 @@ Card* RoundManager::getRiver()
 	else return NULL;
 }
 
+int RoundManager::getRoundstages()
+{
+	return roundState;
+}
+
 int RoundManager::getPot()
 {
 	return pot;

@@ -102,6 +102,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void checkRound();
 
+
+	UFUNCTION(BlueprintCallable, Category = "roundstage")
+		int32 getRoundstages();
+
 	//todo: why is this UFUNCTION? 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void updateHUDcards();

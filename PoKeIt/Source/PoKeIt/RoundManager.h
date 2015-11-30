@@ -25,6 +25,7 @@ private:
 	int playersDidActions;
 
 	int roundState;
+
 	enum Roundstages
 	{
 		PREFLOP,
@@ -52,6 +53,8 @@ public:
 
 	void settingBlinds();
 	void increasePot(int amount);
+
+	int getRoundstages();
 	int getPot();
 	int getAmountOfPlayersRemaining();
 	

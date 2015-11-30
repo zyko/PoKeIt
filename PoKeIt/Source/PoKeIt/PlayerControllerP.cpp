@@ -120,14 +120,14 @@ void APlayerControllerP::checkRound()
 	roundManager->checkRound();
 }
 
+int APlayerControllerP::getRoundstages()
+{
+	return roundManager->getRoundstages();
+}
+
 void APlayerControllerP::debugMessage(FString s)
 {
-
-	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(s));
-
-
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, s);
-
 }
 
 
