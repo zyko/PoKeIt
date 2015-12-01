@@ -3,3 +3,6 @@ ToDo:
 - deck (currently everything is random)
 - destructors
 - winning Calculator
+- dealer management
+- end of round / starting new round
+- mainMenu debugging
