@@ -25,7 +25,7 @@ public:
 
 
 	void increaseBetThisRound(int amount);
-	void initializeNewRound();
+	void initializeNewRound(int a, int b, int c, int d);
 	int getBetThisRound();
 
 	FString getName();
@@ -37,7 +37,6 @@ public:
 	void increaseChips();
 	void decreaseChips(int amount);
 
-	void setCards();
 	Card* getCard0();
 	Card* getCard1();
 

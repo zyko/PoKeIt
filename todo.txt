@@ -1,8 +1,14 @@
 ToDo:
 
-- deck (currently everything is random)
+[x] deck
+- selection of players ( currently set to 5 by default in two blueprint nodes )
+- graphics ( especially cards )
+- showing card graphics ( currently only triggering on "check button" by hud widget )
 - destructors
 - winning Calculator
-- dealer management
+- dealer management ( 2nd round, etc..)
 - end of round / starting new round
 - mainMenu debugging
+- minimum betting / raising (in relation to bigBlind)
+- increasing blinds after a certain amount of rounds
+- camera

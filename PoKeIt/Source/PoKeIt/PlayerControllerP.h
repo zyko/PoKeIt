@@ -27,8 +27,10 @@ public:
 	* UPROPERTY and UFUNCTION make the variables and functions to appear in blueprints
 	*/
 
-
 	// variables:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "dealerIndex")
+		int32 dealerIndex=0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
 		int32 chips;
@@ -40,8 +42,8 @@ public:
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "players")
 	//	int32 amountOfPlayers;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "player")
-		int32 currentPlayer=0;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "player")
+		//int32 currentPlayer=0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "round management")
 		int32 potSize=0;
@@ -105,6 +107,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "roundstage")
 		int32 getRoundstages();
+
+
+	UFUNCTION(BlueprintCallable, Category = "bets")
+		int32 getCurrentMaxBet();
+	UFUNCTION(BlueprintCallable, Category = "bets")
+		int32 getCurrentPlayersBetThisRound();
+
 
 	//todo: why is this UFUNCTION? 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")

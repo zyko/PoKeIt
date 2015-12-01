@@ -14,13 +14,6 @@ MyPlayerP::MyPlayerP(int givenChips, FString nameGiven)
 	betThisRound = 0;
 }
 
-void MyPlayerP::setCards()
-{
-	cards[0] = new Card(FMath::RandRange(0, 3), FMath::RandRange(0, 12));
-	cards[1] = new Card(FMath::RandRange(0, 3), FMath::RandRange(0, 12));
-}
-
-
 Card* MyPlayerP::getCard0()
 {
 	return cards[0];
@@ -68,9 +61,11 @@ void MyPlayerP::fold()
 
 }
 
-void MyPlayerP::initializeNewRound()
+void MyPlayerP::initializeNewRound(int card0Color, int card0Value, int card1Color, int card1Value)
 {
 	betThisRound = 0;
+	cards[0] = new Card(card0Color, card0Value);
+	cards[1] = new Card(card1Color, card1Value);
 }
 
 FString MyPlayerP::getName()

@@ -21,6 +21,8 @@ private:
 	int dealerIndex;
 	int currentPlayerIndex;
 	int currentMaxBet;
+
+	
 	int amountOfPlayersRemaining;
 	int playersDidActions;
 
@@ -36,7 +38,7 @@ private:
 		RIVER,
 	};
 
-	int* deck[4][13];
+	int deck[4][13];
 
 	Card* flop[3];
 	Card* turn;
@@ -57,10 +59,14 @@ public:
 
 	void settingBlinds();
 	void increasePot(int amount);
+	void resetDeck();
 
 	int getRoundstages();
 	int getPot();
 	int getAmountOfPlayersRemaining();
+	int getCurrentPlayerIndex();
+	int getCurrentMaxBet();
+	int getCurrentPlayersBetThisRound();
 
 	bool controlDeck(int a, int b);
 	
@@ -76,7 +82,7 @@ public:
 
 	APlayerControllerP* playerController;
 
-	RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining);
+	RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex);
 	~RoundManager();
 
 	

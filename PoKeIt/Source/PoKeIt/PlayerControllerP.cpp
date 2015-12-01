@@ -28,11 +28,10 @@ void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 	{
 		FString nameTMP = "Player " + FString::FromInt(i);
 		MyPlayerP *spawnedPlayer = new MyPlayerP(10000, nameTMP);
-		spawnedPlayer->setCards();
 		players[i] = spawnedPlayer;
 	}
 
-	roundManager = new RoundManager(players, this, amountOfPlayers);
+	roundManager = new RoundManager(players, this, amountOfPlayers, dealerIndex);
 
 
 	updateHUD();	
@@ -48,22 +47,22 @@ void APlayerControllerP::roundFinished()
 
 void APlayerControllerP::updateHUD()
 {
-	currentPlayersChips = roundManager->players[currentPlayer]->getChips();
-	currentPlayerName = roundManager->players[currentPlayer]->getName();
+	currentPlayersChips = roundManager->players[roundManager->getCurrentPlayerIndex()]->getChips();
+	currentPlayerName = roundManager->players[roundManager->getCurrentPlayerIndex()]->getName();
 	potSize = roundManager->getPot();
 	updateHUDcards();
 }
 
 void APlayerControllerP::finishTurn()
 {
-	currentPlayer = ++currentPlayer % roundManager->getAmountOfPlayersRemaining();
+	//currentPlayer = ++currentPlayer % roundManager->getAmountOfPlayersRemaining();
 	updateHUD();
 }
 
 void APlayerControllerP::updateHUDcards()
 {
-	currentPlayersHand[0] = roundManager->players[currentPlayer]->getCard0();
-	currentPlayersHand[1] = roundManager->players[currentPlayer]->getCard1();
+	currentPlayersHand[0] = roundManager->players[roundManager->getCurrentPlayerIndex()]->getCard0();
+	currentPlayersHand[1] = roundManager->players[roundManager->getCurrentPlayerIndex()]->getCard1();
 
 	cardColor0 = currentPlayersHand[0]->getColor();
 	cardValue0 = currentPlayersHand[0]->getValue();
@@ -124,6 +123,27 @@ void APlayerControllerP::checkRound()
 int APlayerControllerP::getRoundstages()
 {
 	return roundManager->getRoundstages();
+}
+
+int APlayerControllerP::getCurrentMaxBet()
+{
+	if (roundManager != NULL)
+	{
+		return roundManager->getCurrentMaxBet();
+	}
+	else
+		return 0;
+}
+
+int APlayerControllerP::getCurrentPlayersBetThisRound()
+{
+	if (roundManager != NULL)
+	{
+		return roundManager->getCurrentPlayersBetThisRound();
+	}
+	else
+		return 0;
+	
 }
 
 void APlayerControllerP::debugMessage(FString s)

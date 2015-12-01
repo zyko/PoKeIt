@@ -5,26 +5,35 @@
 #include "UnrealString.h"
 
 
-RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int ampr)
+RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex)
 {
 	playerController = pc;
-	amountOfPlayersRemaining = ampr;
+	this->amountOfPlayersRemaining = amountOfPlayersRemaining;
+	resetDeck();
 
 	for (int i = 0; i < amountOfPlayersRemaining; ++i)
 	{
+
 		players[i] = playersOfThisRound[i];
 
-		int* card0[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
-		int* card1[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };		
+		int card0[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
+		int card1[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };		
 
-		while (!controlDeck(card0[0], card0[1])
+		while (!controlDeck(card0[0], card0[1]))
 		{
-			card0[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
-			card1[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
-			controlDeck(card0[0], card0[1];
+			card1[0] = FMath::RandRange(0, 3);
+			card1[1] = FMath::RandRange(0, 12);
+			controlDeck(card0[0], card0[1]);
 		}
 
-		players[i]->initializeNewRound();
+		while (!controlDeck(card1[0], card1[1]))
+		{
+			card1[0] = FMath::RandRange(0, 3);
+			card1[1] = FMath::RandRange(0, 12);
+		}
+		
+
+		players[i]->initializeNewRound(card0[0], card0[1], card1[0], card1[1]);
 	}
 
 
@@ -32,10 +41,10 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 	*	should be given by PlayerController.
 	*	set to 0 for debugging reasons.
 	*/
-	dealerIndex = 0;
 
 
-	currentPlayerIndex = 0;
+	this->dealerIndex = dealerIndex;
+	currentPlayerIndex = (dealerIndex + 3 ) % amountOfPlayersRemaining;
 	pot = 0;
 	roundState = PREFLOP;
 	smallBlind = 0; // 250
@@ -48,48 +57,91 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 
 bool RoundManager::controlDeck(int color, int value)
 {
-	if (deck[color][value] != NULL)
+	if ((deck[color][value]) < 4)
 	{
-		if ((deck[color[value])* < 4)
-		{
-			deck[color][value]++;
-			return true;
-		}
-		else if ((deck[acolor[value])* == 4)
-		{
-			return false;
-		}
+		deck[color][value]++;
+		return true;
 	}
+	else // if ((deck[color][value]) == 4)
+	{
+		return false;
+	}
+}
 
-	/*
+void RoundManager::resetDeck()
+{
 	for (int i = 0; i < 4; ++i)
 	{
-
 		for (int n = 0; n < 13; ++n)
 		{
 			deck[i][n] = 0;
 		}
 	}
-	*/
 }
 
 void RoundManager::roundStateSwitch()
 {
 	if (roundState == PREFLOP)
 	{
-		flop[0] = new Card(FMath::RandRange(0, 3), FMath::RandRange(0, 12));
-		flop[1] = new Card(FMath::RandRange(0, 3), FMath::RandRange(0, 12));
-		flop[2] = new Card(FMath::RandRange(0, 3), FMath::RandRange(0, 12));
+		currentPlayerIndex = (dealerIndex) % amountOfPlayersRemaining;
+
+		int flop0[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
+		int flop1[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
+		int flop2[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
+
+		while (!controlDeck(flop0[2], flop0[1]))
+		{
+			flop0[0] = FMath::RandRange(0, 3);
+			flop0[1] = FMath::RandRange(0, 12);
+		}
+
+		while (!controlDeck(flop1[0], flop1[1]))
+		{
+			flop1[0] = FMath::RandRange(0, 3);
+			flop1[1] = FMath::RandRange(0, 12);
+		}
+
+		while (!controlDeck(flop2[0], flop2[1]))
+		{
+			flop2[0] = FMath::RandRange(0, 3);
+			flop2[1] = FMath::RandRange(0, 12);
+		}
+
+		flop[0] = new Card(flop0[0], flop0[1]);
+		flop[1] = new Card(flop1[0], flop1[1]);
+		flop[2] = new Card(flop2[0], flop2[1]);
+
+
+
 	}
 	else if (roundState == FLOP)
 	{
-		turn = new Card(FMath::RandRange(0, 3), FMath::RandRange(0, 12));
+		currentPlayerIndex = (dealerIndex) % amountOfPlayersRemaining;
+
+		int turnA[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
+
+		while (!controlDeck(turnA[2], turnA[1]))
+		{
+			turnA[0] = FMath::RandRange(0, 3);
+			turnA[1] = FMath::RandRange(0, 12);
+		}
+
+		turn = new Card(turnA[0], turnA[1]);
 
 	}
 	else if (roundState == TURN)
 	{
-		river = new Card(FMath::RandRange(0, 3), FMath::RandRange(0, 12));
+		currentPlayerIndex = (dealerIndex) % amountOfPlayersRemaining;
 
+		int riverA[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
+
+		while (!controlDeck(riverA[2], riverA[1]))
+		{
+			riverA[0] = FMath::RandRange(0, 3);
+			riverA[1] = FMath::RandRange(0, 12);
+		}
+
+		turn = new Card(riverA[0], riverA[1]);
 	}
 	else if (roundState == RIVER)
 	{
@@ -109,6 +161,15 @@ void RoundManager::checkForCommunityCards()
 		bool everyPlayerOnSameBet = false;
 		for (int i = 0; i < amountOfPlayersRemaining; ++i)
 		{
+			FString betThisRound = "getBetThisRound: " + FString::FromInt(players[i]->getBetThisRound());
+			playerController->debugMessage(betThisRound);
+
+			FString currentMaxBets = "currentMaxBet is: " + FString::FromInt(currentMaxBet);
+			playerController->debugMessage(currentMaxBets);
+
+			//FString currentMaxBet = "currentMaxBet: " + FString::FromInt((int) currentMaxBet);
+			//playerController->debugMessage(currentMaxBet);
+
 			if (players[i]->getBetThisRound() == currentMaxBet)
 			{
 				everyPlayerOnSameBet = true;
@@ -116,6 +177,7 @@ void RoundManager::checkForCommunityCards()
 			else
 			{
 				everyPlayerOnSameBet = false;
+				break;
 			}
 		}
 		if (everyPlayerOnSameBet)
@@ -136,6 +198,8 @@ void RoundManager::roundOver()
 	flop[2]->~Card();
 	turn->~Card();
 	river->~Card();
+
+	resetDeck();
 }
 
 void RoundManager::settingBlinds()
@@ -155,6 +219,13 @@ void RoundManager::increasePot(int amount)
 
 void RoundManager::checkRound()
 {
+	/*
+	FString betThisRound = "getBetThisRound: " + FString::FromInt(players[currentPlayerIndex]->getBetThisRound());
+	playerController->debugMessage(betThisRound);
+
+	FString currentMaxBets = "currentMaxBet is: " + FString::FromInt(currentMaxBet);
+	playerController->debugMessage(currentMaxBets);
+	*/
 	if (players[currentPlayerIndex]->getBetThisRound() >= currentMaxBet)
 	{
 		finishTurn();
@@ -172,14 +243,13 @@ void RoundManager::betRaise(int amount)
 	{
 		players[currentPlayerIndex]->decreaseChips(amount);
 		players[currentPlayerIndex]->increaseBetThisRound(amount);
+		currentMaxBet = players[currentPlayerIndex]->getBetThisRound();
 		pot += amount;
 		finishTurn();
 	}
 	else
 	{
-		FString s = "not enough bet. betThisRound is: " + players[currentPlayerIndex]->getBetThisRound();
-		//FString t = " amount is: " + amount;
-		//FString u = s + t;
+		FString s = "not enough bet. betThisRound is: " + FString::FromInt(players[currentPlayerIndex]->getBetThisRound());
 		playerController->debugMessage(s);
 	}
 }
@@ -257,6 +327,21 @@ int RoundManager::getPot()
 int RoundManager::getAmountOfPlayersRemaining()
 {
 	return amountOfPlayersRemaining;
+}
+
+int RoundManager::getCurrentPlayerIndex()
+{
+	return currentPlayerIndex;
+}
+
+int RoundManager::getCurrentMaxBet()
+{
+	return currentMaxBet;
+}
+
+int RoundManager::getCurrentPlayersBetThisRound()
+{
+	return players[currentPlayerIndex]->getBetThisRound();
 }
 
 RoundManager::~RoundManager()
