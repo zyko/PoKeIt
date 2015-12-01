@@ -24,6 +24,8 @@ private:
 	int amountOfPlayersRemaining;
 	int playersDidActions;
 
+
+
 	int roundState;
 
 	enum Roundstages
@@ -33,6 +35,8 @@ private:
 		TURN,
 		RIVER,
 	};
+
+	int* deck[4][13];
 
 	Card* flop[3];
 	Card* turn;
@@ -57,6 +61,8 @@ public:
 	int getRoundstages();
 	int getPot();
 	int getAmountOfPlayersRemaining();
+
+	bool controlDeck(int a, int b);
 	
 	void checkForCommunityCards();
 	void finishTurn();

@@ -38,6 +38,8 @@ void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 	updateHUD();	
 }
 
+
+
 // still needs to be called by either winning calculation or playercontroller.
 void APlayerControllerP::roundFinished()
 {
@@ -96,7 +98,6 @@ void APlayerControllerP::updateHUDcards()
 		}
 	}
 }
-
 
 void APlayerControllerP::betRaise(int atb)
 {

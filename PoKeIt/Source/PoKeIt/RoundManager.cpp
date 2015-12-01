@@ -13,6 +13,17 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 	for (int i = 0; i < amountOfPlayersRemaining; ++i)
 	{
 		players[i] = playersOfThisRound[i];
+
+		int* card0[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
+		int* card1[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };		
+
+		while (!controlDeck(card0[0], card0[1])
+		{
+			card0[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
+			card1[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
+			controlDeck(card0[0], card0[1];
+		}
+
 		players[i]->initializeNewRound();
 	}
 
@@ -33,6 +44,33 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 	playersDidActions = 0;
 
 	settingBlinds();
+}
+
+bool RoundManager::controlDeck(int color, int value)
+{
+	if (deck[color][value] != NULL)
+	{
+		if ((deck[color[value])* < 4)
+		{
+			deck[color][value]++;
+			return true;
+		}
+		else if ((deck[acolor[value])* == 4)
+		{
+			return false;
+		}
+	}
+
+	/*
+	for (int i = 0; i < 4; ++i)
+	{
+
+		for (int n = 0; n < 13; ++n)
+		{
+			deck[i][n] = 0;
+		}
+	}
+	*/
 }
 
 void RoundManager::roundStateSwitch()
