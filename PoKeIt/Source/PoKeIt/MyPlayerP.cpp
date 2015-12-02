@@ -2,10 +2,6 @@
 
 #include "PoKeIt.h"
 #include "MyPlayerP.h"
-#include "UnrealString.h"
-
-
-
 
 MyPlayerP::MyPlayerP(int givenChips, FString nameGiven)
 {
