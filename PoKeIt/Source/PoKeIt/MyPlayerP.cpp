@@ -20,7 +20,6 @@ Card* MyPlayerP::getCard1()
 	return cards[1];
 }
 
-
 void MyPlayerP::increaseChips()
 {
 	chips += 100;
