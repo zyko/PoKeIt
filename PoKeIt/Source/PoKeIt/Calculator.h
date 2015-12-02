@@ -13,10 +13,11 @@ class POKEIT_API Calculator
 
 private:
 
-	Card* sortedCards[5];
-public:
+	int amountOfCards = 7;
 
-	int	calculateWinning(Card* hand1, Card* hand2, Card* flop[3], Card* turn, Card* river);
+	Card* cards[5];
+
+public:
 
 	enum CardRanking
 	{
@@ -37,9 +38,23 @@ public:
 
 	int pairCheck(Card* array[5]);
 
-	void sortCards();
-	int qualityOfCards(Card* selection[5]);
 
-	Calculator();
+	//void sortCards();
+
+	bool tripsCheck();
+	bool quadsCheck();
+	bool pairCheck();
+
+	bool flushCheck();
+
+	bool straightCheck();
+
+	void bubbleSortByValue();
+	void bubbleSortByColor();
+
+	
+	int qualityOfCards();
+
+	Calculator(Card* hand1, Card* hand2, Card* flop0, Card* flop1, Card* flop2, Card* turn, Card* river);
 	~Calculator();
 };

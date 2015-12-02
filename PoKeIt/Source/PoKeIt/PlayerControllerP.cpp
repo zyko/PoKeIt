@@ -33,6 +33,11 @@ void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 
 	roundManager = new RoundManager(players, this, amountOfPlayers, dealerIndex);
 
+	/*
+	KI bla = new KI(..);
+
+	bla.setRoundManager(roundManager);
+	*/
 
 	updateHUD();	
 }

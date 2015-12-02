@@ -236,6 +236,25 @@ void RoundManager::checkRound()
 	FString currentMaxBets = "currentMaxBet is: " + FString::FromInt(currentMaxBet);
 	playerController->debugMessage(currentMaxBets);
 	*/
+
+	//only for debugging:
+
+	/*
+	Card* a = new Card(0, 1);
+	Card* b = new Card(0, 7);
+	Card* c = new Card(1, 3);
+	Card* d = new Card(0, 12);
+	Card* e = new Card(0, 5);
+	Card* f = new Card(1, 9);
+	Card* g = new Card(0, 7);
+
+	Calculator* calc = new Calculator(a, b, c, d, e, f, g);
+	
+	int q = calc->qualityOfCards();
+
+	playerController->debugMessage("quality calculated: " + FString::FromInt(q));
+	*/
+
 	if (players[currentPlayerIndex]->getBetThisRound() >= currentMaxBet)
 	{
 		finishTurn();
