@@ -74,6 +74,7 @@ public:
 	void finishTurn();
 
 	void checkRound();
+	void callRound();
 	void betRaise(int amount);
 	void fold();
 

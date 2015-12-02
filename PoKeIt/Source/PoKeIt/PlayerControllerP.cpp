@@ -112,7 +112,7 @@ void APlayerControllerP::foldRound()
 
 void APlayerControllerP::callRound()
 {
-
+	roundManager->callRound();
 }
 
 void APlayerControllerP::checkRound()

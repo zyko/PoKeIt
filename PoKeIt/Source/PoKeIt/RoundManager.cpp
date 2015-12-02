@@ -57,12 +57,12 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 
 bool RoundManager::controlDeck(int color, int value)
 {
-	if ((deck[color][value]) < 4)
+	if ((deck[color][value]) < 1)
 	{
 		deck[color][value]++;
 		return true;
 	}
-	else // if ((deck[color][value]) == 4)
+	else // if ((deck[color][value]) == 1)
 	{
 		return false;
 	}
@@ -217,6 +217,16 @@ void RoundManager::increasePot(int amount)
 	pot += amount;
 }
 
+// player actions:
+
+void RoundManager::callRound()
+{
+	if ((players[currentPlayerIndex]->getChips()) >= (currentMaxBet - players[currentPlayerIndex]->getBetThisRound()))
+		betRaise(currentMaxBet - players[currentPlayerIndex]->getBetThisRound());
+	else
+		playerController->debugMessage("couldnt call, because too less chips available");
+}
+
 void RoundManager::checkRound()
 {
 	/*
@@ -292,6 +302,8 @@ void RoundManager::finishTurn()
 	currentPlayerIndex = ++currentPlayerIndex % amountOfPlayersRemaining;
 	playerController->finishTurn();
 }
+
+// Getters:
 
 Card* RoundManager::getFlop(int index)
 {

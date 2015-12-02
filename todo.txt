@@ -1,9 +1,10 @@
 ToDo:
 
-[x] deck
+
+- deck											[done]
 - selection of players ( currently set to 5 by default in two blueprint nodes )
 - graphics ( especially cards )
-- showing card graphics ( currently only triggering on "check button" by hud widget )
+- showing card graphics ( currently only triggering on "check button" by hud widget ) 	[done]
 - destructors
 - winning Calculator
 - dealer management ( 2nd round, etc..)
