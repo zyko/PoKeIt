@@ -2,10 +2,6 @@
 
 #include "PoKeIt.h"
 #include "MyPlayerP.h"
-#include "UnrealString.h"
-
-
-
 
 MyPlayerP::MyPlayerP(int givenChips, FString nameGiven)
 {
@@ -23,7 +19,6 @@ Card* MyPlayerP::getCard1()
 {
 	return cards[1];
 }
-
 
 void MyPlayerP::increaseChips()
 {
