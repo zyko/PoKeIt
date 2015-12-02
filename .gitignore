@@ -57,10 +57,8 @@ PoKeIt/Intermediate/Build/*
 PoKeIt/Intermediate/Config/*
 PoKeIt/Intermediate/ReimportCache/*
 PoKeIt/Intermediate/Shaders/*
-
-
-
-
+PoKeIt/Intermediate/ProjectFiles/*
+PoKeIt/Intermediate/CachedAssetRegistry.bin
 
 # Cache files for the editor to use
 PoKeIt/DerivedDataCache/*
@@ -72,9 +70,3 @@ PoKeIt/DerivedDataCache/*
 *.swp
 *.swo
 .ctrlp_cache/
-
-PoKeIt/Intermediate/CachedAssetRegistry.bin
-PoKeIt/Intermediate/Config/CoalescedSourceConfigs/Engine.ini
-PoKeIt/Saved/AutoScreenshot.png
-PoKeIt/Saved/Config/Windows/Editor.ini
-PoKeIt/Saved/Config/Windows/EditorPerProjectUserSettings.ini
