@@ -4,6 +4,11 @@
 
 #include "Card.h"
 #include "MyPlayerP.h"
+#include "PlayerControllerP.h" //debugging
+
+
+
+class APlayerControllerP;
 
 /**
  * 
@@ -13,11 +18,18 @@ class POKEIT_API Calculator
 
 private:
 
-	int amountOfCards = 7;
+	static const int amountOfCards = 7;
 
-	Card* cards[5];
+	Card* cards[amountOfCards];
 
 public:
+
+	// debugging:
+	void setPlayerController(APlayerControllerP* pc);
+
+	APlayerControllerP* playerController;
+	
+
 
 	enum CardRanking
 	{
@@ -36,25 +48,22 @@ public:
 
 	// functions:
 
-	int pairCheck(Card* array[5]);
 
-
-	//void sortCards();
-
-	bool tripsCheck();
+	int pairCheck(int pairCheckValue);
+	bool tripsCheck(int pairCheckValue);
 	bool quadsCheck();
-	bool pairCheck();
+	
 
-	bool flushCheck();
+	int flushCheck();
 
-	bool straightCheck();
+	bool straightCheck(int straightFlushCheck);
 
 	void bubbleSortByValue();
 	void bubbleSortByColor();
 
 	
-	int qualityOfCards();
+	int qualityOfCards(Card* hand1, Card* hand2, Card* flop0, Card* flop1, Card* flop2, Card* turn, Card* river);
 
-	Calculator(Card* hand1, Card* hand2, Card* flop0, Card* flop1, Card* flop2, Card* turn, Card* river);
+	Calculator();
 	~Calculator();
 };

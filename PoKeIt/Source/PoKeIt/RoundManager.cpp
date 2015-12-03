@@ -9,6 +9,8 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 {
 	playerController = pc;
 	this->amountOfPlayersRemaining = amountOfPlayersRemaining;
+	
+	
 	resetDeck();
 
 	for (int i = 0; i < amountOfPlayersRemaining; ++i)
@@ -21,9 +23,8 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 
 		while (!controlDeck(card0[0], card0[1]))
 		{
-			card1[0] = FMath::RandRange(0, 3);
-			card1[1] = FMath::RandRange(0, 12);
-			controlDeck(card0[0], card0[1]);
+			card0[0] = FMath::RandRange(0, 3);
+			card0[1] = FMath::RandRange(0, 12);
 		}
 
 		while (!controlDeck(card1[0], card1[1]))
@@ -31,7 +32,6 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 			card1[0] = FMath::RandRange(0, 3);
 			card1[1] = FMath::RandRange(0, 12);
 		}
-		
 
 		players[i]->initializeNewRound(card0[0], card0[1], card1[0], card1[1]);
 	}
@@ -41,7 +41,7 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 	*	should be given by PlayerController.
 	*	set to 0 for debugging reasons.
 	*/
-
+#pragma region debugging reasons
 
 	this->dealerIndex = dealerIndex;
 	currentPlayerIndex = (dealerIndex + 3 ) % amountOfPlayersRemaining;
@@ -53,13 +53,15 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 	playersDidActions = 0;
 
 	settingBlinds();
+#pragma endregion
+
 }
 
 bool RoundManager::controlDeck(int color, int value)
 {
-	if ((deck[color][value]) < 1)
+	if ((deck[color][value]) == 0)
 	{
-		deck[color][value]++;
+		deck[color][value] = 1;
 		return true;
 	}
 	else // if ((deck[color][value]) == 1)
@@ -229,31 +231,35 @@ void RoundManager::callRound()
 
 void RoundManager::checkRound()
 {
-	/*
-	FString betThisRound = "getBetThisRound: " + FString::FromInt(players[currentPlayerIndex]->getBetThisRound());
-	playerController->debugMessage(betThisRound);
-
-	FString currentMaxBets = "currentMaxBet is: " + FString::FromInt(currentMaxBet);
-	playerController->debugMessage(currentMaxBets);
-	*/
 
 	//only for debugging:
 
-	/*
-	Card* a = new Card(0, 1);
-	Card* b = new Card(0, 7);
-	Card* c = new Card(1, 3);
-	Card* d = new Card(0, 12);
-	Card* e = new Card(0, 5);
-	Card* f = new Card(1, 9);
-	Card* g = new Card(0, 7);
 
-	Calculator* calc = new Calculator(a, b, c, d, e, f, g);
+	Card* a = new Card(3, 3);
+	Card* b = new Card(1, 8);
+	Card* c = new Card(0, 2);
+	Card* d = new Card(0, 1);
+	Card* e = new Card(0, 0);
+	Card* f = new Card(1, 11);
+	Card* g = new Card(0, 9);
+
+	Calculator* calc = new Calculator();
+	calc->setPlayerController(playerController);
 	
-	int q = calc->qualityOfCards();
+	int q = calc->qualityOfCards(a, b, c, d, e, f, g);
 
 	playerController->debugMessage("quality calculated: " + FString::FromInt(q));
-	*/
+
+
+	a->~Card();
+	b->~Card();
+	c->~Card();
+	d->~Card();
+	e->~Card();
+	f->~Card();
+	g->~Card();
+	calc->~Calculator();
+	
 
 	if (players[currentPlayerIndex]->getBetThisRound() >= currentMaxBet)
 	{

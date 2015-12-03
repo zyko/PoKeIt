@@ -5,7 +5,7 @@
 #include "Card.h"
 #include "MyPlayerP.h"
 #include "PlayerControllerP.h"
-//#include "Calculator.h"
+#include "Calculator.h"
 
 class APlayerControllerP;
 

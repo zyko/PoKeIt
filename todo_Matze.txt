@@ -1,15 +1,20 @@
 ToDo:
 
 
-- deck											[done]
+- deck!											[done] (hopefully)
+- Ace can be 0 and 12 @ straight							[done]
+- check what happens, when both players have flush, f. e.
 - selection of players ( currently set to 5 by default in two blueprint nodes )
 - graphics ( especially cards )
 - showing card graphics ( currently only triggering on "check button" by hud widget ) 	[done]
 - destructors
-- winning Calculator
+- winning Calculator									[done]
 - dealer management ( 2nd round, etc..)
+- winning screen
 - end of round / starting new round
 - mainMenu debugging
 - minimum betting / raising (in relation to bigBlind)
 - increasing blinds after a certain amount of rounds
 - camera
+- screen when player switches
+- graphic animations
