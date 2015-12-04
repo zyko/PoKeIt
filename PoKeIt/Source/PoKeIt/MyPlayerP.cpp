@@ -68,6 +68,14 @@ FString MyPlayerP::getName()
 	return playerName;
 }
 
+void MyPlayerP::destroyCards()
+{
+	cards[0]->~Card();
+	cards[1]->~Card();
+	cards[0] = 0;
+	cards[1] = 0;
+}
+
 MyPlayerP::~MyPlayerP()
 {
 	cards[0]->~Card();

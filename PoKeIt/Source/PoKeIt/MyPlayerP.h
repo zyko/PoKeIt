@@ -44,5 +44,7 @@ public:
 
 
 	MyPlayerP(int givenChips, FString nameGiven);
+
+	void destroyCards();
 	~MyPlayerP();
 };

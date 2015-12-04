@@ -18,3 +18,4 @@ ToDo:
 - camera
 - screen when player switches
 - graphic animations
+- delete playerController stuff in calculator

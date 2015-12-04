@@ -10,12 +10,10 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 	playerController = pc;
 	this->amountOfPlayersRemaining = amountOfPlayersRemaining;
 	
-	
 	resetDeck();
 
 	for (int i = 0; i < amountOfPlayersRemaining; ++i)
 	{
-
 		players[i] = playersOfThisRound[i];
 
 		int card0[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
@@ -37,12 +35,6 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 	}
 
 
-	/*
-	*	should be given by PlayerController.
-	*	set to 0 for debugging reasons.
-	*/
-#pragma region debugging reasons
-
 	this->dealerIndex = dealerIndex;
 	currentPlayerIndex = (dealerIndex + 3 ) % amountOfPlayersRemaining;
 	pot = 0;
@@ -53,8 +45,6 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 	playersDidActions = 0;
 
 	settingBlinds();
-#pragma endregion
-
 }
 
 bool RoundManager::controlDeck(int color, int value)
@@ -73,12 +63,8 @@ bool RoundManager::controlDeck(int color, int value)
 void RoundManager::resetDeck()
 {
 	for (int i = 0; i < 4; ++i)
-	{
 		for (int n = 0; n < 13; ++n)
-		{
 			deck[i][n] = 0;
-		}
-	}
 }
 
 void RoundManager::roundStateSwitch()
@@ -112,8 +98,6 @@ void RoundManager::roundStateSwitch()
 		flop[0] = new Card(flop0[0], flop0[1]);
 		flop[1] = new Card(flop1[0], flop1[1]);
 		flop[2] = new Card(flop2[0], flop2[1]);
-
-
 
 	}
 	else if (roundState == FLOP)
@@ -193,6 +177,79 @@ void RoundManager::checkForCommunityCards()
 
 void RoundManager::roundOver()
 {
+	// can be used for debugging:
+	/* can be used for debugging:
+
+	Card* a = new Card(3, 3);
+	Card* b = new Card(1, 8);
+	Card* c = new Card(0, 2);
+	Card* d = new Card(0, 1);
+	Card* e = new Card(0, 0);
+	Card* f = new Card(1, 11);
+	Card* g = new Card(0, 9);
+
+	Calculator* calc = new Calculator();
+	calc->setPlayerController(playerController);
+
+	int q = calc->qualityOfCards(a, b, c, d, e, f, g);
+
+	playerController->debugMessage("quality calculated: " + FString::FromInt(q));
+
+
+	a->~Card();
+	b->~Card();
+	c->~Card();
+	d->~Card();
+	e->~Card();
+	f->~Card();
+	g->~Card();
+
+
+	calc->~Calculator();
+	*/
+	
+
+	Calculator* calc = new Calculator();
+	calc->setPlayerController(playerController);
+	int value = -1;
+	int player = 0;
+
+	for (int i = 0; i < amountOfPlayersRemaining; ++i)
+	{
+		int tmp = calc->qualityOfCards(players[i]->getCard0(), players[i]->getCard1(), flop[0], flop[1], flop[2], turn, river);
+		if (tmp > value)
+		{
+			value = tmp;
+			player = i;
+		}
+	}
+	FString winner;
+
+	if (value == 0)
+		winner = "High Card!";
+	if (value == 1)
+		winner = "Pair!";
+	if (value == 2)
+		winner = "Two Pair!";
+	if (value == 3)
+		winner = "Triple!";
+	if (value == 4)
+		winner = "Straight!";
+	if (value == 5)
+		winner = "Flush!";
+	if (value == 6)
+		winner = "Full House!";
+	if (value == 7)
+		winner = "Quads!";
+	if (value == 8)
+		winner = "Straight Flush!";
+
+	playerController->debugMessage("aaaaand the winner is: " + players[player]->getName() + " with: " + winner);
+
+	for (int i = 0; i < amountOfPlayersRemaining; ++i)
+		players[i]->destroyCards();
+
+	calc->~Calculator();
 	//calculateWinning();
 	// destroy cards of players;
 	flop[0]->~Card();
@@ -231,45 +288,10 @@ void RoundManager::callRound()
 
 void RoundManager::checkRound()
 {
-
-	//only for debugging:
-
-
-	Card* a = new Card(3, 3);
-	Card* b = new Card(1, 8);
-	Card* c = new Card(0, 2);
-	Card* d = new Card(0, 1);
-	Card* e = new Card(0, 0);
-	Card* f = new Card(1, 11);
-	Card* g = new Card(0, 9);
-
-	Calculator* calc = new Calculator();
-	calc->setPlayerController(playerController);
-	
-	int q = calc->qualityOfCards(a, b, c, d, e, f, g);
-
-	playerController->debugMessage("quality calculated: " + FString::FromInt(q));
-
-
-	a->~Card();
-	b->~Card();
-	c->~Card();
-	d->~Card();
-	e->~Card();
-	f->~Card();
-	g->~Card();
-	calc->~Calculator();
-	
-
 	if (players[currentPlayerIndex]->getBetThisRound() >= currentMaxBet)
-	{
 		finishTurn();
-	}
 	else
-	{
-		FString s = "not enough bet to check this round";
-		playerController->debugMessage(s);
-	}
+		playerController->debugMessage("not enough bet to check this round");
 }
 
 void RoundManager::betRaise(int amount)
