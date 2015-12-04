@@ -120,6 +120,8 @@ public:
 		void updateHUDcards();
 
 
+	void roundOver();
+
 	void updateHUD();
 
 	void finishTurn();

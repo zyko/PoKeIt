@@ -58,10 +58,16 @@ void APlayerControllerP::updateHUD()
 	updateHUDcards();
 }
 
+// todo: still necessary? could call updateHUD() directly
 void APlayerControllerP::finishTurn()
 {
 	//currentPlayer = ++currentPlayer % roundManager->getAmountOfPlayersRemaining();
 	updateHUD();
+}
+
+void APlayerControllerP::roundOver()
+{
+	//roundManager->~RoundManager();
 }
 
 void APlayerControllerP::updateHUDcards()
@@ -103,6 +109,8 @@ void APlayerControllerP::updateHUDcards()
 	}
 }
 
+// player actions:
+
 void APlayerControllerP::betRaise(int atb)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("APC betRaise was called with: %i"), atb));
@@ -124,6 +132,8 @@ void APlayerControllerP::checkRound()
 {
 	roundManager->checkRound();
 }
+
+// getters:
 
 int APlayerControllerP::getRoundstages()
 {

@@ -117,6 +117,7 @@ void RoundManager::roundStateSwitch()
 	}
 	else if (roundState == TURN)
 	{
+		
 		currentPlayerIndex = (dealerIndex) % amountOfPlayersRemaining;
 
 		int riverA[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
@@ -127,7 +128,8 @@ void RoundManager::roundStateSwitch()
 			riverA[1] = FMath::RandRange(0, 12);
 		}
 
-		turn = new Card(riverA[0], riverA[1]);
+		river = new Card(riverA[0], riverA[1]);
+		
 	}
 	else if (roundState == RIVER)
 	{
@@ -147,19 +149,8 @@ void RoundManager::checkForCommunityCards()
 		bool everyPlayerOnSameBet = false;
 		for (int i = 0; i < amountOfPlayersRemaining; ++i)
 		{
-			FString betThisRound = "getBetThisRound: " + FString::FromInt(players[i]->getBetThisRound());
-			playerController->debugMessage(betThisRound);
-
-			FString currentMaxBets = "currentMaxBet is: " + FString::FromInt(currentMaxBet);
-			playerController->debugMessage(currentMaxBets);
-
-			//FString currentMaxBet = "currentMaxBet: " + FString::FromInt((int) currentMaxBet);
-			//playerController->debugMessage(currentMaxBet);
-
 			if (players[i]->getBetThisRound() == currentMaxBet)
-			{
 				everyPlayerOnSameBet = true;
-			}
 			else
 			{
 				everyPlayerOnSameBet = false;
@@ -167,11 +158,7 @@ void RoundManager::checkForCommunityCards()
 			}
 		}
 		if (everyPlayerOnSameBet)
-		{
 			roundStateSwitch();
-			FString a = "roundStateSwitch() was triggered ! ";
-			playerController->debugMessage(a);
-		}
 	}
 }
 
@@ -207,7 +194,7 @@ void RoundManager::roundOver()
 
 	calc->~Calculator();
 	*/
-	
+
 
 	Calculator* calc = new Calculator();
 	calc->setPlayerController(playerController);
@@ -246,19 +233,19 @@ void RoundManager::roundOver()
 
 	playerController->debugMessage("aaaaand the winner is: " + players[player]->getName() + " with: " + winner);
 
+	/* aint workin
 	for (int i = 0; i < amountOfPlayersRemaining; ++i)
+	{
 		players[i]->destroyCards();
+		players[i] = 0;
+	}
+	*/
 
 	calc->~Calculator();
-	//calculateWinning();
-	// destroy cards of players;
-	flop[0]->~Card();
-	flop[1]->~Card();
-	flop[2]->~Card();
-	turn->~Card();
-	river->~Card();
 
 	resetDeck();
+
+	playerController->roundOver();
 }
 
 void RoundManager::settingBlinds()
@@ -274,6 +261,13 @@ void RoundManager::settingBlinds()
 void RoundManager::increasePot(int amount)
 {
 	pot += amount;
+}
+
+void RoundManager::finishTurn()
+{
+	checkForCommunityCards();
+	currentPlayerIndex = ++currentPlayerIndex % amountOfPlayersRemaining;
+	playerController->finishTurn();
 }
 
 // player actions:
@@ -343,13 +337,6 @@ void RoundManager::fold()
 
 }
 
-void RoundManager::finishTurn()
-{
-	checkForCommunityCards();
-	currentPlayerIndex = ++currentPlayerIndex % amountOfPlayersRemaining;
-	playerController->finishTurn();
-}
-
 // Getters:
 
 Card* RoundManager::getFlop(int index)
@@ -405,4 +392,17 @@ int RoundManager::getCurrentPlayersBetThisRound()
 
 RoundManager::~RoundManager()
 {
+	//playerController->debugMessage("roundmanager destructor was called");
+	/*
+	flop[0]->~Card();
+	flop[0] = 0;
+	flop[1]->~Card();
+	flop[1] = 0;
+	flop[2]->~Card();
+	flop[2] = 0;
+	turn->~Card();
+	turn = 0;
+	river->~Card();
+	river = 0;
+	*/
 }

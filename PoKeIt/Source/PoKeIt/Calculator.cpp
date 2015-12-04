@@ -30,9 +30,6 @@ int Calculator::qualityOfCards(Card* hand1, Card* hand2, Card* flop0, Card* flop
 
 	bubbleSortByValue();
 
-	//debugging:
-	for (int i = 0; i < amountOfCards; ++i)
-		playerController->debugMessage("cards[" + FString::FromInt(i) + "]: " + FString::FromInt(cards[i]->getValue()));
 
 	int returnValue = HIGHCARD;
 	if (pairCheck(-1) >= 0)
