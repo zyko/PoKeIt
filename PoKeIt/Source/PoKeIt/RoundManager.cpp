@@ -49,9 +49,12 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 
 bool RoundManager::controlDeck(int color, int value)
 {
+	// this is only doable, because there can only be a maximum of 8 x 2 + 3 + 1 + 1 = 21 cards out of 52 within the game
+
 	if ((deck[color][value]) == 0)
 	{
 		deck[color][value] = 1;
+
 		return true;
 	}
 	else // if ((deck[color][value]) == 1)
@@ -77,7 +80,7 @@ void RoundManager::roundStateSwitch()
 		int flop1[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
 		int flop2[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
 
-		while (!controlDeck(flop0[2], flop0[1]))
+		while (!controlDeck(flop0[0], flop0[1]))
 		{
 			flop0[0] = FMath::RandRange(0, 3);
 			flop0[1] = FMath::RandRange(0, 12);
@@ -106,7 +109,7 @@ void RoundManager::roundStateSwitch()
 
 		int turnA[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
 
-		while (!controlDeck(turnA[2], turnA[1]))
+		while (!controlDeck(turnA[0], turnA[1]))
 		{
 			turnA[0] = FMath::RandRange(0, 3);
 			turnA[1] = FMath::RandRange(0, 12);
@@ -122,7 +125,7 @@ void RoundManager::roundStateSwitch()
 
 		int riverA[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
 
-		while (!controlDeck(riverA[2], riverA[1]))
+		while (!controlDeck(riverA[0], riverA[1]))
 		{
 			riverA[0] = FMath::RandRange(0, 3);
 			riverA[1] = FMath::RandRange(0, 12);
@@ -245,7 +248,7 @@ void RoundManager::roundOver()
 
 	resetDeck();
 
-	playerController->roundOver();
+	playerController->roundFinished();
 }
 
 void RoundManager::settingBlinds()
@@ -393,7 +396,7 @@ int RoundManager::getCurrentPlayersBetThisRound()
 RoundManager::~RoundManager()
 {
 	//playerController->debugMessage("roundmanager destructor was called");
-	/*
+	
 	flop[0]->~Card();
 	flop[0] = 0;
 	flop[1]->~Card();
@@ -404,5 +407,5 @@ RoundManager::~RoundManager()
 	turn = 0;
 	river->~Card();
 	river = 0;
-	*/
+	
 }

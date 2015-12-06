@@ -59,6 +59,10 @@ void MyPlayerP::fold()
 void MyPlayerP::initializeNewRound(int card0Color, int card0Value, int card1Color, int card1Value)
 {
 	betThisRound = 0;
+	
+	cards[0]->~Card();
+	cards[1]->~Card();
+
 	cards[0] = new Card(card0Color, card0Value);
 	cards[1] = new Card(card1Color, card1Value);
 }

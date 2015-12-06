@@ -29,9 +29,10 @@ public:
 
 	// variables:
 
+	int roundsPlayed = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "dealerIndex")
 		int32 dealerIndex=0;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
 		int32 chips;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
@@ -120,8 +121,6 @@ public:
 		void updateHUDcards();
 
 
-	void roundOver();
-
 	void updateHUD();
 
 	void finishTurn();
@@ -131,9 +130,6 @@ public:
 	void debugMessage(FString s);
 	
 	void callRound();
-
-
-
 
 
 

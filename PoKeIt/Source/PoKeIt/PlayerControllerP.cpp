@@ -17,7 +17,6 @@ int amountOfPlayers;
 // since UE 4.6, constructor is not needed anymore
 APlayerControllerP::APlayerControllerP()
 {
-	chips = 1337;
 }
 
 void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
@@ -48,6 +47,10 @@ void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 void APlayerControllerP::roundFinished()
 {
 	roundManager->~RoundManager();
+	FPlatformProcess::Sleep(10.0f);
+	roundsPlayed++;
+	dealerIndex++;
+	spawnPlayers(5);
 }
 
 void APlayerControllerP::updateHUD()
@@ -61,13 +64,7 @@ void APlayerControllerP::updateHUD()
 // todo: still necessary? could call updateHUD() directly
 void APlayerControllerP::finishTurn()
 {
-	//currentPlayer = ++currentPlayer % roundManager->getAmountOfPlayersRemaining();
 	updateHUD();
-}
-
-void APlayerControllerP::roundOver()
-{
-	//roundManager->~RoundManager();
 }
 
 void APlayerControllerP::updateHUDcards()
@@ -130,6 +127,24 @@ void APlayerControllerP::callRound()
 
 void APlayerControllerP::checkRound()
 {
+
+
+	//GameMode* gameMode = GetWorld()->GetAuthGameMode();
+	
+	//AGameMode* gm = GetWorld()->GetAuthGameMode();
+
+	// gm->debugFuncCalled();
+	
+///////////////////*	AHUD * hud = Cast<AHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
+//////////////////
+//////////////////	*/AHUD * hud2 = (AHUD*)(GetWorld()->GetFirstPlayerController()->GetHUD());
+
+	//AHUD* kpOida = GetWorld()->
+
+	//AHUD * hud = (AHUD*)(GetWorld()->GetFirstPlayerController()->GetHUD());
+
+	//hud->debugFunc();
+
 	roundManager->checkRound();
 }
 
@@ -165,6 +180,4 @@ void APlayerControllerP::debugMessage(FString s)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, s);
 }
-
-
 
