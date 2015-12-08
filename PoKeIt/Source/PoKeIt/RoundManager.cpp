@@ -74,11 +74,7 @@ void RoundManager::roundStateSwitch()
 {
 	if (roundState == PREFLOP)
 	{
-		playerController->debugMessage("dealerIndex within roundstateswitch: " + FString::FromInt(dealerIndex));
-		playerController->debugMessage("amountOfPlayersRemaining within roundstateswitch: " + FString::FromInt(amountOfPlayersRemaining));
-
 		currentPlayerIndex = (dealerIndex) % amountOfPlayersRemaining;
-		playerController->debugMessage("currentPlayerIndex within roundstateswitch: " + FString::FromInt(currentPlayerIndex));
 
 		int flop0[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
 		int flop1[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
@@ -176,23 +172,26 @@ void RoundManager::checkForCommunityCards()
 void RoundManager::roundOver()
 {
 	// can be used for debugging:
-	/* can be used for debugging:
-
-	Card* a = new Card(3, 3);
-	Card* b = new Card(1, 8);
-	Card* c = new Card(0, 2);
-	Card* d = new Card(0, 1);
-	Card* e = new Card(0, 0);
-	Card* f = new Card(1, 11);
-	Card* g = new Card(0, 9);
+	int keyValue1 = 0;
+	int keyValue2 = 0;
 
 	Calculator* calc = new Calculator();
 	calc->setPlayerController(playerController);
 
+	Card* a = new Card(3, 11);
+	Card* b = new Card(2, 3);
+	Card* c = new Card(1, 8);
+	Card* d = new Card(0, 1);
+	Card* e = new Card(3, 9);
+	Card* f = new Card(2, 10);
+	Card* g = new Card(1, 10);
+
+
 	int q = calc->qualityOfCards(a, b, c, d, e, f, g);
+	keyValue1 = calc->getKeyValue();
 
 	playerController->debugMessage("quality calculated: " + FString::FromInt(q));
-
+	playerController->debugMessage("keyValue1 is: " + FString::FromInt(keyValue1));
 
 	a->~Card();
 	b->~Card();
@@ -202,12 +201,39 @@ void RoundManager::roundOver()
 	f->~Card();
 	g->~Card();
 
+	
+	/*a = new Card(3, 8);
+	b = new Card(1, 8);
+	c = new Card(0, 11);
+	d = new Card(0, 1);
+	e = new Card(0, 0);
+	f = new Card(1, 11);
+	g = new Card(0, 9);
+
+	q = calc->qualityOfCards(a, b, c, d, e, f, g);
+	keyValue2 = calc->getKeyValue();
+
+	playerController->debugMessage("quality calculated: " + FString::FromInt(q));
+	playerController->debugMessage("keyValue2 is: " + FString::FromInt(keyValue2));
+
+	a->~Card();
+	b->~Card();
+	c->~Card();
+	d->~Card();
+	e->~Card();
+	f->~Card();
+	g->~Card();*/
+
 
 	calc->~Calculator();
-	*/
+	
+
+
+	/* correct one:
 
 	if (amountOfPlayersRemaining > 1)
 	{
+		
 		Calculator* calc = new Calculator();
 		calc->setPlayerController(playerController);
 		int value = -1;
@@ -220,6 +246,10 @@ void RoundManager::roundOver()
 			{
 				value = tmp;
 				player = i;
+			}
+			if (tmp == value)
+			{
+				// todo:
 			}
 		}
 		FString winner;
@@ -244,13 +274,18 @@ void RoundManager::roundOver()
 			winner = "Straight Flush!";
 
 		playerController->debugMessage("aaaaand the winner is: " + players[player]->getName() + " with: " + winner);
-
+		
 		calc->~Calculator();
+		
 
 	}
 	else
 		playerController->debugMessage("aaaaand the winner is: " + players[currentPlayerIndex]->getName() + " !");
 	
+	*/
+	// todo: missing: 
+	// player increasing chips
+
 
 	resetDeck();
 
@@ -400,8 +435,6 @@ int RoundManager::getCurrentPlayersBetThisRound()
 
 RoundManager::~RoundManager()
 {
-	//playerController->debugMessage("roundmanager destructor was called");
-	
 	flop[0]->~Card();
 	flop[0] = 0;
 	flop[1]->~Card();

@@ -23,6 +23,7 @@ private:
 	int currentPlayerIndex;
 	int currentMaxBet;
 
+
 	
 	int amountOfPlayersRemaining;
 	int playersDidActions;
@@ -61,6 +62,8 @@ public:
 	void settingBlinds();
 	void increasePot(int amount);
 	void resetDeck();
+
+
 
 	int getRoundstages();
 	int getPot();

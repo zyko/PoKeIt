@@ -18,6 +18,12 @@ class POKEIT_API Calculator
 
 private:
 
+	int keyValue;
+
+//	Card* keyCards[5];
+
+	TArray<Card*> keyCards;
+
 	static const int amountOfCards = 7;
 
 	Card* cards[amountOfCards];
@@ -48,15 +54,21 @@ public:
 
 	// functions:
 
+	//debug stuff
+	void printKeyCards();
+	void fillKeyCards();
+
+	void setKeyValue(int v);
+	int getKeyValue();
 
 	int pairCheck(int pairCheckValue);
-	bool tripsCheck(int pairCheckValue);
-	bool quadsCheck();
+	int tripsCheck(int pairCheckValue);
+	int quadsCheck();
 	
 
 	int flushCheck();
 
-	bool straightCheck(int straightFlushCheck);
+	int straightCheck(int straightFlushCheck);
 
 	void bubbleSortByValue();
 	void bubbleSortByColor();

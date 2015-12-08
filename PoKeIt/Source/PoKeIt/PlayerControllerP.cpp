@@ -32,7 +32,7 @@ void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 
 	roundManager = new RoundManager(players, this, amountOfPlayers, dealerIndex);
 
-	/*
+	/* todO:
 	KI bla = new KI(..);
 
 	bla.setRoundManager(roundManager);
@@ -47,7 +47,7 @@ void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 void APlayerControllerP::roundFinished()
 {
 	roundManager->~RoundManager();
-	FPlatformProcess::Sleep(10.0f);
+	//FPlatformProcess::Sleep(10.0f);
 	roundsPlayed++;
 	dealerIndex++;
 	spawnPlayers(5);
