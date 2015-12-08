@@ -74,7 +74,11 @@ void RoundManager::roundStateSwitch()
 {
 	if (roundState == PREFLOP)
 	{
+		playerController->debugMessage("dealerIndex within roundstateswitch: " + FString::FromInt(dealerIndex));
+		playerController->debugMessage("amountOfPlayersRemaining within roundstateswitch: " + FString::FromInt(amountOfPlayersRemaining));
+
 		currentPlayerIndex = (dealerIndex) % amountOfPlayersRemaining;
+		playerController->debugMessage("currentPlayerIndex within roundstateswitch: " + FString::FromInt(currentPlayerIndex));
 
 		int flop0[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
 		int flop1[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
@@ -138,6 +142,8 @@ void RoundManager::roundStateSwitch()
 	{
 		roundOver();
 	}
+	
+
 
 	playersDidActions = 0;
 	roundState++;
@@ -163,6 +169,8 @@ void RoundManager::checkForCommunityCards()
 		if (everyPlayerOnSameBet)
 			roundStateSwitch();
 	}
+
+
 }
 
 void RoundManager::roundOver()
@@ -198,53 +206,51 @@ void RoundManager::roundOver()
 	calc->~Calculator();
 	*/
 
-
-	Calculator* calc = new Calculator();
-	calc->setPlayerController(playerController);
-	int value = -1;
-	int player = 0;
-
-	for (int i = 0; i < amountOfPlayersRemaining; ++i)
+	if (amountOfPlayersRemaining > 1)
 	{
-		int tmp = calc->qualityOfCards(players[i]->getCard0(), players[i]->getCard1(), flop[0], flop[1], flop[2], turn, river);
-		if (tmp > value)
+		Calculator* calc = new Calculator();
+		calc->setPlayerController(playerController);
+		int value = -1;
+		int player = 0;
+
+		for (int i = 0; i < amountOfPlayersRemaining; ++i)
 		{
-			value = tmp;
-			player = i;
+			int tmp = calc->qualityOfCards(players[i]->getCard0(), players[i]->getCard1(), flop[0], flop[1], flop[2], turn, river);
+			if (tmp > value)
+			{
+				value = tmp;
+				player = i;
+			}
 		}
+		FString winner;
+
+		if (value == 0)
+			winner = "High Card!";
+		if (value == 1)
+			winner = "Pair!";
+		if (value == 2)
+			winner = "Two Pair!";
+		if (value == 3)
+			winner = "Triple!";
+		if (value == 4)
+			winner = "Straight!";
+		if (value == 5)
+			winner = "Flush!";
+		if (value == 6)
+			winner = "Full House!";
+		if (value == 7)
+			winner = "Quads!";
+		if (value == 8)
+			winner = "Straight Flush!";
+
+		playerController->debugMessage("aaaaand the winner is: " + players[player]->getName() + " with: " + winner);
+
+		calc->~Calculator();
+
 	}
-	FString winner;
-
-	if (value == 0)
-		winner = "High Card!";
-	if (value == 1)
-		winner = "Pair!";
-	if (value == 2)
-		winner = "Two Pair!";
-	if (value == 3)
-		winner = "Triple!";
-	if (value == 4)
-		winner = "Straight!";
-	if (value == 5)
-		winner = "Flush!";
-	if (value == 6)
-		winner = "Full House!";
-	if (value == 7)
-		winner = "Quads!";
-	if (value == 8)
-		winner = "Straight Flush!";
-
-	playerController->debugMessage("aaaaand the winner is: " + players[player]->getName() + " with: " + winner);
-
-	/* aint workin
-	for (int i = 0; i < amountOfPlayersRemaining; ++i)
-	{
-		players[i]->destroyCards();
-		players[i] = 0;
-	}
-	*/
-
-	calc->~Calculator();
+	else
+		playerController->debugMessage("aaaaand the winner is: " + players[currentPlayerIndex]->getName() + " !");
+	
 
 	resetDeck();
 
@@ -270,6 +276,8 @@ void RoundManager::finishTurn()
 {
 	checkForCommunityCards();
 	currentPlayerIndex = ++currentPlayerIndex % amountOfPlayersRemaining;
+	if (currentPlayerIndex >= amountOfPlayersRemaining)
+		currentPlayerIndex = 0;
 	playerController->finishTurn();
 }
 
@@ -312,22 +320,19 @@ void RoundManager::fold()
 {
 	amountOfPlayersRemaining--;
 
-	players[currentPlayerIndex]->~MyPlayerP();
-
 	if (amountOfPlayersRemaining > 1)
 	{
 		for (int i = currentPlayerIndex; i < amountOfPlayersRemaining; ++i)
-		{
 			players[i] = players[i + 1];
-		}
+
 		playersDidActions--;
-		checkForCommunityCards();
-		playerController->updateHUD();
+		currentPlayerIndex--;
+
+		finishTurn();
 	}
 	else
-	{
 		roundOver();
-	}
+
 
 	/*
 	1. reduce amountOfPlayeresRemaining--

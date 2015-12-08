@@ -18,7 +18,4 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "GameMode")
 		void debugFunc();
-	
-	
-	
 };

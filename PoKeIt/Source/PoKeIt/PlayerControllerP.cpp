@@ -139,6 +139,11 @@ void APlayerControllerP::checkRound()
 //////////////////
 //////////////////	*/AHUD * hud2 = (AHUD*)(GetWorld()->GetFirstPlayerController()->GetHUD());
 
+	//AHUD * hud2 = (AHUD*)(GetWorld()->GetFirstPlayerController()->GetHUD());
+
+	//AHUD* TheHUD = Cast<AHUD>(this->GetHUD());
+
+
 	//AHUD* kpOida = GetWorld()->
 
 	//AHUD * hud = (AHUD*)(GetWorld()->GetFirstPlayerController()->GetHUD());
