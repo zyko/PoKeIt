@@ -31,78 +31,100 @@ int Calculator::qualityOfCards(Card* hand1, Card* hand2, Card* flop0, Card* flop
 
 	bubbleSortByValue();
 
+	
+	int flushCheckValue = flushCheck();
+	if (flushCheckValue >= 0 && straightCheck(flushCheckValue) >= 0)
+	{
+		printKeyCards();
+		return STRAIGHTFLUSH;
+	}
+	keyCards.Empty();
 
-	int returnValue = HIGHCARD;
+	if (quadsCheck() >= 0)
+	{
+		fillKeyCards();
+		return QUADS;
+	}
+	keyCards.Empty();
+	
+	int tripsCheckValue = tripsCheck(-1);
+	if ((tripsCheckValue >= 0) && pairCheck(tripsCheckValue) != -1)
+	{
+		fillKeyCards();
+		return FULLHOUSE;
+	}
+
+	keyCards.Empty();
+		
+	if (flushCheck() >= 0)
+	{
+		printKeyCards();
+		return FLUSH;
+	}
+
+	keyCards.Empty();
+		
+	if (straightCheck(-1) >= 0)
+	{
+		printKeyCards();
+		return STRAIGHT;
+	}
+		
+	
+	keyCards.Empty();
+		
+	if (tripsCheck(-1) >= 0)
+	{
+		fillKeyCards();
+		return TRIPS;
+	}
+
+	keyCards.Empty();
+		
+	if (pairCheck(pairCheck(-1)) >= 0)
+	{
+		fillKeyCards();
+		return TWOPAIR;
+	}
+	keyCards.Empty();
+		
 	if (pairCheck(-1) >= 0)
 	{
-		returnValue = PAIR;
-		if (pairCheck(pairCheck(-1)) >= 0)
-			returnValue = TWOPAIR;
-	}		
-	if (tripsCheck(-1) >= 0)
-		returnValue = TRIPS;
-	if (straightCheck(-1) >= 0)
-		returnValue = STRAIGHT;
-	if (flushCheck() >= 0)
-		returnValue = FLUSH;
-	if (pairCheck(-1) != -1 && (tripsCheck(pairCheck(-1)) >= 0))
-		returnValue = FULLHOUSE;
-	if (quadsCheck() >= 0)
-		returnValue = QUADS;
-	if (flushCheck() >= 0 && straightCheck(flushCheck()) >= 0)
-		returnValue = STRAIGHTFLUSH;
-
-	/* todo:
-	ROYALFLUSH ?!
-	*/
-	if (returnValue == HIGHCARD)
-		setKeyValue(cards[amountOfCards - 1]->getValue());
-
-	fillKeyCards();
+		fillKeyCards();
+		return PAIR;
+	}
+	keyCards.Empty();
 	
-	return returnValue;
+
+	//if (returnValue == HIGHCARD)
+	fillKeyCards();
+
+	return HIGHCARD;
 
 }
 
-void Calculator::setKeyValue(int v)
-{
-	keyValue = v;
-}
 
-int Calculator::getKeyValue()
-{
-	return keyValue;
-}
 
 void Calculator::fillKeyCards()
 {
-	playerController->debugMessage("keyCardsNum() is: " + FString::FromInt(keyCards.Num()) + " --- (should be2)");
+	// debugging:
 	int x = 0;
+
 	for (int i = amountOfCards-1; i >= 0; --i)
 	{
 		bool elementAlreadyWithin = false;
 		for (int n = 0; n < keyCards.Num(); ++n)
-			if ( (keyCards[n]->getValue() == cards[i]->getValue() ) && ( keyCards[n]->getColor() == cards[i]->getColor() ))
+			if (keyCards[n]->getValue() == cards[i]->getValue())
 				elementAlreadyWithin = true;
 		if (!elementAlreadyWithin)
 			if (keyCards.Num() <= 4)
 			{
 				keyCards.Add(cards[i]);
-				playerController->debugMessage("called adding times: " + FString::FromInt(++x) + " --- (should be3)");
+				playerController->debugMessage("called adding times: " + FString::FromInt(++x) + " --- (should be 2)");
 			}
-				
 	}
 
 	printKeyCards();
-}
-
-// actually debugging stuff
-void Calculator::printKeyCards()
-{
-	playerController->debugMessage("keyCardsNum is: " + FString::FromInt(keyCards.Num()));
-	for (int i = 0; i < keyCards.Num(); ++i)
-		playerController->debugMessage("keyCards[" + FString::FromInt(i) + "]: " + FString::FromInt(keyCards[i]->getValue()));
-
 }
 
 // actually debugging stuff
@@ -111,105 +133,12 @@ void Calculator::setPlayerController(APlayerControllerP* pc)
 	this->playerController = pc;
 }
 
-int Calculator::straightCheck(int straightFlushCheck)
+// actually debugging stuff
+void Calculator::printKeyCards()
 {
-	int returnValue = -1;
-
-	if (straightFlushCheck == -1)
-	{
-		int counter = 0;
-
-		for (int i = 0; i < amountOfCards; ++i)
-		{
-			if (cards[i]->getValue() + 1 == cards[i + 1]->getValue())
-				counter++;
-			else
-				counter = 0;
-			if (counter >= 4)
-				returnValue = cards[i + 1]->getValue();
-		}
-	}
-	if (straightFlushCheck == -1) // if branch for straight starting with ace only
-	{
-		int counter = 0;
-
-		if (cards[amountOfCards-1]->getValue() == 12 && cards[0]->getValue() == 0)
-			counter++;
-
-		for (int i = 0; i < amountOfCards; ++i)
-		{
-			if ((cards[i]->getValue() + 1) == cards[i + 1]->getValue())
-				counter++;
-			else
-				counter = 0;
-			if (counter >= 4)
-				returnValue = cards[i + 1]->getValue();
-		}
-	}
-	else if (straightFlushCheck >= 0)
-	{
-		int counter = 0;
-
-		for (int i = 0; i < amountOfCards; ++i)
-		{
-			if (cards[i]->getValue() + 1 == cards[i + 1]->getValue())
-				if (cards[i]->getColor() == straightFlushCheck)
-					counter++;
-			else
-				counter = 0;
-			if (counter >= 4)
-				returnValue = cards[i + 1]->getValue();
-		}
-	}
-	if (returnValue >= 0)
-		setKeyValue(returnValue);
-
-	return returnValue;
-}
-
-int Calculator::flushCheck()
-{
-	int counter = 0;
-	int returnValue = -1;
-
-	int colorReference = cards[0]->getColor();
-
-	for (int i = 0; i < amountOfCards; ++i)
-	{
-		if (cards[i]->getColor() == colorReference)
-			counter++;
-		if (counter == 5)
-			returnValue = cards[i]->getValue();
-	}
-
-	counter = 0;
-
-	colorReference = cards[1]->getColor();
-
-	for (int i = 0; i < amountOfCards; ++i)
-	{
-		if (cards[i]->getColor() == colorReference)
-			counter++;
-		if (counter == 5)
-			returnValue = cards[i]->getValue();
-	}
-
-	counter = 0;
-
-	colorReference = cards[2]->getColor();
-
-	for (int i = 0; i < amountOfCards; ++i)
-	{
-		if (cards[i]->getColor() == colorReference)
-			counter++;
-		if (counter == 5)
-			returnValue = cards[i]->getValue();
-	}
-
-	if (returnValue >= 0)
-		setKeyValue(returnValue);
-
-	return returnValue;
+	//playerController->debugMessage("keyCardsNum is: " + FString::FromInt(keyCards.Num()));
+	for (int i = 0; i < keyCards.Num(); ++i)
+		playerController->debugMessage("keyCards[" + FString::FromInt(i) + "]: " + FString::FromInt(keyCards[i]->getValue()));
 
 }
 
@@ -219,7 +148,7 @@ int Calculator::pairCheck(int pairCheckValue)
 
 	if (pairCheckValue == -1)
 	{
-		for (int i = 5; i >= 0; --i)
+		for (int i = (amountOfCards-2); i >= 0; --i)
 			if (cards[i]->getValue() == cards[i + 1]->getValue())
 			{
 				returnValue = cards[i]->getValue();
@@ -227,58 +156,25 @@ int Calculator::pairCheck(int pairCheckValue)
 				{
 					keyCards.Add(cards[i]);
 					keyCards.Add(cards[i + 1]);
-				}	
+				}
+				break;
 			}
-				
-
-		/*
-		if (cards[0]->getValue() == cards[1]->getValue())
-			return cards[0]->getValue();
-		if (cards[1]->getValue() == cards[2]->getValue())
-			return cards[1]->getValue();
-		if (cards[2]->getValue() == cards[3]->getValue())
-			return cards[2]->getValue();
-		if (cards[3]->getValue() == cards[4]->getValue())
-			return cards[3]->getValue();
-		if (cards[4]->getValue() == cards[5]->getValue())
-			return cards[4]->getValue();
-		if (cards[5]->getValue() == cards[6]->getValue())
-			return cards[5]->getValue();
-		*/
 	}
-	else if (pairCheckValue >= 0)
+
+	if (pairCheckValue >= 0)
 	{
-		for (int i = 5; i >= 0; --i)
+		for (int i = (amountOfCards - 2); i >= 0; --i)
 			if (cards[i]->getValue() == cards[i + 1]->getValue() && cards[i]->getValue() != pairCheckValue)
 			{
-				returnValue = cards[i]->getValue();
-				keyCards[2] = keyCards[0];
-				keyCards[3] = keyCards[1];
-				keyCards[0] = cards[i];
-				keyCards[1] = cards[i + 1];
-				playerController->debugMessage("called adding stuff 222");
+				if (keyCards.Num() < 4)
+				{
+					returnValue = cards[i]->getValue();
+					playerController->debugMessage("cards[" + FString::FromInt(i) + "]: " + FString::FromInt(cards[i]->getValue()));
+					keyCards.Add(cards[i]);
+					keyCards.Add(cards[i + 1]);
+				}
 			}
-				
-
-		/*
-		if (cards[0]->getValue() == cards[1]->getValue() && cards[0]->getValue() != pairCheckValue)
-			return cards[0]->getValue();
-		if (cards[1]->getValue() == cards[2]->getValue() && cards[1]->getValue() != pairCheckValue)
-			return cards[1]->getValue();
-		if (cards[2]->getValue() == cards[3]->getValue() && cards[2]->getValue() != pairCheckValue)
-			return cards[2]->getValue();
-		if (cards[3]->getValue() == cards[4]->getValue() && cards[3]->getValue() != pairCheckValue)
-			return cards[3]->getValue();
-		if (cards[4]->getValue() == cards[5]->getValue() && cards[4]->getValue() != pairCheckValue)
-			return cards[4]->getValue();
-		if (cards[5]->getValue() == cards[6]->getValue() && cards[5]->getValue() != pairCheckValue)
-			return cards[5]->getValue();
-			*/
 	}
-
-	if (returnValue >= 0)
-		setKeyValue(returnValue);
-
 	return returnValue;
 }
 
@@ -290,14 +186,26 @@ int Calculator::tripsCheck(int pairCheckValue)
 	{
 		int counter = 0;
 
-		for (int i = 0; i < amountOfCards; ++i)
+		for (int i = (amountOfCards - 2); i >= 0; --i)
 		{
 			if (cards[i]->getValue() == cards[i + 1]->getValue())
+			{
+				keyCards.Add(cards[i]);
 				counter++;
+			}
 			else
+			{
 				counter = 0;
+				keyCards.Empty();
+			}
+				
 			if (counter == 2)
+			{
+				keyCards.Add(cards[i+1]);
 				returnValue = cards[i + 1]->getValue();
+				break;
+			}
+				
 		}
 	}
 
@@ -305,20 +213,209 @@ int Calculator::tripsCheck(int pairCheckValue)
 	{
 		int counter = 0;
 
-		for (int i = 0; i < amountOfCards; ++i)
+		for (int i = (amountOfCards - 2); i >= 0; --i)
 		{
 			if ((cards[i]->getValue() == cards[i + 1]->getValue()) && cards[i]->getValue() != pairCheckValue)
+			{
+				keyCards.Add(cards[i]);
 				counter++;
+			}
 			else
+			{
 				counter = 0;
+				keyCards.Empty();
+			}
 			if (counter == 2)
+			{
+				keyCards.Add(cards[i + 1]);
 				returnValue = cards[i + 1]->getValue();
+				break;
+			}
+		}
+	}	
+	return returnValue;
+}
+
+int Calculator::straightCheck(int straightFlushCheck)
+{
+	int returnValue = -1;
+
+	if (straightFlushCheck == -1)
+	{
+		int counter = 0;
+
+		for (int i = amountOfCards-2; i >= 0; --i)
+		{
+			if (cards[i]->getValue() + 1 == cards[i + 1]->getValue())
+			{
+				keyCards.Add(cards[i + 1]);
+				counter++;
+			}
+			else if (cards[i]->getValue() != cards[i + 1]->getValue())
+			{
+				keyCards.Empty();
+				counter = 0;
+			}
+			if (counter == 4)
+			{
+				keyCards.Add(cards[i]);
+				returnValue = keyCards[0]->getValue();
+				break;
+			}		
+		}
+		if (counter != 4)
+			keyCards.Empty();
+	}
+	if (straightFlushCheck == -1 && keyCards.Num() == 0) // if branch for straight starting with ace only -> 12 - 0 - 1 - 2 - 3
+	{
+
+		int counter = 0;
+
+		if (cards[amountOfCards - 1]->getValue() == 12 && cards[0]->getValue() == 0)
+			counter++;
+
+		for (int i = amountOfCards - 2; i >= 0; --i)
+		{
+			if (cards[i]->getValue() + 1 == cards[i + 1]->getValue())
+			{
+				keyCards.Add(cards[i + 1]);
+				counter++;
+			}
+			else if(cards[i]->getValue() != cards[i + 1]->getValue())
+			{
+				keyCards.Empty();
+				if (cards[amountOfCards - 1]->getValue() == 12 && cards[0]->getValue() == 0)
+					counter=1;
+				else
+					counter = 0;
+			}
+			if (counter == 4)
+			{
+				keyCards.Add(cards[i]);
+				keyCards.Add(cards[amountOfCards - 1]);
+				returnValue = keyCards[0]->getValue();
+				break;
+			}
+		}
+	}
+	if (straightFlushCheck >= 0)
+	{
+		keyCards.Empty();
+		int counter = 0;
+
+		for (int i = amountOfCards - 2; i >= 0; --i)
+		{
+			if (cards[i]->getValue() + 1 == cards[i + 1]->getValue())
+			{
+				if (cards[i]->getColor() == straightFlushCheck && cards[i + 1]->getColor() == straightFlushCheck)
+				{
+					keyCards.Add(cards[i + 1]);
+					counter++;
+				}
+			}
+			else if(cards[i]->getValue() != cards[i + 1]->getValue())
+			{
+				keyCards.Empty();
+				counter = 0;
+			}
+			if (counter == 4)
+			{
+				keyCards.Add(cards[i]);
+				returnValue = cards[i + 1]->getValue();
+				break;
+			}
+		}
+		if (counter != 4)
+			keyCards.Empty();
+	}
+	if (straightFlushCheck >= 0 && keyCards.Num() == 0) // if branch for straight starting with ace only -> 12 - 0 - 1 - 2 - 3
+	{
+		int counter = 0;
+		if (cards[amountOfCards - 1]->getValue() == 12 && cards[0]->getValue() == 0)
+			counter++;
+
+		for (int i = amountOfCards - 2; i >= 0; --i)
+		{
+			if (cards[i]->getValue() + 1 == cards[i + 1]->getValue())
+			{
+				if (cards[i]->getColor() == straightFlushCheck && cards[i + 1]->getColor() == straightFlushCheck)
+				{
+					keyCards.Add(cards[i + 1]);
+					counter++;
+				}
+			}
+			else if (cards[i]->getValue() != cards[i + 1]->getValue())
+			{
+				keyCards.Empty();
+				if (cards[amountOfCards - 1]->getValue() == 12 && cards[0]->getValue() == 0)
+					counter = 1;
+				else
+					counter = 0;
+			}
+			if (counter == 4)
+			{
+				keyCards.Add(cards[i]);
+				keyCards.Add(cards[amountOfCards - 1]);
+				returnValue = keyCards[0]->getValue();
+				break;
+			}
 		}
 	}
 
-	if (returnValue >= 0)
-		setKeyValue(returnValue);
-	
+	return returnValue;
+}
+
+int Calculator::flushCheck()
+{
+	int counter = 0;
+	int returnValue = -1;
+
+	int colorReference = cards[0]->getColor();
+
+	for (int i = amountOfCards - 1; i >= 0; --i)
+	{
+		if (cards[i]->getColor() == colorReference)
+		{
+			keyCards.Add(cards[i]);
+			counter++;
+		}
+		if (counter == 5)
+			returnValue = colorReference;
+	}
+
+	counter = 0;
+	if (keyCards.Num() != 5)
+		keyCards.Empty();
+
+	colorReference = cards[1]->getColor();
+
+	for (int i = amountOfCards - 1; i >= 0; --i)
+	{
+		if (cards[i]->getColor() == colorReference)
+		{
+			keyCards.Add(cards[i]);
+			counter++;
+		}
+		if (counter == 5)
+			returnValue = colorReference;
+	}
+
+	counter = 0;
+	if (keyCards.Num() != 5)
+		keyCards.Empty();
+
+	colorReference = cards[2]->getColor();
+
+	for (int i = amountOfCards - 1; i >= 0; --i)
+	{
+		if (cards[i]->getColor() == colorReference)
+		{
+			keyCards.Add(cards[i]);
+			counter++;
+		}
+		if (counter == 5)
+			returnValue = colorReference;
+	}
 	return returnValue;
 }
 
@@ -336,11 +433,6 @@ int Calculator::quadsCheck()
 		if (counter == 3)
 			returnValue = cards[i + 1]->getValue();
 	}
-
-
-	if (returnValue >= 0)
-		setKeyValue(returnValue);
-
 	return returnValue;
 }
 
@@ -431,6 +523,11 @@ void Calculator::bubbleSortByColor()
 		}
 		--n;
 	}
+}
+
+Card* Calculator::getKeyCard(int index)
+{
+	return keyCards[index];
 }
 
 Calculator::~Calculator()

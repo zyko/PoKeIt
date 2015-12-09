@@ -178,19 +178,42 @@ void RoundManager::roundOver()
 	Calculator* calc = new Calculator();
 	calc->setPlayerController(playerController);
 
-	Card* a = new Card(3, 11);
-	Card* b = new Card(2, 3);
+	//Card* a = new Card(3, 5);
+	//Card* b = new Card(2, 4);
+	//Card* c = new Card(1, 11);
+	//Card* d = new Card(0, 8);
+	//Card* e = new Card(3, 6);
+	//Card* f = new Card(2, 7);
+	//Card* g = new Card(1, 10);
+
+	Card* a = new Card(0, 2);
+	Card* b = new Card(0, 12);
 	Card* c = new Card(1, 8);
-	Card* d = new Card(0, 1);
-	Card* e = new Card(3, 9);
-	Card* f = new Card(2, 10);
-	Card* g = new Card(1, 10);
+	Card* d = new Card(0, 4);
+	Card* e = new Card(0, 1);
+	Card* f = new Card(0, 0);
+	Card* g = new Card(0, 3);
+
+	Card* h = new Card(0, 7);
+	Card* i = new Card(0, 6);
+	Card* j = new Card(1, 1);
+	Card* k = new Card(2, 1);
+	Card* l = new Card(0, 8);
+	Card* m = new Card(0, 9);
+	Card* n = new Card(0, 10);
+
+	int first = calc->qualityOfCards(h, i, j, k, l, m, n);
+	int second = calc->qualityOfCards(a, b, c, d, e, f, g);
+
+	if (first == second)
+	{
+	}
 
 
-	int q = calc->qualityOfCards(a, b, c, d, e, f, g);
-	keyValue1 = calc->getKeyValue();
+	/*keyValue1 = calc->getKeyValue();
+	getKeyCard*/
 
-	playerController->debugMessage("quality calculated: " + FString::FromInt(q));
+	playerController->debugMessage("quality calculated: " + FString::FromInt(first));
 	playerController->debugMessage("keyValue1 is: " + FString::FromInt(keyValue1));
 
 	a->~Card();
@@ -328,6 +351,11 @@ void RoundManager::callRound()
 
 void RoundManager::checkRound()
 {
+	// debug:
+
+	roundOver();
+
+
 	if (players[currentPlayerIndex]->getBetThisRound() >= currentMaxBet)
 		finishTurn();
 	else

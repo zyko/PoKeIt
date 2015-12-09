@@ -18,10 +18,6 @@ class POKEIT_API Calculator
 
 private:
 
-	int keyValue;
-
-//	Card* keyCards[5];
-
 	TArray<Card*> keyCards;
 
 	static const int amountOfCards = 7;
@@ -56,10 +52,11 @@ public:
 
 	//debug stuff
 	void printKeyCards();
+
+
 	void fillKeyCards();
 
-	void setKeyValue(int v);
-	int getKeyValue();
+	Card* getKeyCard(int index);
 
 	int pairCheck(int pairCheckValue);
 	int tripsCheck(int pairCheckValue);
