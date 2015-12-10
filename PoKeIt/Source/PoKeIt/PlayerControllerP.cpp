@@ -139,9 +139,7 @@ void APlayerControllerP::updateHUDcards()
 
 void APlayerControllerP::betRaise(int atb)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("APC betRaise was called with: %i"), atb));
 	roundManager->betRaise(atb);
-
 }
 
 void APlayerControllerP::foldRound()

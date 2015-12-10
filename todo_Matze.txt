@@ -1,6 +1,8 @@
 ToDo:
 
 
+- make calculator global?
+
 - deck!											[done] (hopefully)
 - Ace can be 0 and 12 @ straight							[done]
 - check what happens, when both players have flush, f. e.				[done]
@@ -10,12 +12,13 @@ ToDo:
 - split pot										[done]
 - dealer management ( 2nd round, etc..)							[done]
 - minimum betting / raising (in relation to bigBlind)					[done]
-
+- pot / chips management when round is over						[done]
 
 // NEXT GOALS
-- pot / chips management when round is over
+
+- side pot stuff (betRaise method)
 - winning screen end of round / starting new round
-- side pot stuff	
+	
 
 // MAIN MENU								
 - mainMenu debugging
@@ -28,9 +31,11 @@ ToDo:
 - graphic animations
 - show graphics for increasing blinds
 - camera
+- highlighting winning cards
 
 // PROGRAMMING
 - destructors
+- problem, when raising would lead to creating new pot, e. g. p1 allin, p2 raises above p1's allin
 - delete playerController stuff in calculator
 - testing, testing, testing calculator
 - players winningstuffflag?

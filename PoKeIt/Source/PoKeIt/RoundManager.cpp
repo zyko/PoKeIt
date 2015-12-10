@@ -37,6 +37,7 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 
 	this->dealerIndex = dealerIndex;
 	currentPlayerIndex = (dealerIndex + 3 ) % amountOfPlayersRemaining;
+	addPot();
 	pot = 0;
 	lastBet = bigBlind;
 	roundState = PREFLOP;
@@ -156,6 +157,8 @@ void RoundManager::checkForCommunityCards()
 		{
 			if (players[i]->getBetThisRound() == currentMaxBet)
 				everyPlayerOnSameBet = true;
+			else if (players[i]->getChips() == 0)
+				everyPlayerOnSameBet = true;
 			else
 			{
 				everyPlayerOnSameBet = false;
@@ -165,8 +168,6 @@ void RoundManager::checkForCommunityCards()
 		if (everyPlayerOnSameBet)
 			roundStateSwitch();
 	}
-
-
 }
 
 void RoundManager::roundOver()
@@ -186,7 +187,7 @@ void RoundManager::roundOver()
 */
 	// -- debugging
 
-#pragma region winner calculation stuff
+
 	if (amountOfPlayersRemaining > 1)
 	{
 		Calculator* calc = new Calculator();
@@ -197,103 +198,110 @@ void RoundManager::roundOver()
 		int value = -1;
 		int player = 0;
 
-		int highestPlayerSoFar[2] = { -1, -1 };		// [0] = quality of cards, [1] player's index within players[];
-		int currentPlayer[2];						// [0] = quality of cards, [1] player's index within players[];
+		int highestPlayerSoFar[2] = { -1, -1 };					// [0] = quality of cards, [1] player's index within players[];
+		int currentPlayer[2];									// [0] = quality of cards, [1] player's index within players[];
 		int comparisonKeyCardsArray[5];
 		TArray<int> splitPotCandidates;
 
-		for (int i = 0; i < amountOfPlayersRemaining; ++i)
+		for (int k = 0; k < pots.Num(); ++k)					// going throught this procedure for each pot
 		{
-			currentPlayer[0] = calc->qualityOfCards(players[i]->getCard0(), players[i]->getCard1(), flop[0], flop[1], flop[2], turn, river);
-			currentPlayer[1] = i;
-
-			if (currentPlayer[0] > highestPlayerSoFar[0])
+			for (int i = 0; i < amountOfPlayersRemaining; ++i)	// checking each player
 			{
-				highestPlayerSoFar[0] = currentPlayer[0];
-				highestPlayerSoFar[1] = currentPlayer[1];
-
-				splitPotCandidates.Empty();
-
-				for (int n = 0; n < 5; ++n)
-					comparisonKeyCardsArray[n] = calc->keyCards[n]->getValue();
-
-				// so keyCards[] will always be the current array, and comparisonKeyCards[] will always be the highest player's one
-			}
-			else if (currentPlayer[0] == highestPlayerSoFar[0]) // checking for possible splitPot
-			{
-				int splitPotCounter = 0;
-				for (int n = 0; n < 5; ++n)
+				if (players[i]->getPotAssignment() == k)		// checking to which pot player belongs to
 				{
-					if (calc->keyCards[n]->getValue() > comparisonKeyCardsArray[n])
+					currentPlayer[0] = calc->qualityOfCards(players[i]->getCard0(), players[i]->getCard1(), flop[0], flop[1], flop[2], turn, river);
+					currentPlayer[1] = i;
+
+					if (currentPlayer[0] > highestPlayerSoFar[0])
 					{
 						highestPlayerSoFar[0] = currentPlayer[0];
 						highestPlayerSoFar[1] = currentPlayer[1];
+
 						splitPotCandidates.Empty();
-						break;
+
+						for (int n = 0; n < 5; ++n)
+							comparisonKeyCardsArray[n] = calc->keyCards[n]->getValue();
+
+						// so keyCards[] will always be the current array, and comparisonKeyCards[] will always be the highest player's one
 					}
-					else if (calc->keyCards[n]->getValue() == comparisonKeyCardsArray[n])
+					else if (currentPlayer[0] == highestPlayerSoFar[0]) // checking for possible splitPot
 					{
-						splitPotCounter++;
+						int splitPotCounter = 0;
+						for (int n = 0; n < 5; ++n)
+						{
+							if (calc->keyCards[n]->getValue() > comparisonKeyCardsArray[n])
+							{
+								highestPlayerSoFar[0] = currentPlayer[0];
+								highestPlayerSoFar[1] = currentPlayer[1];
+								splitPotCandidates.Empty();
+								break;
+							}
+							else if (calc->keyCards[n]->getValue() == comparisonKeyCardsArray[n])
+							{
+								splitPotCounter++;
+							}
+						}
+
+						if (splitPotCounter == 5)
+						{
+							splitPotCandidates.Add(highestPlayerSoFar[1]);
+							splitPotCandidates.Add(currentPlayer[1]);
+						}
 					}
 				}
-				
-				if (splitPotCounter == 5)
-				{
-					splitPotCandidates.Add(highestPlayerSoFar[1]);
-					splitPotCandidates.Add(currentPlayer[1]);
-				}
-			}		
-		}
+			}
 
-		
-#pragma region printing winner stuff
-
-		FString winner;
-		if (highestPlayerSoFar[0] == 0)
-			winner = "High Card!";
-		if (highestPlayerSoFar[0] == 1)
-			winner = "Pair!";
-		if (highestPlayerSoFar[0] == 2)
-			winner = "Two Pair!";
-		if (highestPlayerSoFar[0] == 3)
-			winner = "Triple!";
-		if (highestPlayerSoFar[0] == 4)
-			winner = "Straight!";
-		if (highestPlayerSoFar[0] == 5)
-			winner = "Flush!";
-		if (highestPlayerSoFar[0] == 6)
-			winner = "Full House!";
-		if (highestPlayerSoFar[0] == 7)
-			winner = "Quads!";
-		if (highestPlayerSoFar[0] == 8)
-			winner = "Straight Flush!";
-
-		if (splitPotCandidates.Num() > 0) // we got one split pot
-		{
-			playerController->debugMessage("we got one split pot!! with following players:");
-			for (int i = 0; i < splitPotCandidates.Num(); ++i)
-				playerController->debugMessage("" + players[splitPotCandidates[i]]->getName() + " with: " + winner);
-
-		} else // we got one single player winning
-			playerController->debugMessage("aaaaand the winner is: " + players[player]->getName() + " with: " + winner);
-		
-		calc->~Calculator();
+			#pragma region defining winner String
+			FString winner;
+			if (highestPlayerSoFar[0] == 0)
+				winner = "High Card!";
+			if (highestPlayerSoFar[0] == 1)
+				winner = "Pair!";
+			if (highestPlayerSoFar[0] == 2)
+				winner = "Two Pair!";
+			if (highestPlayerSoFar[0] == 3)
+				winner = "Triple!";
+			if (highestPlayerSoFar[0] == 4)
+				winner = "Straight!";
+			if (highestPlayerSoFar[0] == 5)
+				winner = "Flush!";
+			if (highestPlayerSoFar[0] == 6)
+				winner = "Full House!";
+			if (highestPlayerSoFar[0] == 7)
+				winner = "Quads!";
+			if (highestPlayerSoFar[0] == 8)
+				winner = "Straight Flush!";
 #pragma endregion
+
+			if (splitPotCandidates.Num() > 0) // that means split pot
+			{
+				playerController->debugMessage("split pot ! splitting pot " + FString::FromInt(k) + " with: ");
+				for (int i = 0; i < splitPotCandidates.Num(); ++i)
+				{
+					players[splitPotCandidates[i]]->increaseChips(pots[k] / splitPotCandidates.Num());
+
+					playerController->debugMessage("" + players[splitPotCandidates[i]]->getName() + " (" + winner + ")");
+				}
+			}
+			else
+			{
+				playerController->debugMessage("" + players[player]->getName() +" with: " + winner + "wins pot " + FString::FromInt(k));
+				players[player]->increaseChips(pots[k]);
+			}
+		}
+		calc->~Calculator();
 	}
 	else
 		playerController->debugMessage("aaaaand the winner is: " + players[currentPlayerIndex]->getName() + " !");
-#pragma endregion
-
 
 
 
 	// todo: missing: 
-	// player increasing chips
 	// highlighting winning cards
 
+	pots.Empty(); // should be redundant
 
 	resetDeck();
-
 	playerController->roundFinished();
 }
 
@@ -309,13 +317,13 @@ void RoundManager::settingBlinds()
 
 void RoundManager::increasePot(int amount)
 {
-	//pots[pots.Num()][0] += amount;
-	//pot = pots[pots.Num()][0]; // for debugging reasons / showing nooby interface stuff
+	pots[pots.Num() - 1] += amount;
+	pot = pots[pots.Num() - 1];	// for debugging reasons / showing nooby interface stuff
 }
 
 void RoundManager::addPot()
 {
-	//pots.Add.Add(0);
+	pots.Add(0);
 }
 
 void RoundManager::finishTurn()
@@ -363,9 +371,7 @@ void RoundManager::callRound()
 
 void RoundManager::checkRound()
 {
-	// debug:
-	//roundOver();
-
+	playerController->debugMessage("pots.Num(): " + FString::FromInt(pots.Num()));
 	if (players[currentPlayerIndex]->getBetThisRound() >= currentMaxBet)
 		finishTurn();
 	else
@@ -392,7 +398,7 @@ void RoundManager::betRaise(int amount)
 	{
 		raisingAllowed = true;
 	}
-	/*
+	/* TODO
 	else if (amount == players[currentPlayerIndex]->getChips()											// creating side pot
 			&& (players[currentPlayerIndex]->getBetThisRound() + amount) < currentMaxBet)
 	{
@@ -400,7 +406,18 @@ void RoundManager::betRaise(int amount)
 	}
 	*/
 
-
+	if (bettingAllowed || raisingAllowed)
+	{
+		for (int i = 0; i < amountOfPlayersRemaining; ++i)
+		{
+			if (players[i]->getChips() == 0 && players[i]->getPotAssignment() == pots.Num() - 1)
+			{
+				addPot();
+				break;
+			}
+		}
+	}
+	
 
 
 
@@ -419,10 +436,11 @@ void RoundManager::betRaise(int amount)
 
 	if (callingAllowed || bettingAllowed || raisingAllowed)
 	{
-		
 
 		players[currentPlayerIndex]->decreaseChips(amount);
 		players[currentPlayerIndex]->increaseBetThisRound(amount);
+		players[currentPlayerIndex]->setPotAssignment(pots.Num() - 1);
+
 		currentMaxBet = players[currentPlayerIndex]->getBetThisRound();
 		increasePot(amount);
 		finishTurn();

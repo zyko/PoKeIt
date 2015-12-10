@@ -114,6 +114,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void checkRound();
 
+	UFUNCTION(BlueprintCallable, Category = "playerAction")
+		void callRound();
+
 	UFUNCTION(BlueprintCallable, Category = "roundstage")
 		int32 getRoundstages();
 
@@ -138,7 +141,7 @@ public:
 
 	void debugMessage(FString s);
 	
-	void callRound();
+	
 
 
 	// constructor:

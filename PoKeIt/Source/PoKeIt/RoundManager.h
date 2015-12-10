@@ -44,11 +44,9 @@ private:
 
 	int currentSidePotIndex = 0;
 
-	// 1st dimension: amount of (side)pots
-	// 2nd dimension: indices of players, anticipating in that pot
-	// pots[x][0] = the actual pot
-	TArray<TArray<int>> pots;
 
+	// 1st dimension: amount of (side)pots
+	TArray<int> pots;
 
 
 	Card* flop[3];
