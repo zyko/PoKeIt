@@ -21,16 +21,20 @@ APlayerControllerP::APlayerControllerP()
 
 void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 {
+	int startingChips = 10000;
+	smallBlind = startingChips / 100;
+	bigBlind = smallBlind * 2;
+
 	amountOfPlayers = amountOfPlayersSelected;
 
 	for (int i = 0; i < amountOfPlayers; ++i)
 	{
 		FString nameTMP = "Player " + FString::FromInt(i);
-		MyPlayerP *spawnedPlayer = new MyPlayerP(10000, nameTMP);
+		MyPlayerP *spawnedPlayer = new MyPlayerP(startingChips - i * 1000, nameTMP);
 		players[i] = spawnedPlayer;
 	}
 
-	roundManager = new RoundManager(players, this, amountOfPlayers, dealerIndex);
+	roundManager = new RoundManager(players, this, amountOfPlayers, dealerIndex, smallBlind, bigBlind);
 
 	/* todO:
 	KI bla = new KI(..);
@@ -38,19 +42,44 @@ void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 	bla.setRoundManager(roundManager);
 	*/
 
-	updateHUD();	
+	updateHUD();
 }
 
-
-
-// still needs to be called by either winning calculation or playercontroller.
 void APlayerControllerP::roundFinished()
 {
 	roundManager->~RoundManager();
 	//FPlatformProcess::Sleep(10.0f);
 	roundsPlayed++;
+	adjustBlinds();
 	dealerIndex++;
 	spawnPlayers(5);
+}
+
+void APlayerControllerP::adjustBlinds()
+{
+	if ((roundsPlayed % 15) == 0)
+	{
+		if (roundsPlayed < 15 * 6)
+		{
+			smallBlind += 100;
+			bigBlind = smallBlind * 2;
+		}
+		if (roundsPlayed < 15 * 8)
+		{
+			smallBlind += 200;
+			bigBlind = smallBlind * 2;
+		}
+		if ( roundsPlayed < 15 * 10)
+		{
+			smallBlind += 500;
+			bigBlind = smallBlind * 2;
+		}
+		if (roundsPlayed < 15 * 15)
+		{
+			smallBlind += 1000;
+			bigBlind = smallBlind * 2;
+		}
+	}
 }
 
 void APlayerControllerP::updateHUD()
@@ -127,29 +156,6 @@ void APlayerControllerP::callRound()
 
 void APlayerControllerP::checkRound()
 {
-
-
-	//GameMode* gameMode = GetWorld()->GetAuthGameMode();
-	
-	//AGameMode* gm = GetWorld()->GetAuthGameMode();
-
-	// gm->debugFuncCalled();
-	
-///////////////////*	AHUD * hud = Cast<AHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
-//////////////////
-//////////////////	*/AHUD * hud2 = (AHUD*)(GetWorld()->GetFirstPlayerController()->GetHUD());
-
-	//AHUD * hud2 = (AHUD*)(GetWorld()->GetFirstPlayerController()->GetHUD());
-
-	//AHUD* TheHUD = Cast<AHUD>(this->GetHUD());
-
-
-	//AHUD* kpOida = GetWorld()->
-
-	//AHUD * hud = (AHUD*)(GetWorld()->GetFirstPlayerController()->GetHUD());
-
-	//hud->debugFunc();
-
 	roundManager->checkRound();
 }
 

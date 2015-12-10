@@ -3,24 +3,40 @@ ToDo:
 
 - deck!											[done] (hopefully)
 - Ace can be 0 and 12 @ straight							[done]
-- check what happens, when both players have flush, f. e.
-- selection of players ( currently set to 5 by default in two blueprint nodes )
-- graphics ( especially cards )
+- check what happens, when both players have flush, f. e.				[done]
 - showing card graphics ( currently only triggering on "check button" by hud widget ) 	[done]
-- destructors
+- increasing blinds after a certain amount of rounds					[done] currently 15
 - winning Calculator									[done]
-- dealer management ( 2nd round, etc..)
-- winning screen
-- end of round / starting new round
+- split pot										[done]
+- dealer management ( 2nd round, etc..)							[done]
+- minimum betting / raising (in relation to bigBlind)					[done]
+
+
+// NEXT GOALS
+- pot / chips management when round is over
+- winning screen end of round / starting new round
+- side pot stuff	
+
+// MAIN MENU								
 - mainMenu debugging
-- minimum betting / raising (in relation to bigBlind)
-- increasing blinds after a certain amount of rounds
-- camera
+- selection of players ( currently set to 5 by default in two blueprint nodes )
+- possibility to adjust blinds / startingChips within option menu at the beginning
+
+// GRAPHICS
+- graphics ( especially cards )	
 - screen when player switches
 - graphic animations
-- delete playerController stuff in calculator
+- show graphics for increasing blinds
+- camera
 
-Frage:
+// PROGRAMMING
+- destructors
+- delete playerController stuff in calculator
+- testing, testing, testing calculator
+- players winningstuffflag?
+
+
+Fragen:
 
 - wie wichtig ist kapselung?
 	(in Hinblick auf: keyCards[] aus Calculator.cpp public) + pointer getter in RoundManager.cpp

@@ -10,6 +10,11 @@
  */
 class POKEIT_API MyPlayerP
 {
+
+private:
+
+	int potAssignment = -1;
+
 public:
 
 
@@ -19,8 +24,6 @@ public:
 	int betThisRound;
 	int chips;
 	Card* cards[2];
-
-	bool winningRoundFlag = false;
 
 	// functions: 
 
@@ -35,7 +38,7 @@ public:
 
 	void fold();
 
-	void increaseChips();
+	void increaseChips(int amount);
 	void decreaseChips(int amount);
 
 	Card* getCard0();
@@ -43,9 +46,8 @@ public:
 
 	int getChips();
 
-	void setWinningRoundFlag(bool wrf);
-	bool getWinningRoundFlag();
-
+	int getPotAssignment();
+	void setPotAssignment(int i);
 
 	MyPlayerP(int givenChips, FString nameGiven);
 

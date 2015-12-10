@@ -23,7 +23,7 @@ private:
 	int currentPlayerIndex;
 	int currentMaxBet;
 
-
+	int lastBet;
 	
 	int amountOfPlayersRemaining;
 	int playersDidActions;
@@ -41,6 +41,15 @@ private:
 	};
 
 	int deck[4][13];
+
+	int currentSidePotIndex = 0;
+
+	// 1st dimension: amount of (side)pots
+	// 2nd dimension: indices of players, anticipating in that pot
+	// pots[x][0] = the actual pot
+	TArray<TArray<int>> pots;
+
+
 
 	Card* flop[3];
 	Card* turn;
@@ -62,8 +71,8 @@ public:
 	void settingBlinds();
 	void increasePot(int amount);
 	void resetDeck();
-
-
+	
+	void addPot();
 
 	int getRoundstages();
 	int getPot();
@@ -87,7 +96,7 @@ public:
 
 	APlayerControllerP* playerController;
 
-	RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex);
+	RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex, int smallBlind, int bigBlind);
 	~RoundManager();
 
 	

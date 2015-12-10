@@ -20,6 +20,13 @@ class POKEIT_API APlayerControllerP : public APlayerController
 {
 	GENERATED_BODY()
 
+private:
+
+
+	int smallBlind;
+	int bigBlind;
+	int roundsPlayed = 0;
+
 
 public:
 
@@ -29,7 +36,7 @@ public:
 
 	// variables:
 
-	int roundsPlayed = 0;
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "dealerIndex")
 		int32 dealerIndex=0;
@@ -91,7 +98,9 @@ public:
 	Card* currentPlayersHand[2];
 
 
-	// functions:
+	// FUNCTIONS
+
+	// UFunctions
 
 	UFUNCTION(BlueprintCallable, Category = "players")
 		void spawnPlayers(int32 amountOfPlayersSelected);
@@ -105,21 +114,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void checkRound();
 
-
 	UFUNCTION(BlueprintCallable, Category = "roundstage")
 		int32 getRoundstages();
-
 
 	UFUNCTION(BlueprintCallable, Category = "bets")
 		int32 getCurrentMaxBet();
 	UFUNCTION(BlueprintCallable, Category = "bets")
 		int32 getCurrentPlayersBetThisRound();
 
-
 	//todo: why is this UFUNCTION? 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void updateHUDcards();
 
+	// normal functions:
+
+	void adjustBlinds();
 
 	void updateHUD();
 
@@ -132,6 +141,7 @@ public:
 	void callRound();
 
 
+	// constructor:
 
 	APlayerControllerP();
 

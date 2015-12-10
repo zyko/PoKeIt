@@ -5,7 +5,7 @@
 #include "UnrealString.h"
 
 
-RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex)
+RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex, int smallBlind, int bigBlind)
 {
 	playerController = pc;
 	this->amountOfPlayersRemaining = amountOfPlayersRemaining;
@@ -38,9 +38,10 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 	this->dealerIndex = dealerIndex;
 	currentPlayerIndex = (dealerIndex + 3 ) % amountOfPlayersRemaining;
 	pot = 0;
+	lastBet = bigBlind;
 	roundState = PREFLOP;
-	smallBlind = 0; // 250
-	bigBlind = 0;	// 500
+	this->smallBlind = smallBlind;
+	this->bigBlind = bigBlind;
 	currentMaxBet = bigBlind;
 	playersDidActions = 0;
 
@@ -120,7 +121,6 @@ void RoundManager::roundStateSwitch()
 	}
 	else if (roundState == TURN)
 	{
-		
 		currentPlayerIndex = (dealerIndex) % amountOfPlayersRemaining;
 
 		int riverA[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
@@ -140,7 +140,7 @@ void RoundManager::roundStateSwitch()
 	}
 	
 
-
+	lastBet = bigBlind;
 	playersDidActions = 0;
 	roundState++;
 }
@@ -171,171 +171,125 @@ void RoundManager::checkForCommunityCards()
 
 void RoundManager::roundOver()
 {
-	// can be used for debugging:
+	// can be used for debugging calculator:
+	/*
+	players[0]->initializeNewRound(3, 5, 3, 6);
+	players[1]->initializeNewRound(1, 1, 1, 12);
 
+	amountOfPlayersRemaining = 2;
 
-	Calculator* calc = new Calculator();
-	calc->setPlayerController(playerController);
+	flop[0] = new Card(0,4);
+	flop[1] = new Card(0,2);
+	flop[2] = new Card(0,3);
+	turn    = new Card(0,5);
+	river   = new Card(1,9);
+*/
+	// -- debugging
 
-	//Card* a = new Card(3, 5);
-	//Card* b = new Card(2, 4);
-	//Card* c = new Card(1, 11);
-	//Card* d = new Card(0, 8);
-	//Card* e = new Card(3, 6);
-	//Card* f = new Card(2, 7);
-	//Card* g = new Card(1, 10);
-
-	Card* a = new Card(0, 2);
-	Card* b = new Card(0, 12);
-	Card* c = new Card(1, 8);
-	Card* d = new Card(0, 4);
-	Card* e = new Card(0, 1);
-	Card* f = new Card(0, 0);
-	Card* g = new Card(0, 3);
-
-	Card* h = new Card(0, 7);
-	Card* i = new Card(0, 6);
-	Card* j = new Card(1, 1);
-	Card* k = new Card(2, 1);
-	Card* l = new Card(0, 8);
-	Card* m = new Card(0, 9);
-	Card* n = new Card(0, 10);
-
-
-
-	int first = calc->qualityOfCards(a, b, c, d, e, f, g);
-		
-	int blabla = calc->keyCards[0]->getValue();
-
-
-	for (int i = 0; i < amountOfPlayersRemaining; ++i)
-	{
-
-	}
-
-
-	for (int i = 0; i < 5; ++i)
-	{
-		playerController->debugMessage("keyCards[" + FString::FromInt(i) + "]: " + FString::FromInt(calc->keyCards[i]->getValue()));
-		//test1++;
-	}
-
-	Card* test1;
-
-	test1 = calc->getKeyCard(0);
-
-	for (int i = 0; i < 5; ++i)
-	{
-		playerController->debugMessage("keyCards[" + FString::FromInt(i) + "]: " + FString::FromInt(test1->getValue()));
-		test1++;
-	}
-		
-	
-	//int second = calc->qualityOfCards(h, i, j, k, l, m, n);
-
-	/*if (first == second)
-	{
-	}*/
-
-
-	/*keyValue1 = calc->getKeyValue();
-	getKeyCard*/
-
-	playerController->debugMessage("quality calculated: " + FString::FromInt(first));
-	a->~Card();
-	b->~Card();
-	c->~Card();
-	d->~Card();
-	e->~Card();
-	f->~Card();
-	g->~Card();
-
-	
-	/*a = new Card(3, 8);
-	b = new Card(1, 8);
-	c = new Card(0, 11);
-	d = new Card(0, 1);
-	e = new Card(0, 0);
-	f = new Card(1, 11);
-	g = new Card(0, 9);
-
-	q = calc->qualityOfCards(a, b, c, d, e, f, g);
-	keyValue2 = calc->getKeyValue();
-
-	playerController->debugMessage("quality calculated: " + FString::FromInt(q));
-	playerController->debugMessage("keyValue2 is: " + FString::FromInt(keyValue2));
-
-	a->~Card();
-	b->~Card();
-	c->~Card();
-	d->~Card();
-	e->~Card();
-	f->~Card();
-	g->~Card();*/
-
-
-	calc->~Calculator();
-	
-
-
-	 //correct one:
-
+#pragma region winner calculation stuff
 	if (amountOfPlayersRemaining > 1)
 	{
-		
 		Calculator* calc = new Calculator();
+
+		// debugging:
 		calc->setPlayerController(playerController);
+
 		int value = -1;
 		int player = 0;
 
+		int highestPlayerSoFar[2] = { -1, -1 };		// [0] = quality of cards, [1] player's index within players[];
+		int currentPlayer[2];						// [0] = quality of cards, [1] player's index within players[];
+		int comparisonKeyCardsArray[5];
+		TArray<int> splitPotCandidates;
+
 		for (int i = 0; i < amountOfPlayersRemaining; ++i)
 		{
-			int tmp = calc->qualityOfCards(players[i]->getCard0(), players[i]->getCard1(), flop[0], flop[1], flop[2], turn, river);
-			if (tmp > value)
+			currentPlayer[0] = calc->qualityOfCards(players[i]->getCard0(), players[i]->getCard1(), flop[0], flop[1], flop[2], turn, river);
+			currentPlayer[1] = i;
+
+			if (currentPlayer[0] > highestPlayerSoFar[0])
 			{
-				value = tmp;
-				player = i;
+				highestPlayerSoFar[0] = currentPlayer[0];
+				highestPlayerSoFar[1] = currentPlayer[1];
+
+				splitPotCandidates.Empty();
+
+				for (int n = 0; n < 5; ++n)
+					comparisonKeyCardsArray[n] = calc->keyCards[n]->getValue();
+
+				// so keyCards[] will always be the current array, and comparisonKeyCards[] will always be the highest player's one
 			}
-			if (tmp == value)
+			else if (currentPlayer[0] == highestPlayerSoFar[0]) // checking for possible splitPot
 			{
-				// todo:
-			}
+				int splitPotCounter = 0;
+				for (int n = 0; n < 5; ++n)
+				{
+					if (calc->keyCards[n]->getValue() > comparisonKeyCardsArray[n])
+					{
+						highestPlayerSoFar[0] = currentPlayer[0];
+						highestPlayerSoFar[1] = currentPlayer[1];
+						splitPotCandidates.Empty();
+						break;
+					}
+					else if (calc->keyCards[n]->getValue() == comparisonKeyCardsArray[n])
+					{
+						splitPotCounter++;
+					}
+				}
+				
+				if (splitPotCounter == 5)
+				{
+					splitPotCandidates.Add(highestPlayerSoFar[1]);
+					splitPotCandidates.Add(currentPlayer[1]);
+				}
+			}		
 		}
 
-		FString winner;
+		
+#pragma region printing winner stuff
 
-		if (value == 0)
+		FString winner;
+		if (highestPlayerSoFar[0] == 0)
 			winner = "High Card!";
-		if (value == 1)
+		if (highestPlayerSoFar[0] == 1)
 			winner = "Pair!";
-		if (value == 2)
+		if (highestPlayerSoFar[0] == 2)
 			winner = "Two Pair!";
-		if (value == 3)
+		if (highestPlayerSoFar[0] == 3)
 			winner = "Triple!";
-		if (value == 4)
+		if (highestPlayerSoFar[0] == 4)
 			winner = "Straight!";
-		if (value == 5)
+		if (highestPlayerSoFar[0] == 5)
 			winner = "Flush!";
-		if (value == 6)
+		if (highestPlayerSoFar[0] == 6)
 			winner = "Full House!";
-		if (value == 7)
+		if (highestPlayerSoFar[0] == 7)
 			winner = "Quads!";
-		if (value == 8)
+		if (highestPlayerSoFar[0] == 8)
 			winner = "Straight Flush!";
 
-		playerController->debugMessage("aaaaand the winner is: " + players[player]->getName() + " with: " + winner);
+		if (splitPotCandidates.Num() > 0) // we got one split pot
+		{
+			playerController->debugMessage("we got one split pot!! with following players:");
+			for (int i = 0; i < splitPotCandidates.Num(); ++i)
+				playerController->debugMessage("" + players[splitPotCandidates[i]]->getName() + " with: " + winner);
+
+		} else // we got one single player winning
+			playerController->debugMessage("aaaaand the winner is: " + players[player]->getName() + " with: " + winner);
 		
 		calc->~Calculator();
-		
-
+#pragma endregion
 	}
 	else
 		playerController->debugMessage("aaaaand the winner is: " + players[currentPlayerIndex]->getName() + " !");
-	
-	
+#pragma endregion
+
+
+
 
 	// todo: missing: 
 	// player increasing chips
+	// highlighting winning cards
 
 
 	resetDeck();
@@ -355,13 +309,43 @@ void RoundManager::settingBlinds()
 
 void RoundManager::increasePot(int amount)
 {
-	pot += amount;
+	//pots[pots.Num()][0] += amount;
+	//pot = pots[pots.Num()][0]; // for debugging reasons / showing nooby interface stuff
+}
+
+void RoundManager::addPot()
+{
+	//pots.Add.Add(0);
 }
 
 void RoundManager::finishTurn()
 {
 	checkForCommunityCards();
 	currentPlayerIndex = ++currentPlayerIndex % amountOfPlayersRemaining;
+
+	if (players[currentPlayerIndex]->getChips() == 0)
+	{
+		int playersRemainingWithChips = 0;
+		for (int i = 0; i < amountOfPlayersRemaining; ++i)
+		{
+			if (players[i]->getChips() != 0)
+			{
+				playersRemainingWithChips++;
+			}
+		}
+		if (playersRemainingWithChips <= 1)
+		{
+			roundStateSwitch();
+			roundStateSwitch();
+			roundStateSwitch();
+			roundStateSwitch();
+		}
+		else
+		{
+			finishTurn();
+		}
+	}
+		
 	if (currentPlayerIndex >= amountOfPlayersRemaining)
 		currentPlayerIndex = 0;
 	playerController->finishTurn();
@@ -380,9 +364,7 @@ void RoundManager::callRound()
 void RoundManager::checkRound()
 {
 	// debug:
-
-	roundOver();
-
+	//roundOver();
 
 	if (players[currentPlayerIndex]->getBetThisRound() >= currentMaxBet)
 		finishTurn();
@@ -392,18 +374,69 @@ void RoundManager::checkRound()
 
 void RoundManager::betRaise(int amount)
 {
-	if ( (players[currentPlayerIndex]->getBetThisRound() + amount ) >= currentMaxBet)
+	bool callingAllowed = false;
+	bool bettingAllowed = false;
+	bool raisingAllowed = false;
+
+	if ((players[currentPlayerIndex]->getBetThisRound() + amount) == currentMaxBet)						// this is actually calling
 	{
+		callingAllowed = true;
+	}
+	else if (players[currentPlayerIndex]->getBetThisRound() == currentMaxBet && amount >= bigBlind)		// this is actually betting
+	{
+		bettingAllowed = true;
+		lastBet = amount;
+	}
+	else if (players[currentPlayerIndex]->getBetThisRound() <= currentMaxBet
+			&& players[currentPlayerIndex]->getBetThisRound() + amount >= currentMaxBet + lastBet)		// this is actually raising
+	{
+		raisingAllowed = true;
+	}
+	/*
+	else if (amount == players[currentPlayerIndex]->getChips()											// creating side pot
+			&& (players[currentPlayerIndex]->getBetThisRound() + amount) < currentMaxBet)
+	{
+
+	}
+	*/
+
+
+
+
+
+	//for (int i = 0; i < amountOfPlayersRemaining; ++i) // checking for side pot
+	//{
+	//	if (players[i]->getChips() == 0)
+	//	{
+	//		sidePotNecessary = true;
+	//	}
+	//	if (sidePotNecessary)
+	//	{
+	//		sidePots.Add
+	//	}
+	//}
+
+
+	if (callingAllowed || bettingAllowed || raisingAllowed)
+	{
+		
+
 		players[currentPlayerIndex]->decreaseChips(amount);
 		players[currentPlayerIndex]->increaseBetThisRound(amount);
 		currentMaxBet = players[currentPlayerIndex]->getBetThisRound();
-		pot += amount;
+		increasePot(amount);
 		finishTurn();
 	}
 	else
 	{
-		FString s = "not enough bet. betThisRound is: " + FString::FromInt(players[currentPlayerIndex]->getBetThisRound());
-		playerController->debugMessage(s);
+		FString a = "bet / raise has failed!";
+		FString b = "in case of betting, you have to bet at least the big blind amount, which is " + FString::FromInt(bigBlind)
+			+ " for the moment!";
+		FString c = "in case of raising, you have to bet at least raise the amount of the last bet, which is " + FString::FromInt(lastBet)
+			+ " for the moment!";
+		playerController->debugMessage(a);
+		playerController->debugMessage(b);
+		playerController->debugMessage(c);
 	}
 }
 

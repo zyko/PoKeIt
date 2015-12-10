@@ -103,8 +103,6 @@ int Calculator::qualityOfCards(Card* hand1, Card* hand2, Card* flop0, Card* flop
 
 }
 
-
-
 void Calculator::fillKeyCards()
 {
 	// debugging:
@@ -456,48 +454,6 @@ void Calculator::bubbleSortByValue()
 			}
 		}
 	}
-	
-	/* implementation by "hand":
-
-	if (array[0]->getValue() > array[1]->getValue())
-	{
-		tmp = array[0];
-		array[0] = array[1];
-		array[1] = tmp;
-	}
-	if (array[1]->getValue() > array[2]->getValue())
-	{
-		tmp = array[1];
-		array[1] = array[2];
-		array[2] = tmp;
-
-	}
-	if (array[2]->getValue() > array[3]->getValue())
-	{
-		tmp = array[2];
-		array[2] = array[3];
-		array[3] = tmp;
-	}
-	if (array[3]->getValue() > array[4]->getValue())
-	{
-		tmp = array[3];
-		array[3] = array[4];
-		array[4] = tmp;
-	}
-	if (array[4]->getValue() > array[5]->getValue())
-	{
-		tmp = array[4];
-		array[4] = array[5];
-		array[5] = tmp;
-	}
-	if (array[5]->getValue() > array[6]->getValue())
-	{
-		tmp = array[5];
-		array[5] = array[6];
-		array[6] = tmp;
-	}
-	*/
-
 }
 
 void Calculator::bubbleSortByColor()
