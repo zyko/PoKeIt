@@ -72,6 +72,16 @@ FString MyPlayerP::getName()
 	return playerName;
 }
 
+void MyPlayerP::setWinningRoundFlag(bool wrf)
+{
+	winningRoundFlag = wrf;
+}
+
+bool MyPlayerP::getWinningRoundFlag()
+{
+	return winningRoundFlag;
+}
+
 void MyPlayerP::destroyCards()
 {
 	cards[0]->~Card();

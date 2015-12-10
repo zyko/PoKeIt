@@ -172,8 +172,7 @@ void RoundManager::checkForCommunityCards()
 void RoundManager::roundOver()
 {
 	// can be used for debugging:
-	int keyValue1 = 0;
-	int keyValue2 = 0;
+
 
 	Calculator* calc = new Calculator();
 	calc->setPlayerController(playerController);
@@ -202,20 +201,47 @@ void RoundManager::roundOver()
 	Card* m = new Card(0, 9);
 	Card* n = new Card(0, 10);
 
-	int first = calc->qualityOfCards(h, i, j, k, l, m, n);
-	int second = calc->qualityOfCards(a, b, c, d, e, f, g);
 
-	if (first == second)
+
+	int first = calc->qualityOfCards(a, b, c, d, e, f, g);
+		
+	int blabla = calc->keyCards[0]->getValue();
+
+
+	for (int i = 0; i < amountOfPlayersRemaining; ++i)
 	{
+
 	}
+
+
+	for (int i = 0; i < 5; ++i)
+	{
+		playerController->debugMessage("keyCards[" + FString::FromInt(i) + "]: " + FString::FromInt(calc->keyCards[i]->getValue()));
+		//test1++;
+	}
+
+	Card* test1;
+
+	test1 = calc->getKeyCard(0);
+
+	for (int i = 0; i < 5; ++i)
+	{
+		playerController->debugMessage("keyCards[" + FString::FromInt(i) + "]: " + FString::FromInt(test1->getValue()));
+		test1++;
+	}
+		
+	
+	//int second = calc->qualityOfCards(h, i, j, k, l, m, n);
+
+	/*if (first == second)
+	{
+	}*/
 
 
 	/*keyValue1 = calc->getKeyValue();
 	getKeyCard*/
 
 	playerController->debugMessage("quality calculated: " + FString::FromInt(first));
-	playerController->debugMessage("keyValue1 is: " + FString::FromInt(keyValue1));
-
 	a->~Card();
 	b->~Card();
 	c->~Card();
@@ -252,7 +278,7 @@ void RoundManager::roundOver()
 	
 
 
-	/* correct one:
+	 //correct one:
 
 	if (amountOfPlayersRemaining > 1)
 	{
@@ -275,6 +301,7 @@ void RoundManager::roundOver()
 				// todo:
 			}
 		}
+
 		FString winner;
 
 		if (value == 0)
@@ -305,7 +332,8 @@ void RoundManager::roundOver()
 	else
 		playerController->debugMessage("aaaaand the winner is: " + players[currentPlayerIndex]->getName() + " !");
 	
-	*/
+	
+
 	// todo: missing: 
 	// player increasing chips
 

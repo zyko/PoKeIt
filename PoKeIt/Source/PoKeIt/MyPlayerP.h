@@ -20,6 +20,7 @@ public:
 	int chips;
 	Card* cards[2];
 
+	bool winningRoundFlag = false;
 
 	// functions: 
 
@@ -41,6 +42,9 @@ public:
 	Card* getCard1();
 
 	int getChips();
+
+	void setWinningRoundFlag(bool wrf);
+	bool getWinningRoundFlag();
 
 
 	MyPlayerP(int givenChips, FString nameGiven);

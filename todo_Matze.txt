@@ -19,3 +19,8 @@ ToDo:
 - screen when player switches
 - graphic animations
 - delete playerController stuff in calculator
+
+Frage:
+
+- wie wichtig ist kapselung?
+	(in Hinblick auf: keyCards[] aus Calculator.cpp public) + pointer getter in RoundManager.cpp

@@ -18,7 +18,7 @@ class POKEIT_API Calculator
 
 private:
 
-	TArray<Card*> keyCards;
+	
 
 	static const int amountOfCards = 7;
 
@@ -31,7 +31,7 @@ public:
 
 	APlayerControllerP* playerController;
 	
-
+	TArray<Card*> keyCards;
 
 	enum CardRanking
 	{
