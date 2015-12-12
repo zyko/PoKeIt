@@ -22,14 +22,9 @@ private:
 	int dealerIndex;
 	int currentPlayerIndex;
 	int currentMaxBet;
-
 	int lastBet;
-	
 	int amountOfPlayersRemaining;
 	int playersDidActions;
-
-
-
 	int roundState;
 
 	enum Roundstages
@@ -42,12 +37,7 @@ private:
 
 	int deck[4][13];
 
-	int currentSidePotIndex = 0;
-
-
-	// 1st dimension: amount of (side)pots
 	TArray<int> pots;
-
 
 	Card* flop[3];
 	Card* turn;
@@ -69,7 +59,7 @@ public:
 	void settingBlinds();
 	void increasePot(int amount);
 	void resetDeck();
-	
+	bool controlDeck(int a, int b);
 	void addPot();
 
 	int getRoundstages();
@@ -78,8 +68,6 @@ public:
 	int getCurrentPlayerIndex();
 	int getCurrentMaxBet();
 	int getCurrentPlayersBetThisRound();
-
-	bool controlDeck(int a, int b);
 	
 	void checkForCommunityCards();
 	void finishTurn();
