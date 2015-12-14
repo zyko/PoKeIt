@@ -14,16 +14,20 @@ ToDo:
 - minimum betting / raising (in relation to bigBlind)					[done]
 - pot / chips management when round is over						[done]
 
-// NEXT GOALS
+// BUGS / BUGFIXING
+- roundOver() method: if (pot <(!!!) player->getAssignedPot())
+- collection of names for creating random player names for KI etc.
 
+// NEXT GOALS
 - side pot stuff (betRaise method)
-- winning screen end of round / starting new round
-	
+- winning screen end of round / starting new round	
 
 // MAIN MENU								
 - mainMenu debugging
 - selection of players ( currently set to 5 by default in two blueprint nodes )
 - possibility to adjust blinds / startingChips within option menu at the beginning
+- setting unique player name
+- selection of KI
 
 // GRAPHICS
 - graphics ( especially cards )	
@@ -38,7 +42,6 @@ ToDo:
 - problem, when raising would lead to creating new pot, e. g. p1 allin, p2 raises above p1's allin
 - delete playerController stuff in calculator
 - testing, testing, testing calculator
-- players winningstuffflag?
 
 
 Fragen:
