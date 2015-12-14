@@ -28,6 +28,12 @@ private:
 	int bigBlind;
 	int roundsPlayed = 0;
 
+	/*
+	enum BlueprintInteraction
+	{
+		UPDATEHUD;
+	};*/
+
 
 public:
 
@@ -37,7 +43,10 @@ public:
 
 	// variables:
 
-	
+
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "updating HUD")
+		void udpateHUDblueprint();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "dealerIndex")
 		int32 dealerIndex=0;
@@ -47,12 +56,6 @@ public:
 		int32 currentPlayersChips=0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "player")
 		FString currentPlayerName;
-
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "players")
-	//	int32 amountOfPlayers;
-
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "player")
-		//int32 currentPlayer=0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "round management")
 		int32 potSize=0;
@@ -102,6 +105,9 @@ public:
 	// FUNCTIONS
 
 	// UFunctions
+
+	UFUNCTION(BlueprintCallable, Category = "interaction")
+		int32 interactWithBlueprint();
 
 	UFUNCTION(BlueprintCallable, Category = "players")
 		void spawnPlayers(int32 amountOfPlayersSelected);
