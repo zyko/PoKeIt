@@ -1,0 +1,52 @@
+ToDo:
+
+
+- make calculator global?
+
+- deck!											[done] (hopefully)
+- Ace can be 0 and 12 @ straight							[done]
+- check what happens, when both players have flush, f. e.				[done]
+- showing card graphics ( currently only triggering on "check button" by hud widget ) 	[done]
+- increasing blinds after a certain amount of rounds					[done] currently 15
+- winning Calculator									[done]
+- split pot										[done]
+- dealer management ( 2nd round, etc..)							[done]
+- minimum betting / raising (in relation to bigBlind)					[done]
+- pot / chips management when round is over						[done]
+- side pot stuff (betRaise method)							[done]
+
+
+// NEXT GOALS
+- problem within showcardgraphic function of HUDwidget:
+	getRoundStages > 0 triggers spawn flop, that means its gonna trigger with turn and river as well
+	if getRoundStages == x, its trigger twice, when people go all-in before flop
+- twoPairs win? debug!
+
+- winning screen end of round / starting new round
+- setting maximum to bet within HUDWidget
+	
+
+// MAIN MENU								
+- mainMenu debugging
+- selection of players ( currently set to 5 by default in two blueprint nodes )
+- possibility to adjust blinds / startingChips within option menu at the beginning
+
+// GRAPHICS
+- graphics ( especially cards )	
+- screen when player switches
+- graphic animations
+- show graphics for increasing blinds
+- camera
+- highlighting winning cards
+
+// PROGRAMMING
+- destructors
+- problem, when raising would lead to creating new pot, e. g. p1 allin, p2 raises above p1's allin
+- delete playerController stuff in calculator
+- testing, testing, testing calculator
+
+
+Fragen:
+
+- wie wichtig ist kapselung?
+	(in Hinblick auf: keyCards[] aus Calculator.cpp public) + pointer getter in RoundManager.cpp
