@@ -6,10 +6,10 @@ class POKEIT_API Card
 {
 private:
 	/*
-	0 = pik
-	1 = herz
-	2 = karo
-	3 = kreuz
+	0 = clubs
+	1 = spades
+	2 = diamonds
+	3 = hearts
 	*/
 	int color;
 

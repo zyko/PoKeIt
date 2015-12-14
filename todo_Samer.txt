@@ -1,0 +1,6 @@
+To do:
+
+KI.cpp:
+_automatische Verarbeitung einer Runde
+_Informationssatz in vectors abspeichern
+_Daten verarbeiten und Schlüsse kalkulieren
