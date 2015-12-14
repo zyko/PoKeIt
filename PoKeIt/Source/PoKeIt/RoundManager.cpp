@@ -54,7 +54,8 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 
 void RoundManager::checkRound()
 {
-	playerController->debugMessage("pots.Num(): " + FString::FromInt(pots.Num()));
+	//debug:
+	//playerController->debugMessage("pots.Num(): " + FString::FromInt(pots.Num()));
 	if (players[currentPlayerIndex]->getBetThisRound() >= currentMaxBet)
 		finishTurn();
 	else
@@ -349,18 +350,19 @@ bool RoundManager::controlDeck(int color, int value)
 void RoundManager::roundOver()
 {
 	// can be used for debugging calculator:
-	/*
-	players[0]->initializeNewRound(3, 5, 3, 6);
-	players[1]->initializeNewRound(1, 1, 1, 12);
+	
 
-	amountOfPlayersRemaining = 2;
+	//players[0]->initializeNewRound(3, 10, 3, 6);
+	//players[1]->initializeNewRound(2, 12, 1, 12);
 
-	flop[0] = new Card(0,4);
-	flop[1] = new Card(0,2);
-	flop[2] = new Card(0,3);
-	turn    = new Card(0,5);
-	river   = new Card(1,9);
-*/
+	//amountOfPlayersRemaining = 2;
+
+	//flop[0] = new Card(0,5);
+	//flop[1] = new Card(0,2);
+	//flop[2] = new Card(0,3);
+	//turn    = new Card(2,5);
+	//river   = new Card(1,9);
+
 	// -- debugging
 
 

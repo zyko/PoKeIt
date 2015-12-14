@@ -22,7 +22,8 @@ class POKEIT_API APlayerControllerP : public APlayerController
 
 private:
 
-
+	AHUD *myAhud;
+	UBlueprint* myhud;
 	int smallBlind;
 	int bigBlind;
 	int roundsPlayed = 0;

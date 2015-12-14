@@ -6,6 +6,8 @@
 #include "Card.h"
 #include "MyPlayerP.h"
 //#include "UnrealString.h"
+//#include "HUDbp.bpp"
+class AHUDbp;
 
 // todo:
 int amountOfPlayers;
@@ -17,6 +19,46 @@ int amountOfPlayers;
 // since UE 4.6, constructor is not needed anymore
 APlayerControllerP::APlayerControllerP()
 {
+	/* desperate tries to call blueprint function*/
+
+	//APlayerController* pc = GetWorld()->GetFirstPlayerController();
+
+	//AGameMode * MyGameMode = Cast(UGameplayStatics::GetGameMode(this));
+
+	//AGameMode * MyGameMode = GetWorld()->GetAuthGameMode();
+
+	//MyGameMode->pokeitgamemode
+
+	//MyGameMode->DebugFunction();
+
+	//AHUDbp * hud = Cast<AHUDbp>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
+
+	//AHUD * hud2 = Cast(GetWorld()->GetFirstPlayerController()->GetHUD());
+
+	
+	AHUDbp* asdf = (AHUDbp) this->GetHUD();
+	//ahud->maaDebug
+
+	
+	static ConstructorHelpers::FObjectFinder<AHUDbp> bla(TEXT("Blueprint'/Game/HUDbp.HUDbp'"));
+	{
+		//if (bla.Object != NULL)
+		//{
+
+		//	//bla.Object->debugFunction();
+		//}
+	}
+
+	// use our custom HUD class
+	//static ConstructorHelpers::FClassFinder <AHUD> MyDefaultHUD(TEXT("'/Game/HUDbp.HUDbp'"));
+	//{
+	//}
+	//HUDClass = (UClass*)MyDefaultHUD.Class;
+	
+	/*
+	static ConstructorHelpers::FClassFinder <AHUD> MyDefaultHUD(TEXT("/Game/UI/MyDefaultHUD"));
+	HUDClass = (UClass*)MyDefaultHUD.Class;
+	*/
 }
 
 void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
@@ -154,6 +196,9 @@ void APlayerControllerP::callRound()
 
 void APlayerControllerP::checkRound()
 {
+	AHUDbp* asdf = (AHUDbp*) this->GetHUD();
+	asdf->maaDebugFc();
+
 	roundManager->checkRound();
 }
 

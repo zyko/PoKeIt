@@ -20,6 +20,7 @@ ToDo:
 - problem within showcardgraphic function of HUDwidget:
 	getRoundStages > 0 triggers spawn flop, that means its gonna trigger with turn and river as well
 	if getRoundStages == x, its trigger twice, when people go all-in before flop
+- twoPairs win? debug!
 
 - winning screen end of round / starting new round
 - setting maximum to bet within HUDWidget
