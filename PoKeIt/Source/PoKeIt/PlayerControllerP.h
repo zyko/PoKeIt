@@ -43,10 +43,10 @@ public:
 
 	// variables:
 
+	// todo: obsolet?
+	void spawnCommunityCards(int roundStage);
 
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "updating HUD")
-		void udpateHUDblueprint();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "dealerIndex")
 		int32 dealerIndex=0;
@@ -104,10 +104,23 @@ public:
 
 	// FUNCTIONS
 
-	// UFunctions
 
-	UFUNCTION(BlueprintCallable, Category = "interaction")
-		int32 interactWithBlueprint();
+	// UFunctions to be sent to blueprint
+
+	// actually debug so far
+	UFUNCTION(BlueprintImplementableEvent, Category = "updating HUD")
+		void debugBlueprintFunc();
+
+	// updating hand cards	
+	UFUNCTION(BlueprintImplementableEvent, Category = "updating HUD")
+		void updateHUDcardsBP();
+
+	// spawning community cards in blueprint
+	UFUNCTION(BlueprintImplementableEvent, Category = "updating HUD")
+		void spawnCommunityCardsBP(int32 roundStage);
+
+
+	// UFunctions to be called from blueprint
 
 	UFUNCTION(BlueprintCallable, Category = "players")
 		void spawnPlayers(int32 amountOfPlayersSelected);

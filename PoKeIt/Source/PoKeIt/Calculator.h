@@ -68,8 +68,6 @@ public:
 	int straightCheck(int straightFlushCheck);
 
 	void bubbleSortByValue();
-	void bubbleSortByColor();
-
 	
 	int qualityOfCards(Card* hand1, Card* hand2, Card* flop0, Card* flop1, Card* flop2, Card* turn, Card* river);
 

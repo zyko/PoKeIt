@@ -5,9 +5,6 @@
 #include "PoKeItGameMode.h"
 #include "Card.h"
 #include "MyPlayerP.h"
-//#include "UnrealString.h"
-//#include "HUDbp.bpp"
-class AHUDbp;
 
 // todo:
 int amountOfPlayers;
@@ -19,20 +16,9 @@ int amountOfPlayers;
 // since UE 4.6, constructor is not needed anymore
 APlayerControllerP::APlayerControllerP()
 {
-}
-
-int APlayerControllerP::interactWithBlueprint()
-{
-	/*
-	int updateHand;
-	int updateFlop;
-	int updateTurn;
-	int updateRiver;
-	int spawnFlop;
-	int spawnTurn;
-	int spawnRiver;
-	*/
-	return -1;
+	// trying to use blueprintimplementableevent
+	// got no fucking clue, why this shit works in constructor (only)
+	debugBlueprintFunc();
 }
 
 void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
@@ -98,18 +84,18 @@ void APlayerControllerP::adjustBlinds()
 	}
 }
 
+// todo: still necessary? could call updateHUD() directly
+void APlayerControllerP::finishTurn()
+{
+	updateHUD();
+}
+
 void APlayerControllerP::updateHUD()
 {
 	currentPlayersChips = roundManager->players[roundManager->getCurrentPlayerIndex()]->getChips();
 	currentPlayerName = roundManager->players[roundManager->getCurrentPlayerIndex()]->getName();
 	potSize = roundManager->getPot();
 	updateHUDcards();
-}
-
-// todo: still necessary? could call updateHUD() directly
-void APlayerControllerP::finishTurn()
-{
-	updateHUD();
 }
 
 void APlayerControllerP::updateHUDcards()
@@ -121,10 +107,13 @@ void APlayerControllerP::updateHUDcards()
 	cardValue0 = currentPlayersHand[0]->getValue();
 	cardColor1 = currentPlayersHand[1]->getColor();
 	cardValue1 = currentPlayersHand[1]->getValue();
-	
+
+
+	// todo: was testing blueprintimplementable
+	updateHUDcardsBP();
+
 	if (roundManager)
 	{
-		
 		if (roundManager->getFlop(0) != NULL)
 		{
 			flopCard0Color = roundManager->getFlop(0)->getColor();
@@ -170,7 +159,6 @@ void APlayerControllerP::callRound()
 
 void APlayerControllerP::checkRound()
 {
-	udpateHUDblueprint();
 	roundManager->checkRound();
 }
 

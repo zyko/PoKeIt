@@ -287,6 +287,9 @@ void RoundManager::roundStateSwitch()
 		flop[1] = new Card(flop1[0], flop1[1]);
 		flop[2] = new Card(flop2[0], flop2[1]);
 
+		// todo: was testing blueprintimplementable
+		playerController->spawnCommunityCardsBP(PREFLOP);
+
 	}
 	else if (roundState == FLOP)
 	{
@@ -302,6 +305,8 @@ void RoundManager::roundStateSwitch()
 
 		turn = new Card(turnA[0], turnA[1]);
 
+		// todo: was testing blueprintimplementable
+		playerController->spawnCommunityCardsBP(FLOP);
 	}
 	else if (roundState == TURN)
 	{
@@ -317,6 +322,8 @@ void RoundManager::roundStateSwitch()
 
 		river = new Card(riverA[0], riverA[1]);
 
+		// todo: was testing blueprintimplementable
+		playerController->spawnCommunityCardsBP(TURN);
 	}
 	else if (roundState == RIVER)
 	{

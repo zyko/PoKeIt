@@ -456,31 +456,6 @@ void Calculator::bubbleSortByValue()
 	}
 }
 
-void Calculator::bubbleSortByColor()
-{
-	int n = amountOfCards - 2;
-	// that means : 7 => 5
-	//				6 => 4
-	//				5 => 3
-
-	Card* tmp = cards[0];
-
-	// 7 cards, means n starts with 5:
-	while (n >= 0)
-	{
-		for (int i = 0; i <= n; ++i)
-		{
-			if (cards[i]->getColor() > cards[i + 1]->getColor())
-			{
-				tmp = cards[i];
-				cards[i] = cards[i + 1];
-				cards[i + 1] = tmp;
-			}
-		}
-		--n;
-	}
-}
-
 Card* Calculator::getKeyCard(int index)
 {
 	return keyCards[index];
