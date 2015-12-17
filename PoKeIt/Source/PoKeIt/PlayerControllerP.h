@@ -145,11 +145,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "bets")
 		int32 getCurrentPlayersBetThisRound();
 
+	UFUNCTION(BlueprintCallable, Category = "start new round")
+		void startNewRound();
+
 	//todo: why is this UFUNCTION? 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void updateHUDcards();
 
 	// normal functions:
+
+	void playerOut();
 
 	void adjustBlinds();
 

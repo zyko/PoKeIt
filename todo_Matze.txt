@@ -14,14 +14,13 @@ ToDo:
 - minimum betting / raising (in relation to bigBlind)					[done]
 - pot / chips management when round is over						[done]
 - side pot stuff (betRaise method)							[done]
-
+- problem within showcardgraphic function of HUDwidget					[done]
 
 // NEXT GOALS
-- problem within showcardgraphic function of HUDwidget:
-	getRoundStages > 0 triggers spawn flop, that means its gonna trigger with turn and river as well
-	if getRoundStages == x, its trigger twice, when people go all-in before flop
+
 - twoPairs win? debug!
 - camera movement
+- players out forever
 
 - winning screen end of round / starting new round
 - setting maximum to bet within HUDWidget
@@ -39,6 +38,7 @@ ToDo:
 - show graphics for increasing blinds
 - camera
 - highlighting winning cards
+- dealer button ( + movement)
 
 // PROGRAMMING
 - destructors

@@ -47,6 +47,18 @@ void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 	updateHUD();
 }
 
+//todo:
+void APlayerControllerP::playerOut()
+{
+	
+}
+
+void APlayerControllerP::startNewRound()
+{
+	roundManager = new RoundManager(players, this, amountOfPlayers, dealerIndex, smallBlind, bigBlind);
+	updateHUD();
+}
+
 void APlayerControllerP::roundFinished()
 {
 	roundManager->~RoundManager();
@@ -54,7 +66,7 @@ void APlayerControllerP::roundFinished()
 	roundsPlayed++;
 	adjustBlinds();
 	dealerIndex++;
-	spawnPlayers(5);
+	//spawnPlayers(5);
 }
 
 void APlayerControllerP::adjustBlinds()
