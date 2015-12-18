@@ -6,9 +6,6 @@
 #include "Card.h"
 #include "MyPlayerP.h"
 
-// todo:
-int amountOfPlayers;
-// default = 5
 
 //todo:
 /* gotta update player HUD from players directly
@@ -23,6 +20,7 @@ APlayerControllerP::APlayerControllerP()
 
 void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 {
+	debugMessage("spawnPlayers was called");
 	int startingChips = 10000;
 	smallBlind = startingChips / 100;
 	bigBlind = smallBlind * 2;

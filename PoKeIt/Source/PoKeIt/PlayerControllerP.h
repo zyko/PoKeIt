@@ -27,12 +27,7 @@ private:
 	int smallBlind;
 	int bigBlind;
 	int roundsPlayed = 0;
-
-	/*
-	enum BlueprintInteraction
-	{
-		UPDATEHUD;
-	};*/
+	int amountOfPlayers;
 
 
 public:
@@ -45,7 +40,6 @@ public:
 
 	// todo: obsolet?
 	void spawnCommunityCards(int roundStage);
-
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "dealerIndex")
