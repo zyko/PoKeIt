@@ -52,6 +52,11 @@ private:
 
 	void makeDecision();
 
+	void folding();
+	void checking();
+	void betting(int betAmount);
+	void calling();
+	void raising(int raiseAmount);
 
 public:
 	KI(int givenChips, FString nameGiven);

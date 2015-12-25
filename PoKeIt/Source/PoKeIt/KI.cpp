@@ -38,9 +38,33 @@ void KI::makeDecision()
 
 }
 
+void KI::folding()
+{
+	roundManager->fold();
+}
+
+void KI::checking()
+{
+	roundManager->checkRound();
+}
+
+void KI::betting(int betAmount)
+{
+	roundManager->betRaise(betAmount);
+}
+
+void KI::calling()
+{
+	roundManager->callRound();
+}
+
+void KI::raising(int raiseAmount)
+{
+	roundManager->betRaise(raiseAmount);
+}
+
 void KI::updateKIInformations(RoundManager *manager)
 {
 	setRoundManager(manager);
 	setRemainingPlayers();
 }
-
