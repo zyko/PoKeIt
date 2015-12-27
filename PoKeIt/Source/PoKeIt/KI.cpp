@@ -30,7 +30,59 @@ void KI::setRoundIndex()
 // calculate odds based on my own cards and the communityCards
 void KI::calculateOdds()
 {
+	float value = 0;
+
+	/*
+	if(poketPair)
+	{
+		value = getPercentageOpponentHigherPocketPair();
+	}
+	*/
+}
+
+float KI::getPercentageOfBetterCard()
+{
+	float value = 0;
+	//Percentage Flop to Turn
+
+
+	//Percentage Turn to River
+
+
+	//Percentage Flop to Turn + River
 	
+
+	return value;
+}
+
+float KI::getBinomialKoeffizient(int n, int k)
+{
+	return (factorial(n)) / (factorial(k) * (factorial(n - k)));
+}
+
+int factorial(int n)
+{
+	return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
+}
+
+float KI::getPercentageOpponentHigherPocketPair()
+{
+	int rankOwnedPP = cards[0]->getValue();
+	float value = (((14 - rankOwnedPP) * 4) / 50) * (3 / 49);
+
+	return value;
+}
+
+int KI::returnOuts()
+{
+	int outs = 0;
+	
+	return outs;
+}
+
+void KI::bluff()
+{
+
 }
 
 void KI::makeDecision()
@@ -67,4 +119,7 @@ void KI::updateKIInformations(RoundManager *manager)
 {
 	setRoundManager(manager);
 	setRemainingPlayers();
+
+	//TO DO
+	// tablePositionAfterDealer = 
 }

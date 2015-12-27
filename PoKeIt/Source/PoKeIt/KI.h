@@ -5,6 +5,8 @@
 #include "MyPlayerP.h"
 #include "RoundManager.h"
 #include <vector>
+#include <tuple>
+#include <array>
 
 /**
  * 
@@ -15,6 +17,7 @@ private:
 	// variables
 	RoundManager *roundManager;
 	int remainingPlayers;
+	int tablePositionAfterDealer;
 	/*
 	0 = PREFLOP,
 	1 = FLOP,
@@ -22,7 +25,6 @@ private:
 	3 = RIVER,
 	*/
 	int currentRound;
-
 	/*
 	value between 0% - 100%
 
@@ -38,6 +40,7 @@ private:
 	9 = royal flush
 	*/
 	std::vector<double> odds;
+	std::vector<Card> estimatedCardsOppenents;
 
 
 	// functions
@@ -48,7 +51,15 @@ private:
 	void setKIAgressive(); // are we rushin' in ...
 	void setKIDefensive(); // ... or goin' sneaky peaky like?
 
+	//calculations
 	void calculateOdds();
+	float getPercentageOfBetterCard();
+	float getBinomialKoeffizient(int n, int k);
+	int factorial(int n);
+	float getPercentageOpponentHigherPocketPair();
+	int returnOuts();
+
+	void bluff();
 
 	void makeDecision();
 
