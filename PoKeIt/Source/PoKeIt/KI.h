@@ -4,9 +4,9 @@
 
 #include "MyPlayerP.h"
 #include "RoundManager.h"
+#include "Calculator.h"
 #include <vector>
 #include <tuple>
-#include <array>
 
 /**
  * 
@@ -41,7 +41,18 @@ private:
 	*/
 	std::vector<double> odds;
 	std::vector<Card> estimatedCardsOppenents;
-
+	/*
+	[0] = Pair
+	[1] = Two Pairs
+	[2] = Three of a kind
+	[3] = Straight
+	[4] = Flush
+	[5] = Full House
+	[6] = Four of a kind
+	[7] = Stright FLush
+	[8] = Royal FLush
+	*/
+	bool ownedCardOmbinations[];
 
 	// functions
 	void setRemainingPlayers();
@@ -58,6 +69,8 @@ private:
 	int factorial(int n);
 	float getPercentageOpponentHigherPocketPair();
 	int returnOuts();
+
+	void checkOwnedCombination();
 
 	void bluff();
 

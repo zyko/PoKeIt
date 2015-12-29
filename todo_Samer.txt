@@ -4,3 +4,10 @@ KI.cpp:
 _automatische Verarbeitung einer Runde
 _Informationssatz in vectors abspeichern
 _Daten verarbeiten und Schlüsse kalkulieren
+
+_angaben ueber vorhandenes blatt ermitteln und speichern(pair, etc)
+_kalkulation der wahrscheinlichkeiten mithilfe eines algorithmus dydnamisch berechnen
+	__fuer pot odds
+	__fuer zu erartende nächste Karte
+_bluff erkennen
+_counter-bluff
