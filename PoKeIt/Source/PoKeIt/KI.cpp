@@ -6,7 +6,7 @@
 KI::KI(int givenChips, FString nameGiven)
 	: MyPlayerP(givenChips, nameGiven)
 {
-	for (int i = 0; i < 8; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		ownedCardOmbinations[i] = false;
 	}
@@ -92,20 +92,51 @@ void KI::checkOwnedCombination()
 {
 	Calculator* calc = new Calculator();
 
+	//checkHighCard(); //and save
+
 	/*
-	HIGHCARD,
-	PAIR,
-	TWOPAIR,
-	TRIPS,
-	STRAIGHT,
-	FLUSH,
-	FULLHOUSE,
-	QUADS,
-	STRAIGHTFLUSH,
-	ROYALFLUSH
+	[0] = High Card
+	[1] = Pair
+	[2] = Two Pairs
+	[3] = Three of a kind
+	[4] = Straight
+	[5] = Flush
+	[6] = Full House
+	[7] = Four of a kind
+	[8] = Straight FLush
+	[9] = Royal FLush
 	*/
 	int highestCombination = calc->qualityOfCards(cards[0], cards[1], roundManager->getFlop(0), roundManager->getFlop(1), roundManager->getFlop(2), roundManager->getTurn(), roundManager->getRiver());
 
+	///////////////// TO DO !!! //////////////
+	// calc has to return all possibilities //
+
+	/*
+	switch (highestCombination)
+	{
+	case 2:
+	{
+		ownedCardOmbinations[1] = true;
+		break;
+	}
+	case 3:
+	{
+		ownedCardOmbinations[1] = true;
+		break;
+	}
+	case 4:
+	{
+		ownedCardOmbinations[1] = true;
+		break;
+	}
+	default:
+	{
+		break;
+	}
+	}
+	*/
+
+	ownedCardOmbinations[highestCombination] = true;
 
 	calc->~Calculator();
 }

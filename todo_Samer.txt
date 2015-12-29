@@ -11,3 +11,9 @@ _kalkulation der wahrscheinlichkeiten mithilfe eines algorithmus dydnamisch bere
 	__fuer zu erartende nächste Karte
 _bluff erkennen
 _counter-bluff
+
+________________________________
+IMPORTANT:
+_Calculator muss iwie alle möglichkeiten zurückgeben
+	_zB: man kann ein FullHouse besitzen und trotzdem einen Drilling
+	_KI soll auch % für einen möglichen Vierling berechnen können!

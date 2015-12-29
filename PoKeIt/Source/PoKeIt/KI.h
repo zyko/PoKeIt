@@ -42,15 +42,16 @@ private:
 	std::vector<double> odds;
 	std::vector<Card> estimatedCardsOppenents;
 	/*
-	[0] = Pair
-	[1] = Two Pairs
-	[2] = Three of a kind
-	[3] = Straight
-	[4] = Flush
-	[5] = Full House
-	[6] = Four of a kind
-	[7] = Stright FLush
-	[8] = Royal FLush
+	[0] = High Card
+	[1] = Pair
+	[2] = Two Pairs
+	[3] = Three of a kind
+	[4] = Straight
+	[5] = Flush
+	[6] = Full House
+	[7] = Four of a kind
+	[8] = Straight FLush
+	[9] = Royal FLush
 	*/
 	bool ownedCardOmbinations[];
 
