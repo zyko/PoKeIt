@@ -6,10 +6,7 @@
 KI::KI(int givenChips, FString nameGiven)
 	: MyPlayerP(givenChips, nameGiven)
 {
-	for (int i = 0; i < 10; ++i)
-	{
-		ownedCardOmbinations[i] = false;
-	}
+
 }
 
 KI::~KI()
@@ -29,6 +26,16 @@ void KI::setRoundManager(RoundManager *manager)
 void KI::setRoundIndex()
 {
 	currentRound = roundManager->getRoundstages();
+}
+
+void KI::setCommunityCards()
+{
+	int communityCardCount = currentRound + 2;
+
+	for (int i = 0; i < communityCardCount; ++i)
+	{
+		communityCards.push_back(*roundManager->getFlop(i));
+	}
 }
 
 // calculate odds based on my own cards and the communityCards
@@ -90,55 +97,7 @@ int KI::returnOuts()
 
 void KI::checkOwnedCombination()
 {
-	Calculator* calc = new Calculator();
-
-	//checkHighCard(); //and save
-
-	/*
-	[0] = High Card
-	[1] = Pair
-	[2] = Two Pairs
-	[3] = Three of a kind
-	[4] = Straight
-	[5] = Flush
-	[6] = Full House
-	[7] = Four of a kind
-	[8] = Straight FLush
-	[9] = Royal FLush
-	*/
-	int highestCombination = calc->qualityOfCards(cards[0], cards[1], roundManager->getFlop(0), roundManager->getFlop(1), roundManager->getFlop(2), roundManager->getTurn(), roundManager->getRiver());
-
-	///////////////// TO DO !!! //////////////
-	// calc has to return all possibilities //
-
-	/*
-	switch (highestCombination)
-	{
-	case 2:
-	{
-		ownedCardOmbinations[1] = true;
-		break;
-	}
-	case 3:
-	{
-		ownedCardOmbinations[1] = true;
-		break;
-	}
-	case 4:
-	{
-		ownedCardOmbinations[1] = true;
-		break;
-	}
-	default:
-	{
-		break;
-	}
-	}
-	*/
-
-	ownedCardOmbinations[highestCombination] = true;
-
-	calc->~Calculator();
+	// ownedCardCombinations = KICalculator::getVec(currentRound, cards[0], cards[1], communityCards);
 }
 
 void KI::bluff()

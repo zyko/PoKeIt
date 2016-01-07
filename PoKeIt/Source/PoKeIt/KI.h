@@ -4,13 +4,10 @@
 
 #include "MyPlayerP.h"
 #include "RoundManager.h"
-#include "Calculator.h"
+#include "KICalculator.h"
 #include <vector>
 #include <tuple>
 
-/**
- * 
- */
 class POKEIT_API KI : public MyPlayerP
 {
 private:
@@ -18,6 +15,8 @@ private:
 	RoundManager *roundManager;
 	int remainingPlayers;
 	int tablePositionAfterDealer;
+	std::vector<Card> communityCards;
+
 	/*
 	0 = PREFLOP,
 	1 = FLOP,
@@ -25,6 +24,7 @@ private:
 	3 = RIVER,
 	*/
 	int currentRound;
+
 	/*
 	value between 0% - 100%
 
@@ -40,7 +40,9 @@ private:
 	9 = royal flush
 	*/
 	std::vector<double> odds;
+
 	std::vector<Card> estimatedCardsOppenents;
+
 	/*
 	[0] = High Card
 	[1] = Pair
@@ -50,15 +52,16 @@ private:
 	[5] = Flush
 	[6] = Full House
 	[7] = Four of a kind
-	[8] = Straight FLush
-	[9] = Royal FLush
+	[8] = Straight Flush
+	[9] = Royal Flush
 	*/
-	bool ownedCardOmbinations[];
+	std::vector<OwnedCardCombination> ownedCardCombinations;
 
 	// functions
 	void setRemainingPlayers();
 	void setRoundManager(RoundManager *manager);
 	void setRoundIndex();
+	void setCommunityCards();
 
 	void setKIAgressive(); // are we rushin' in ...
 	void setKIDefensive(); // ... or goin' sneaky peaky like?

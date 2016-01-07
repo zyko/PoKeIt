@@ -8,12 +8,13 @@ _Daten verarbeiten und Schlüsse kalkulieren
 _angaben ueber vorhandenes blatt ermitteln und speichern(pair, etc)
 _kalkulation der wahrscheinlichkeiten mithilfe eines algorithmus dydnamisch berechnen
 	__fuer pot odds
-	__fuer zu erartende nächste Karte
+	__fuer zu erwartende nächste Karte
 _bluff erkennen
 _counter-bluff
 
 ________________________________
 IMPORTANT:
-_Calculator muss iwie alle möglichkeiten zurückgeben
-	_zB: man kann ein FullHouse besitzen und trotzdem einen Drilling
-	_KI soll auch % für einen möglichen Vierling berechnen können!
+_KICalculator muss iwie alle möglichkeiten zurückgeben
+	_zB: man kann ein FullHouse besitzen und trotzdem einen 	Drilling
+	_KI soll auch % für einen möglichen Vierling berechnen 	können!
+_Alle Pointer auf NULL checken

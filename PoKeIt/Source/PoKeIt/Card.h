@@ -18,9 +18,9 @@ private:
 	1 = 3
 	2 = 4
 	3 = 5
-	4 = 7
-	5 = 9
-	6 = 9
+	4 = 6
+	5 = 7
+	6 = 8
 	7 = 9
 	8 = 10
 	9 = jack
@@ -28,7 +28,6 @@ private:
 	11 = king
 	12 = ace
 	*/
-
 	int value;
 
 public:
@@ -38,4 +37,7 @@ public:
 
 	int getColor();
 	int getValue();
+
+	// for descending sorting with algorithm::sort
+	bool operator > (const Card& card) const;
 };

@@ -28,3 +28,9 @@ int Card::getValue()
 {
 	return value;
 }
+
+// overriding operator> for sorting with std::sort (descending order)
+bool Card::operator > (const Card& card) const
+{
+	return (value > card.value);
+}
