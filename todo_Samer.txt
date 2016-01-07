@@ -2,10 +2,8 @@ To do:
 
 KI.cpp:
 _automatische Verarbeitung einer Runde
-_Informationssatz in vectors abspeichern
+	_implementierung mit Matze
 _Daten verarbeiten und Schlüsse kalkulieren
-
-_angaben ueber vorhandenes blatt ermitteln und speichern(pair, etc)
 _kalkulation der wahrscheinlichkeiten mithilfe eines algorithmus dydnamisch berechnen
 	__fuer pot odds
 	__fuer zu erwartende nächste Karte
@@ -14,7 +12,5 @@ _counter-bluff
 
 ________________________________
 IMPORTANT:
-_KICalculator muss iwie alle möglichkeiten zurückgeben
-	_zB: man kann ein FullHouse besitzen und trotzdem einen 	Drilling
-	_KI soll auch % für einen möglichen Vierling berechnen 	können!
+_Code untersuchen, ob nicht mehr Pointer eingesetzt werden können
 _Alle Pointer auf NULL checken

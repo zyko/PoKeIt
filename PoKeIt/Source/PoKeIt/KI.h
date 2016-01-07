@@ -11,7 +11,6 @@
 class POKEIT_API KI : public MyPlayerP
 {
 private:
-	// variables
 	RoundManager *roundManager;
 	int remainingPlayers;
 	int tablePositionAfterDealer;
