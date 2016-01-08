@@ -22,7 +22,7 @@ KICalculator::~KICalculator()
 {
 }
 
-std::vector<OwnedCardCombination> KICalculator::getVecOwnedCombinations()
+std::vector<OwnedCardCombination> KICalculator::getVecOwnedCombinations(std::vector<Card> communityCards)
 {
 	// sort cards by descending value for faster cardCombinationCheck
 	std::sort(usableCards.begin(), usableCards.end(), std::greater<Card>());
@@ -195,7 +195,7 @@ OwnedCardCombination KICalculator::checkForStraightFlush()
 		return OwnedCardCombination(8, true);
 	}
 
-	// no quads found
+	// no straight flush found
 	return OwnedCardCombination(8);
 }
 
@@ -206,6 +206,16 @@ OwnedCardCombination KICalculator::checkForRoyalFlush()
 		return OwnedCardCombination(9, true);
 	}
 
-	// no quads found
+	// no royal flush found
 	return OwnedCardCombination(9);
+}
+
+float KICalculator::getBinomialKoeffizient(int n, int k)
+{
+	return (factorial(n)) / (factorial(k) * (factorial(n - k)));
+}
+
+int KICalculator::factorial(int n)
+{
+	return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
 }

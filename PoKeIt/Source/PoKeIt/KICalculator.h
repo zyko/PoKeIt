@@ -31,5 +31,8 @@ public:
 	KICalculator(const int round, Card *ownedCardOne, Card *ownedCardTwo, std::vector<Card> communityCards);
 	~KICalculator();
 
-	std::vector<OwnedCardCombination> getVecOwnedCombinations();
+	std::vector<OwnedCardCombination> getVecOwnedCombinations(std::vector<Card> communityCards);
+
+	int factorial(int n);
+	float getBinomialKoeffizient(int n, int k);
 };

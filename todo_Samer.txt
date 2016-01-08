@@ -14,3 +14,9 @@ ________________________________
 IMPORTANT:
 _Code untersuchen, ob nicht mehr Pointer eingesetzt werden können
 _Alle Pointer auf NULL checken
+_const setzen, wenn machbar
+_auto Speicherallokierung wenn möglich, dynamische falls nötig!
+
+________________________________
+wichtige Fragen:
+_sollte die KI die Karten der Gegener kennen, um richtiges Verhalten zu lernen? (Nicht um eine Entscheidung für die Momentane Situation zu fällen = cheaten)!

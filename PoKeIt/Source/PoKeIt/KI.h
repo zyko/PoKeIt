@@ -11,7 +11,8 @@
 class POKEIT_API KI : public MyPlayerP
 {
 private:
-	RoundManager *roundManager;
+	RoundManager *ptr_roundManager;
+	KICalculator *ptr_kiCalculator;
 	int remainingPlayers;
 	int tablePositionAfterDealer;
 	std::vector<Card> communityCards;
@@ -57,23 +58,21 @@ private:
 	std::vector<OwnedCardCombination> ownedCardCombinations;
 
 	// functions
+	void setRoundManager(RoundManager *ptr_manager);
 	void setRemainingPlayers();
-	void setRoundManager(RoundManager *manager);
 	void setRoundIndex();
 	void setCommunityCards();
 
 	void setKIAgressive(); // are we rushin' in ...
 	void setKIDefensive(); // ... or goin' sneaky peaky like?
 
-	//calculations
+	// calculations
 	void calculateOdds();
-	float getPercentageOfBetterCard();
-	float getBinomialKoeffizient(int n, int k);
-	int factorial(int n);
+	float getPercentageOfBetterCardNextRound();
 	float getPercentageOpponentHigherPocketPair();
 	int returnOuts();
 
-	void checkOwnedCombination();
+	void checkOwnedCombinations();
 
 	void bluff();
 
@@ -89,5 +88,5 @@ public:
 	KI(int givenChips, FString nameGiven);
 	~KI();
 
-	void updateKIInformations(RoundManager *manager);
+	void updateKIInformations(RoundManager *ptr_manager);
 };

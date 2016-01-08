@@ -4,37 +4,56 @@
 #include "KI.h"
 
 KI::KI(int givenChips, FString nameGiven)
-	: MyPlayerP(givenChips, nameGiven)
+	: MyPlayerP(givenChips, nameGiven), ptr_roundManager(NULL), ptr_kiCalculator(NULL)
 {
-
 }
 
 KI::~KI()
 {
+	delete ptr_kiCalculator;
+}
+
+void KI::setRoundManager(RoundManager *ptr_manager)
+{
+	ptr_roundManager = ptr_manager;
 }
 
 void KI::setRemainingPlayers()
 {
-	remainingPlayers = roundManager->getAmountOfPlayersRemaining();
-}
-
-void KI::setRoundManager(RoundManager *manager)
-{
-	roundManager = manager;
+	remainingPlayers = ptr_roundManager->getAmountOfPlayersRemaining();
 }
 
 void KI::setRoundIndex()
 {
-	currentRound = roundManager->getRoundstages();
+	currentRound = ptr_roundManager->getRoundstages();
 }
 
 void KI::setCommunityCards()
 {
-	int communityCardCount = currentRound + 2;
-
-	for (int i = 0; i < communityCardCount; ++i)
+	switch (currentRound)
 	{
-		communityCards.push_back(*roundManager->getFlop(i));
+		case 1:
+		{
+			for (int i = 0; i < currentRound + 2; ++i)
+			{
+				communityCards.push_back(*ptr_roundManager->getFlop(i));
+			}
+			break;
+		}
+		case 2:
+		{
+			communityCards.push_back(*ptr_roundManager->getTurn());
+			break;
+		}
+		case 3:
+		{
+			communityCards.push_back(*ptr_roundManager->getRiver());
+			break;
+		}
+		default:
+		{
+			break;
+		}
 	}
 }
 
@@ -51,7 +70,7 @@ void KI::calculateOdds()
 	*/
 }
 
-float KI::getPercentageOfBetterCard()
+float KI::getPercentageOfBetterCardNextRound()
 {
 	float value = 0;
 
@@ -70,20 +89,10 @@ float KI::getPercentageOfBetterCard()
 	return value;
 }
 
-float KI::getBinomialKoeffizient(int n, int k)
-{
-	return (factorial(n)) / (factorial(k) * (factorial(n - k)));
-}
-
-int KI::factorial(int n)
-{
-	return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
-}
-
 float KI::getPercentageOpponentHigherPocketPair()
 {
-	int rankOwnedPP = cards[0]->getValue();
-	float value = (((14 - rankOwnedPP) * 4) / 50) * (3 / 49);
+	int rankOwnedPocketPair = cards[0]->getValue();
+	float value = (((14 - rankOwnedPocketPair) * 4) / 50) * (3 / 49);
 
 	return value;
 }
@@ -92,12 +101,19 @@ int KI::returnOuts()
 {
 	int outs = 0;
 	
+	//
+
 	return outs;
 }
 
-void KI::checkOwnedCombination()
+void KI::checkOwnedCombinations()
 {
-	// ownedCardCombinations = KICalculator::getVec(currentRound, cards[0], cards[1], communityCards);
+	if (!ptr_kiCalculator)
+	{
+		ptr_kiCalculator = new KICalculator(currentRound, cards[0], cards[1], communityCards);
+	}
+
+	ownedCardCombinations = ptr_kiCalculator->getVecOwnedCombinations(communityCards);
 }
 
 void KI::bluff()
@@ -112,31 +128,33 @@ void KI::makeDecision()
 
 void KI::folding()
 {
-	roundManager->fold();
+	ptr_roundManager->fold();
 }
 
 void KI::checking()
 {
-	roundManager->checkRound();
+	ptr_roundManager->checkRound();
 }
 
 void KI::betting(int betAmount)
 {
-	roundManager->betRaise(betAmount);
+	ptr_roundManager->betRaise(betAmount);
 }
 
 void KI::calling()
 {
-	roundManager->callRound();
+	ptr_roundManager->callRound();
 }
 
 void KI::raising(int raiseAmount)
 {
-	roundManager->betRaise(raiseAmount);
+	ptr_roundManager->betRaise(raiseAmount);
 }
 
-void KI::updateKIInformations(RoundManager *manager)
+void KI::updateKIInformations(RoundManager *ptr_manager)
 {
-	setRoundManager(manager);
+	setRoundManager(ptr_manager);
 	setRemainingPlayers();
+	setRoundIndex();
+	setCommunityCards();
 }
