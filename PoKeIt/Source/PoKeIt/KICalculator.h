@@ -11,12 +11,21 @@
 
 class POKEIT_API KICalculator
 {
+public:
+	KICalculator(const int round, Card *ownedCardOne, Card *ownedCardTwo, std::vector<Card> communityCards);
+	~KICalculator();
+
+	std::vector<OwnedCardCombination> getVecOwnedCombinations(std::vector<Card> communityCards);
+
+	int getCardOuts();
+
 private:
 	int currentRound, highestPairValue;
 	bool owningPair, owningTriple, owningStraight, owningFlush, owningHighestValue;
 	std::vector<Card> usableCards;
 	std::vector<OwnedCardCombination> allCombinations;
 	
+	// functions for checking cardCombinations
 	OwnedCardCombination checkForHighestCard();
 	OwnedCardCombination checkForPairs();
 	OwnedCardCombination checkForTriple();
@@ -27,12 +36,10 @@ private:
 	OwnedCardCombination checkForStraightFlush();
 	OwnedCardCombination checkForRoyalFlush();
 
-public:
-	KICalculator(const int round, Card *ownedCardOne, Card *ownedCardTwo, std::vector<Card> communityCards);
-	~KICalculator();
+	// poker-specific functions
+	int calculateCardOuts();
 
-	std::vector<OwnedCardCombination> getVecOwnedCombinations(std::vector<Card> communityCards);
-
+	// mathematical functions
 	int factorial(int n);
-	float getBinomialKoeffizient(int n, int k);
+	float getBinomialKoefficient(int n, int k);
 };

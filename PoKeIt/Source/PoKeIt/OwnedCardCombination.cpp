@@ -42,7 +42,7 @@ int OwnedCardCombination::getComboValue()
 	return comboValue;
 }
 
-int OwnedCardCombination::getCmboColor()
+int OwnedCardCombination::getComboColor()
 {
 	return comboColor;
 }

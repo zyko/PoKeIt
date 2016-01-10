@@ -13,6 +13,14 @@ KI::~KI()
 	delete ptr_kiCalculator;
 }
 
+void KI::updateKIInformations(RoundManager *ptr_manager)
+{
+	setRoundManager(ptr_manager);
+	setRemainingPlayers();
+	setRoundIndex();
+	setCommunityCards();
+}
+
 void KI::setRoundManager(RoundManager *ptr_manager)
 {
 	ptr_roundManager = ptr_manager;
@@ -60,19 +68,17 @@ void KI::setCommunityCards()
 // calculate odds based on my own cards and the communityCards
 void KI::calculateOdds()
 {
-	float value = 0;
+	float probability = 0;
 
-	/*
-	if(poketPair)
+	if(ownedCardCombinations[1].getComboOwned)
 	{
-		value = getPercentageOpponentHigherPocketPair();
+		probability = percentageOpponentHigherPocketPair();
 	}
-	*/
 }
 
-float KI::getPercentageOfBetterCardNextRound()
+float KI::percentageOfBetterCardNextRound()
 {
-	float value = 0;
+	float probability = 0;
 
 	//Percentage Flop to Turn
 	if(currentRound == 1)
@@ -86,24 +92,26 @@ float KI::getPercentageOfBetterCardNextRound()
 	//Percentage Flop to Turn + River
 	
 
-	return value;
+	return probability;
 }
 
-float KI::getPercentageOpponentHigherPocketPair()
+float KI::percentageOpponentHigherPocketPair()
 {
-	int rankOwnedPocketPair = cards[0]->getValue();
-	float value = (((14 - rankOwnedPocketPair) * 4) / 50) * (3 / 49);
+	int rankOwnedPocketPair = ownedCardCombinations[1].getComboValue();
+	int cardsOfHigherRank = (14 - rankOwnedPocketPair) * 4;
+	// float/int Pk
 
-	return value;
-}
+	// opponents first card (of higher value) * probability of getting the pair
+	float probability = ((cardsOfHigherRank / 50) * (3 / 49)) * remainingPlayers;
 
-int KI::returnOuts()
-{
-	int outs = 0;
-	
-	//
+	for (int i = 0; i <= remainingPlayers + 1; ++i)
+	{
+		// Pn berechnen und auf Pk addieren
+	}
 
-	return outs;
+	// probability -= 
+
+	return probability;
 }
 
 void KI::checkOwnedCombinations()
@@ -149,12 +157,4 @@ void KI::calling()
 void KI::raising(int raiseAmount)
 {
 	ptr_roundManager->betRaise(raiseAmount);
-}
-
-void KI::updateKIInformations(RoundManager *ptr_manager)
-{
-	setRoundManager(ptr_manager);
-	setRemainingPlayers();
-	setRoundIndex();
-	setCommunityCards();
 }

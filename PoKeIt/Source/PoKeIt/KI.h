@@ -10,6 +10,12 @@
 
 class POKEIT_API KI : public MyPlayerP
 {
+public:
+	KI(int givenChips, FString nameGiven);
+	~KI();
+
+	void updateKIInformations(RoundManager *ptr_manager);
+
 private:
 	RoundManager *ptr_roundManager;
 	KICalculator *ptr_kiCalculator;
@@ -40,13 +46,14 @@ private:
 	9 = royal flush
 	*/
 	std::vector<double> odds;
+	int cardOuts;
 
 	std::vector<Card> estimatedCardsOppenents;
 
 	/*
 	[0] = High Card
-	[1] = Pair
-	[2] = Two Pairs
+	[1] = First Pair
+	[2] = Second Pair
 	[3] = Three of a kind
 	[4] = Straight
 	[5] = Flush
@@ -68,9 +75,8 @@ private:
 
 	// calculations
 	void calculateOdds();
-	float getPercentageOfBetterCardNextRound();
-	float getPercentageOpponentHigherPocketPair();
-	int returnOuts();
+	float percentageOfBetterCardNextRound();
+	float percentageOpponentHigherPocketPair();
 
 	void checkOwnedCombinations();
 
@@ -83,10 +89,4 @@ private:
 	void betting(int betAmount);
 	void calling();
 	void raising(int raiseAmount);
-
-public:
-	KI(int givenChips, FString nameGiven);
-	~KI();
-
-	void updateKIInformations(RoundManager *ptr_manager);
 };

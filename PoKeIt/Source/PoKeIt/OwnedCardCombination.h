@@ -4,12 +4,6 @@
 
 class POKEIT_API OwnedCardCombination
 {
-private:
-	int comboCardRank;
-	bool comboOwned;
-	int comboValue;
-	int comboColor;
-
 public:
 	OwnedCardCombination(int cardRank, bool owned = false, int value = NULL, int color = NULL);
 	~OwnedCardCombination();
@@ -23,5 +17,11 @@ public:
 	int getComboCardRanking();
 	bool getComboOwned();
 	int getComboValue();
-	int getCmboColor();
+	int getComboColor();
+
+private:
+	int comboCardRank;
+	bool comboOwned;
+	int comboValue;
+	int comboColor;
 };

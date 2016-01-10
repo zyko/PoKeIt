@@ -64,6 +64,11 @@ std::vector<OwnedCardCombination> KICalculator::getVecOwnedCombinations(std::vec
 	return allCombinations;
 }
 
+int KICalculator::getCardOuts()
+{
+	return calculateCardOuts();
+}
+
 OwnedCardCombination KICalculator::checkForHighestCard()
 {
 	return OwnedCardCombination(0, true, usableCards.end()->getValue(), usableCards.end()->getColor());
@@ -210,12 +215,19 @@ OwnedCardCombination KICalculator::checkForRoyalFlush()
 	return OwnedCardCombination(9);
 }
 
-float KICalculator::getBinomialKoeffizient(int n, int k)
+
+int KICalculator::calculateCardOuts()
 {
-	return (factorial(n)) / (factorial(k) * (factorial(n - k)));
+	int cardOuts = 0;
 }
+
 
 int KICalculator::factorial(int n)
 {
 	return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
+}
+
+float KICalculator::getBinomialKoefficient(int n, int k)
+{
+	return (factorial(n)) / (factorial(k) * (factorial(n - k)));
 }
