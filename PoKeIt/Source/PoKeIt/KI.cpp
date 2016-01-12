@@ -76,25 +76,6 @@ void KI::calculateOdds()
 	}
 }
 
-float KI::percentageOfBetterCardNextRound()
-{
-	float probability = 0;
-
-	//Percentage Flop to Turn
-	if(currentRound == 1)
-	{
-		
-	}
-
-	//Percentage Turn to River
-
-
-	//Percentage Flop to Turn + River
-	
-
-	return probability;
-}
-
 float KI::percentageOpponentHigherPocketPair()
 {
 	int rankOwnedPocketPair = ownedCardCombinations[1].getComboValue();

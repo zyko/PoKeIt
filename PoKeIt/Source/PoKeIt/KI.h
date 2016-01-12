@@ -75,7 +75,6 @@ private:
 
 	// calculations
 	void calculateOdds();
-	float percentageOfBetterCardNextRound();
 	float percentageOpponentHigherPocketPair();
 
 	void checkOwnedCombinations();

@@ -64,9 +64,16 @@ std::vector<OwnedCardCombination> KICalculator::getVecOwnedCombinations(std::vec
 	return allCombinations;
 }
 
+/*
 int KICalculator::getCardOuts()
 {
-	return calculateCardOuts();
+	return calcCardOuts();
+}
+*/
+
+float KICalculator::getProbabilityDrawingUsefulCard(int probForRound)
+{
+	return calcProbabilityDrawingUsefulCard(probForRound);
 }
 
 OwnedCardCombination KICalculator::checkForHighestCard()
@@ -216,11 +223,47 @@ OwnedCardCombination KICalculator::checkForRoyalFlush()
 }
 
 
-int KICalculator::calculateCardOuts()
+int KICalculator::calcCardOuts()
 {
-	int cardOuts = 0;
+	//
+
+	return cardOuts;
 }
 
+
+float KICalculator::calcProbabilityDrawingUsefulCard(int probForRound)
+{
+	switch (probForRound)
+	{
+	case 1:
+	{
+		//
+		break;
+	}
+	case 2:
+	{
+		// from flop to turn
+		return cardOuts / 47;
+	}
+	case 3:
+	{
+		// from flop to turn + river
+		if (currentRound == 1)
+		{
+			return 1 - ((47 - cardOuts) / 47) * ((46 - cardOuts) / 46);
+		}
+		// from turn to river
+		else
+		{
+			return cardOuts / 46;
+		}
+	}
+	default:
+	{
+		return 0.0f;
+	}
+	}
+}
 
 int KICalculator::factorial(int n)
 {
