@@ -4,6 +4,7 @@ NEXT:
 _Wahrscheinlichkeiten einer besseren Karte berechnen + outs
 	_Berechnung von P des Flops
 	_WICHTIG: doppelte outs nicht mitzählen!
+	_(vllt): hidden und half outs
 
 _automatische Verarbeitung einer Runde
 	_implementierung mit Matze

@@ -38,7 +38,7 @@ private:
 	OwnedCardCombination checkForRoyalFlush();
 
 	// poker-specific functions
-	int calcCardOuts();
+	void calcCardOuts();
 	float calcProbabilityDrawingUsefulCard(int probForRound);
 
 	// mathematical functions

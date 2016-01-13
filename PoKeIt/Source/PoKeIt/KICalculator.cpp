@@ -223,11 +223,17 @@ OwnedCardCombination KICalculator::checkForRoyalFlush()
 }
 
 
-int KICalculator::calcCardOuts()
+void KICalculator::calcCardOuts()
 {
-	//
+	cardOuts = 0;
 
-	return cardOuts;
+	for (int i = 0; i < allCombinations.size(); --i)
+	{
+		if (allCombinations[i].getComboOwned())
+		{
+
+		}
+	}
 }
 
 
