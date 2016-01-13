@@ -29,8 +29,32 @@ int Card::getValue()
 	return value;
 }
 
-// overriding operator> for sorting with std::sort (descending order)
-bool Card::operator > (const Card& card) const
+inline bool Card::operator==(const Card& card) const
 {
-	return (value > card.value);
+	return (value == card.value && color == card.color);
+}
+
+inline bool Card::operator!=(const Card& card) const
+{
+	return !operator==(card);
+}
+
+inline bool Card::operator< (const Card& card) const
+{
+	return (value < card.value);
+}
+
+inline bool Card::operator> (const Card& card) const
+{
+	return  operator< (card);
+}
+
+inline bool Card::operator<=(const Card& card) const
+{
+	return !operator> (card);
+}
+
+inline bool Card::operator>=(const Card& card) const
+{
+	return !operator< (card);
 }

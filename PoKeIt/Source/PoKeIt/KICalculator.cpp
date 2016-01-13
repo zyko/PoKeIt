@@ -4,14 +4,30 @@
 #include "KICalculator.h"
 
 KICalculator::KICalculator(const int round, Card *ownedCardOne, Card *ownedCardTwo, std::vector<Card> communityCards)
-	: currentRound(round), highestPairValue(NULL), owningPair(false), owningTriple(false), owningStraight(false), owningFlush(false), owningHighestValue(false)
+	: currentRound(round), highestPairValue(NULL), owningPair(false), owningTriple(false), owningStraight(false), owningFlush(false), owningHighestValue(false), cardOuts(0)
 {
 	usableCards.push_back(*ownedCardOne);
 	usableCards.push_back(*ownedCardTwo);
 
+	// check for first Overcard
+	if (*ownedCardOne > communityCards[0] &&
+		*ownedCardOne > communityCards[1] &&
+		*ownedCardOne > communityCards[2])
+	{
+		overcardOne = *ownedCardOne;
+	}
+
+	// check for second Overcard
+	if (*ownedCardTwo > communityCards[0] &&
+		*ownedCardTwo > communityCards[1] && 
+		*ownedCardTwo > communityCards[2])
+	{
+		overcardTwo = *ownedCardTwo;
+	}
+
 	if (currentRound > 1)
 	{
-		for (int i = 0; i < communityCards.size(); ++i)
+		for (size_t i = 0; i < communityCards.size(); ++i)
 		{
 			usableCards.push_back(communityCards[i]);
 		}
@@ -64,13 +80,6 @@ std::vector<OwnedCardCombination> KICalculator::getVecOwnedCombinations(std::vec
 	return allCombinations;
 }
 
-/*
-int KICalculator::getCardOuts()
-{
-	return calcCardOuts();
-}
-*/
-
 float KICalculator::getProbabilityDrawingUsefulCard(int probForRound)
 {
 	return calcProbabilityDrawingUsefulCard(probForRound);
@@ -91,6 +100,8 @@ OwnedCardCombination KICalculator::checkForPairs()
 		{
 			if (!highestPairValue)
 			{
+				// 
+
 				highestPairValue = usableCards[i].getValue();
 				owningPair = true;
 				return OwnedCardCombination(1, true, highestPairValue);
@@ -223,19 +234,10 @@ OwnedCardCombination KICalculator::checkForRoyalFlush()
 }
 
 
-void KICalculator::calcCardOuts()
+void KICalculator::calcfinalCardOuts()
 {
-	cardOuts = 0;
-
-	for (int i = 0; i < allCombinations.size(); --i)
-	{
-		if (allCombinations[i].getComboOwned())
-		{
-
-		}
-	}
+	
 }
-
 
 float KICalculator::calcProbabilityDrawingUsefulCard(int probForRound)
 {
@@ -249,19 +251,19 @@ float KICalculator::calcProbabilityDrawingUsefulCard(int probForRound)
 	case 2:
 	{
 		// from flop to turn
-		return cardOuts / 47;
+		return cardOuts.size() / 47;
 	}
 	case 3:
 	{
 		// from flop to turn + river
 		if (currentRound == 1)
 		{
-			return 1 - ((47 - cardOuts) / 47) * ((46 - cardOuts) / 46);
+			return 1 - ((47 - cardOuts.size()) / 47) * ((46 - cardOuts.size()) / 46);
 		}
 		// from turn to river
 		else
 		{
-			return cardOuts / 46;
+			return cardOuts.size() / 46;
 		}
 	}
 	default:
@@ -276,7 +278,7 @@ int KICalculator::factorial(int n)
 	return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
 }
 
-float KICalculator::getBinomialKoefficient(int n, int k)
+float KICalculator::binomialKoefficient(int n, int k)
 {
 	return (factorial(n)) / (factorial(k) * (factorial(n - k)));
 }

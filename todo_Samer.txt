@@ -1,6 +1,7 @@
 To do:
 
 NEXT:
+_Methoden der calcOuts definieren
 _Wahrscheinlichkeiten einer besseren Karte berechnen + outs
 	_Berechnung von P des Flops
 	_WICHTIG: doppelte outs nicht mitzählen!
@@ -22,6 +23,7 @@ _Alle Pointer auf NULL checken
 _const setzen, wenn machbar
 _auto Speicherallokierung wenn möglich, dynamische falls nötig!
 _impizierten typecast (zB float f = 0;) entfernen -> unnötig!
+_size_t für die loops mit einem bound of x.size() nutzen!
 
 ________________________________
 wichtige Fragen:

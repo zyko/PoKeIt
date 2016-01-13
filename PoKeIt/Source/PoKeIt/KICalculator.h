@@ -17,13 +17,13 @@ public:
 
 	std::vector<OwnedCardCombination> getVecOwnedCombinations(std::vector<Card> communityCards);
 
-	// int getCardOuts();
 	float getProbabilityDrawingUsefulCard(int probForRound);
 
 private:
-	int cardOuts, currentRound, highestPairValue;
+	int currentRound, highestPairValue;
 	bool owningPair, owningTriple, owningStraight, owningFlush, owningHighestValue;
-	std::vector<Card> usableCards;
+	Card overcardOne, overcardTwo;
+	std::vector<Card> usableCards, cardOuts;
 	std::vector<OwnedCardCombination> allCombinations;
 	
 	// functions for checking cardCombinations
@@ -37,11 +37,16 @@ private:
 	OwnedCardCombination checkForStraightFlush();
 	OwnedCardCombination checkForRoyalFlush();
 
+	std::vector<Card> calcOvercardOuts();
+	std::vector<Card> calcPairOuts();
+	std::vector<Card> calcTripleOuts();
+	std::vector<Card> calcFullHouseOuts();
+
 	// poker-specific functions
-	void calcCardOuts();
+	void calcfinalCardOuts();
 	float calcProbabilityDrawingUsefulCard(int probForRound);
 
 	// mathematical functions
 	int factorial(int n);
-	float getBinomialKoefficient(int n, int k);
+	float binomialKoefficient(int n, int k);
 };
