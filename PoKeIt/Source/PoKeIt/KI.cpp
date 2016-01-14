@@ -19,6 +19,7 @@ void KI::updateKIInformations(RoundManager *ptr_manager)
 	setRemainingPlayers();
 	setRoundIndex();
 	setCommunityCards();
+	updateKICalculator();
 }
 
 void KI::setRoundManager(RoundManager *ptr_manager)
@@ -62,6 +63,14 @@ void KI::setCommunityCards()
 		{
 			break;
 		}
+	}
+}
+
+void KI::updateKICalculator()
+{
+	if (!ptr_kiCalculator)
+	{
+		ptr_kiCalculator->updateInformation(communityCards);
 	}
 }
 

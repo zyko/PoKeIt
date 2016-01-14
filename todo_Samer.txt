@@ -1,7 +1,10 @@
 To do:
 
 NEXT:
-_Methoden der calcOuts definieren
+_calcStraightOuts();
+_calcFlushOuts();
+_calcFullHouseOuts();
+_sämtliche Berechungen der gekapselten KICalculator überlassen
 _Wahrscheinlichkeiten einer besseren Karte berechnen + outs
 	_Berechnung von P des Flops
 	_WICHTIG: doppelte outs nicht mitzählen!

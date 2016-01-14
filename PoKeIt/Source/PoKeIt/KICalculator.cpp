@@ -4,7 +4,7 @@
 #include "KICalculator.h"
 
 KICalculator::KICalculator(const int round, Card *ownedCardOne, Card *ownedCardTwo, std::vector<Card> communityCards)
-	: currentRound(round), highestPairValue(NULL), owningPair(false), owningTriple(false), owningStraight(false), owningFlush(false), owningHighestValue(false), cardOuts(0)
+	: currentRound(round), highestPairValue(NULL), owningPair(false), owningTriple(false), owningStraight(false), owningFlush(false), owningHighestValue(false), cardOuts(0), ptr_overcardOne(NULL), ptr_overcardTwo(NULL)
 {
 	usableCards.push_back(*ownedCardOne);
 	usableCards.push_back(*ownedCardTwo);
@@ -14,7 +14,7 @@ KICalculator::KICalculator(const int round, Card *ownedCardOne, Card *ownedCardT
 		*ownedCardOne > communityCards[1] &&
 		*ownedCardOne > communityCards[2])
 	{
-		overcardOne = *ownedCardOne;
+		ptr_overcardOne = ownedCardOne;
 	}
 
 	// check for second Overcard
@@ -22,7 +22,7 @@ KICalculator::KICalculator(const int round, Card *ownedCardOne, Card *ownedCardT
 		*ownedCardTwo > communityCards[1] && 
 		*ownedCardTwo > communityCards[2])
 	{
-		overcardTwo = *ownedCardTwo;
+		ptr_overcardTwo = ownedCardTwo;
 	}
 
 	if (currentRound > 1)
@@ -78,6 +78,14 @@ std::vector<OwnedCardCombination> KICalculator::getVecOwnedCombinations(std::vec
 	}
 
 	return allCombinations;
+}
+
+void KICalculator::updateInformation(std::vector<Card> newCommunityCards)
+{
+	++currentRound;
+
+	usableCards.insert(usableCards.end(), newCommunityCards.begin(), newCommunityCards.end());
+	std::sort(usableCards.begin(), usableCards.end(), std::greater<Card>());
 }
 
 float KICalculator::getProbabilityDrawingUsefulCard(int probForRound)
@@ -233,6 +241,82 @@ OwnedCardCombination KICalculator::checkForRoyalFlush()
 	return OwnedCardCombination(9);
 }
 
+
+std::vector<Card> KICalculator::calcOvercardOuts()
+{
+	std::vector<Card> outs;
+
+	for (int i = 0; i < 4; ++i)
+	{
+		if (ptr_overcardOne->getColor() != i)
+		{
+			outs.push_back(Card(ptr_overcardOne->getValue(), i));
+		}
+
+		// check if second overcard available
+		if (!ptr_overcardTwo && ptr_overcardTwo->getColor() != i)
+		{
+			outs.push_back(Card(ptr_overcardTwo->getValue(), i));
+		}
+	}
+
+	return outs;
+}
+
+std::vector<Card> KICalculator::calcPairsOrTripleOuts(int index)
+{
+	std::vector<Card> outs;
+	int comboColor = allCombinations[index].getComboColor();
+
+	for (int i = 0; i < 4; ++i)
+	{
+		if (comboColor != i)
+		{
+			outs.push_back(Card(allCombinations[index].getComboValue(), i));
+		}
+	}
+
+	return outs;
+}
+
+std::vector<Card> KICalculator::calcStraightOuts()
+{
+	std::vector<Card> outs;
+	std::vector<bool> ownedValues = std::vector<bool>(13);
+	int gapCounter = 0;
+
+	for (int i = 0; i < 13; ++i)
+	{
+		for (size_t j = 0; j < usableCards.size(); ++j)
+		{
+			// owning a value in 
+			if (usableCards[j].getValue() == i)
+			{
+				ownedValues[i] = true;
+			}
+			else
+			{
+
+			}
+		}
+
+		// 
+	}
+
+	return outs;
+}
+
+std::vector<Card> KICalculator::calcFlushOuts()
+{
+
+}
+
+std::vector<Card> KICalculator::calcFullHouseOuts()
+{
+	std::vector<Card> outs;
+
+	return outs;
+}
 
 void KICalculator::calcfinalCardOuts()
 {

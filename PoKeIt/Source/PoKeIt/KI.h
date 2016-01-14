@@ -33,7 +33,6 @@ private:
 
 	/*
 	value between 0% - 100%
-
 	0 = high card
 	1 = pair
 	2 = two pairs
@@ -72,6 +71,8 @@ private:
 
 	void setKIAgressive(); // are we rushin' in ...
 	void setKIDefensive(); // ... or goin' sneaky peaky like?
+
+	void updateKICalculator();
 
 	// calculations
 	void calculateOdds();
