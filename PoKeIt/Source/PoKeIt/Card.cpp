@@ -46,7 +46,7 @@ inline bool Card::operator< (const Card& card) const
 
 inline bool Card::operator> (const Card& card) const
 {
-	return  operator< (card);
+	return (value > card.value);
 }
 
 inline bool Card::operator<=(const Card& card) const
