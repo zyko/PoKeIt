@@ -7,6 +7,7 @@
 #include "MyPlayerP.h"
 #include "Card.h"
 #include "RoundManager.h"
+#include "KI.h"
 #include "PlayerControllerP.generated.h"
 
 
@@ -28,6 +29,7 @@ private:
 	int bigBlind;
 	int roundsPlayed = 0;
 	int amountOfPlayers;
+	int amountKI;
 
 
 public:

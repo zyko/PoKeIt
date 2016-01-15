@@ -36,11 +36,12 @@ void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 
 	roundManager = new RoundManager(players, this, amountOfPlayers, dealerIndex, smallBlind, bigBlind);
 
-	/* todO:
-	KI bla = new KI(..);
+	for (int i = 0; i < amountKI; ++i)
+	{
+		KI *kiPlayer = new KI(startingChips * 1000, "fhffh");
 
-	bla.setRoundManager(roundManager);
-	*/
+		kiPlayer->updateKIInformations(roundManager);
+	}
 
 	updateHUD();
 }

@@ -283,21 +283,36 @@ std::vector<Card> KICalculator::calcStraightOuts()
 {
 	std::vector<Card> outs;
 	std::vector<bool> ownedValues = std::vector<bool>(13);
-	int gapCounter = 0;
+	int gapCounter = 0, connectedCounter = 0;
 
 	for (int i = 0; i < 13; ++i)
 	{
 		for (size_t j = 0; j < usableCards.size(); ++j)
 		{
-			// owning a value in 
+			// owning a value in straight
 			if (usableCards[j].getValue() == i)
 			{
 				ownedValues[i] = true;
+				++connectedCounter;
+
+				// 
+				if (connectedCounter == 4 && gapCounter == 1)
+				{
+
+				}
 			}
 			else
 			{
+				ownedValues[i] = false;
+				++gapCounter;
 
+				// gap in straight too big
+				if (gapCounter > 1)
+				{
+
+				}
 			}
+
 		}
 
 		// 
@@ -308,7 +323,8 @@ std::vector<Card> KICalculator::calcStraightOuts()
 
 std::vector<Card> KICalculator::calcFlushOuts()
 {
-
+	std::vector<Card> outs;
+	return outs;
 }
 
 std::vector<Card> KICalculator::calcFullHouseOuts()
