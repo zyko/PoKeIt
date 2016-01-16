@@ -384,7 +384,7 @@ std::vector<Card> KICalculator::calcFlushOuts()
 		{
 			for (size_t k = 0; k < usableCards.size(); ++k)
 			{
-				if (usableCards[k].getColor == i)
+				if (usableCards[k].getColor() == i)
 				{
 					seperatedValuesOfEachColor[i].push_back(usableCards[k].getValue());
 					++cardCounter;
@@ -443,7 +443,7 @@ float KICalculator::calcProbabilityDrawingUsefulCard(int probForRound)
 	{
 	case 1:
 	{
-		//
+		return 0;
 		break;
 	}
 	case 2:

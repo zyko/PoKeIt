@@ -7,6 +7,8 @@
 #include "KICalculator.h"
 #include <vector>
 
+class RoundManager;
+
 class POKEIT_API KI : public MyPlayerP
 {
 public:

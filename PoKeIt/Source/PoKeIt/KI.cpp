@@ -79,7 +79,7 @@ void KI::calculateOdds()
 {
 	float probability = 0;
 
-	if(ownedCardCombinations[1].getComboOwned)
+	if(ownedCardCombinations[1].getComboOwned())
 	{
 		probability = percentageOpponentHigherPocketPair();
 	}
