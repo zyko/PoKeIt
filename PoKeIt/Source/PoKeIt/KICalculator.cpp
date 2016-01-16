@@ -417,60 +417,24 @@ std::vector<Card> KICalculator::calcFlushOuts()
 
 std::vector<Card> KICalculator::calcFullHouseOuts()
 {
-	std::vector<Card> outs;
+	std::vector<Card> outs, secondOuts;
+	int pairOrTriple = 1;
+
+	if (allCombinations[1].getComboValue() > allCombinations[3].getComboValue())
+	{
+		pairOrTriple = 3;
+	}
+
+	secondOuts = calcPairsOrTripleOuts(pairOrTriple);
+	outs.insert(outs.end(), secondOuts.begin(), secondOuts.end());
 
 	return outs;
 }
 
-std::vector<Card> maskStraightOuts(std::vector<bool> ownedValues)
-{
-	std::vector<Card> outsOfStraight;
-
-	/*
-	// mask for EdgeCards missing
-	std::vector<bool> maskStraightFiveMissing = { true, true, true, true, false, false, false, false, false, false, false, false, false, false };
-	std::vector<bool> maskStraightAceSixMissing = { false, true, true, true, true, false, false, false, false, false, false, false, false, false };
-	std::vector<bool> maskStraightTwoSevenMIssing = { false, false, true, true, true, true, false, false, false, false, false, false, false, false };
-	std::vector<bool> maskStraightThreeEightMissing = { false, false, false, true, true, true, true, false, false, false, false, false, false, false };
-	std::vector<bool> maskStraightFourNineMissing = { false, false, false, false, true, true, true, true, false, false, false, false, false, false };
-	std::vector<bool> maskStraightFiveTenMissing = { false, false, false, false, false, true, true, true, true, false, false, false, false, false };
-	std::vector<bool> maskStraightSixJackMissing = { false, false, false, false, false, false, true, true, true, true, false, false, false, false };
-	std::vector<bool> maskStraightSevenQueenMissing = { false, false, false, false, false, false, false, true, true, true, true, false, false, false };
-	std::vector<bool> maskStraightEightKingMissing = { false, false, false, false, false, false, false, false, true, true, true, true, false, false };
-	std::vector<bool> maskStraightNineAceMissing = { false, false, false, false, false, false, false, false, false, true, true, true, true, false };
-
-	// mask for InnerCards missing
-	std::vector<bool> maskStraightFiveMissing = { true, true, true, true, false, false, false, false, false, false, false, false, false, false };
-	std::vector<bool> maskStraightAceSixMissing = { false, true, true, true, true, false, false, false, false, false, false, false, false, false };
-	std::vector<bool> maskStraightTwoSevenMIssing = { false, false, true, true, true, true, false, false, false, false, false, false, false, false };
-	std::vector<bool> maskStraightThreeEightMissing = { false, false, false, true, true, true, true, false, false, false, false, false, false, false };
-	std::vector<bool> maskStraightFourNineMissing = { false, false, false, false, true, true, true, true, false, false, false, false, false, false };
-	std::vector<bool> maskStraightFiveTenMissing = { false, false, false, false, false, true, true, true, true, false, false, false, false, false };
-	std::vector<bool> maskStraightSixJackMissing = { false, false, false, false, false, false, true, true, true, true, false, false, false, false };
-	std::vector<bool> maskStraightSevenQueenMissing = { false, false, false, false, false, false, false, true, true, true, true, false, false, false };
-	std::vector<bool> maskStraightEightKingMissing = { false, false, false, false, false, false, false, false, true, true, true, true, false, false };
-	std::vector<bool> maskStraightNineAceMissing = { false, false, false, false, false, false, false, false, false, true, true, true, true, false };
-	*/
-
-	for (int i = 0; i < 13; ++i)
-	{
-		if (i > 0 && i < 9 &&
-			ownedValues[i] &&
-			ownedValues[i + 1] &&
-			ownedValues[i + 2] &&
-			ownedValues[i + 3])
-		{
-			outsOfStraight.push_back(Card());
-			outsOfStraight.push_back(Card());
-
-			return outsOfStraight;
-		}
-	}
-}
-
 void KICalculator::calcfinalCardOuts()
 {
-	
+	std::sort(cardOuts.begin(), cardOuts.end());
+	cardOuts.erase(std::unique(cardOuts.begin(), cardOuts.end()), cardOuts.end());
 }
 
 float KICalculator::calcProbabilityDrawingUsefulCard(int probForRound)

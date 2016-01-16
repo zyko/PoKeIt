@@ -25,6 +25,19 @@ private:
 	bool owningPair, owningTriple, owningStraight, owningFlush, owningHighestValue;
 	Card *ptr_overcardOne, *ptr_overcardTwo;
 	std::vector<Card> usableCards, cardOuts;
+
+	/*
+	[0] = High Card
+	[1] = First Pair
+	[2] = Second Pair
+	[3] = Three of a kind
+	[4] = Straight
+	[5] = Flush
+	[6] = Full House
+	[7] = Four of a kind
+	[8] = Straight Flush
+	[9] = Royal Flush
+	*/
 	std::vector<OwnedCardCombination> allCombinations;
 	
 	// functions for checking cardCombinations
@@ -50,8 +63,6 @@ private:
 	std::vector<Card> calcStraightOuts();
 	std::vector<Card> calcFlushOuts();
 	std::vector<Card> calcFullHouseOuts();
-
-	std::vector<Card> maskStraightOuts();
 
 	// poker-specific functions
 	void calcfinalCardOuts();

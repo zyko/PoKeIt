@@ -27,6 +27,9 @@ _auto Speicherallokierung wenn möglich, dynamische falls nötig!
 _impizierten typecast (zB float f = 0;) entfernen -> unnötig!
 _size_t für die loops mit einem bound of x.size() nutzen!
 
+TEST:
+_finalCalcOuts(): checken, ob Duplikate gelöscht sind!
+
 ________________________________
 wichtige Fragen:
 _sollte die KI die Karten der Gegener kennen, um richtiges Verhalten zu lernen? (Nicht um eine Entscheidung für die Momentane Situation zu fällen = cheaten)!
