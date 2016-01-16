@@ -51,6 +51,8 @@ private:
 	std::vector<Card> calcFlushOuts();
 	std::vector<Card> calcFullHouseOuts();
 
+	std::vector<Card> maskStraightOuts();
+
 	// poker-specific functions
 	void calcfinalCardOuts();
 	float calcProbabilityDrawingUsefulCard(int probForRound);

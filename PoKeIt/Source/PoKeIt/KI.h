@@ -6,7 +6,6 @@
 #include "RoundManager.h"
 #include "KICalculator.h"
 #include <vector>
-#include <tuple>
 
 class POKEIT_API KI : public MyPlayerP
 {

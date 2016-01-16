@@ -282,40 +282,87 @@ std::vector<Card> KICalculator::calcPairsOrTripleOuts(int index)
 std::vector<Card> KICalculator::calcStraightOuts()
 {
 	std::vector<Card> outs;
-	std::vector<bool> ownedValues = std::vector<bool>(13);
+	std::vector<bool> ownedValues = std::vector<bool>(13, false);
 	int gapCounter = 0, connectedCounter = 0;
 
+	for (size_t i = 0; i < usableCards.size(); ++i)
+	{
+		// owning a value in straight
+		ownedValues[usableCards[i].getValue()] = true;
+
+		// Ace is also a One in Straights
+		if (usableCards[i].getValue() == 12)
+		{
+			ownedValues[0] = true;
+		}
+	}
+
+	// Missing 4 Cards in 1st and 5th place of Straight
 	for (int i = 0; i < 13; ++i)
 	{
-		for (size_t j = 0; j < usableCards.size(); ++j)
+		if (i > 0 && i < 9 &&
+			ownedValues[i] &&
+			ownedValues[i + 1] &&
+			ownedValues[i + 2] &&
+			ownedValues[i + 3])
 		{
-			// owning a value in straight
-			if (usableCards[j].getValue() == i)
+			// Ace as One
+			if (i == 0)
 			{
-				ownedValues[i] = true;
-				++connectedCounter;
-
-				// 
-				if (connectedCounter == 4 && gapCounter == 1)
+				for (int j = 0; j < 4; ++j)
 				{
-
+					outs.push_back(Card(12, j));
 				}
 			}
 			else
 			{
-				ownedValues[i] = false;
-				++gapCounter;
-
-				// gap in straight too big
-				if (gapCounter > 1)
+				for (int j = 0; j < 4; ++j)
 				{
-
+					outs.push_back(Card(i - 1, j));
 				}
 			}
 
+			for (int j = 0; j < 4; ++j)
+			{
+				outs.push_back(Card(i + 4, j));
+			}
 		}
-
-		// 
+		// Missing 4 Cards in 2nd place of Straight
+		else if (i < 10 &&
+				 ownedValues[i] &&
+				 ownedValues[i + 2] &&
+			 	 ownedValues[i + 3] &&
+			  	 ownedValues[i + 4])
+		{
+			for (int j = 0; j < 4; ++j)
+			{
+				outs.push_back(Card(i + 1, j));
+			}
+		}
+		// Missing 4 Cards in 3rd place of Straight
+		else if (i < 10 &&
+				 ownedValues[i] &&
+				 ownedValues[i + 1] &&
+				 ownedValues[i + 3] &&
+				 ownedValues[i + 4])
+		{
+			for (int j = 0; j < 4; ++j)
+			{
+				outs.push_back(Card(i + 2, j));
+			}
+		}
+		// Missing 4 Cards in 4th place of Straight
+		else if (i < 10 &&
+				 ownedValues[i] &&
+				 ownedValues[i + 1] &&
+				 ownedValues[i + 2] &&
+				 ownedValues[i + 4])
+		{
+			for (int j = 0; j < 4; ++j)
+			{
+				outs.push_back(Card(i + 3, j));
+			}
+		}
 	}
 
 	return outs;
@@ -324,6 +371,47 @@ std::vector<Card> KICalculator::calcStraightOuts()
 std::vector<Card> KICalculator::calcFlushOuts()
 {
 	std::vector<Card> outs;
+	std::vector<std::vector<int>> seperatedValuesOfEachColor;
+	int outsColor = 0;
+
+	// looping through each color
+	for (int i = 0; i < 4; ++i)
+	{ 
+		int cardCounter = 0;
+
+		// find four Cards of one Color
+		for (int j = 0; j < 4; ++j)
+		{
+			for (size_t k = 0; k < usableCards.size(); ++k)
+			{
+				if (usableCards[k].getColor == i)
+				{
+					seperatedValuesOfEachColor[i].push_back(usableCards[k].getValue());
+					++cardCounter;
+
+					// four Cards found, exit Loop
+					if (cardCounter == 4)
+					{
+						goto loopExit;
+					}
+				}
+			}
+		}
+		++outsColor;
+	}
+
+	loopExit: std::sort(seperatedValuesOfEachColor[outsColor].begin(), seperatedValuesOfEachColor[outsColor].end());
+	int cardIndex = 0;
+
+	for (int i = 0; i < 13; ++i)
+	{
+		if (seperatedValuesOfEachColor[outsColor][cardIndex] != i)
+		{
+			outs.push_back(Card(i, outsColor));
+			++cardIndex;
+		}
+	}
+
 	return outs;
 }
 
@@ -332,6 +420,52 @@ std::vector<Card> KICalculator::calcFullHouseOuts()
 	std::vector<Card> outs;
 
 	return outs;
+}
+
+std::vector<Card> maskStraightOuts(std::vector<bool> ownedValues)
+{
+	std::vector<Card> outsOfStraight;
+
+	/*
+	// mask for EdgeCards missing
+	std::vector<bool> maskStraightFiveMissing = { true, true, true, true, false, false, false, false, false, false, false, false, false, false };
+	std::vector<bool> maskStraightAceSixMissing = { false, true, true, true, true, false, false, false, false, false, false, false, false, false };
+	std::vector<bool> maskStraightTwoSevenMIssing = { false, false, true, true, true, true, false, false, false, false, false, false, false, false };
+	std::vector<bool> maskStraightThreeEightMissing = { false, false, false, true, true, true, true, false, false, false, false, false, false, false };
+	std::vector<bool> maskStraightFourNineMissing = { false, false, false, false, true, true, true, true, false, false, false, false, false, false };
+	std::vector<bool> maskStraightFiveTenMissing = { false, false, false, false, false, true, true, true, true, false, false, false, false, false };
+	std::vector<bool> maskStraightSixJackMissing = { false, false, false, false, false, false, true, true, true, true, false, false, false, false };
+	std::vector<bool> maskStraightSevenQueenMissing = { false, false, false, false, false, false, false, true, true, true, true, false, false, false };
+	std::vector<bool> maskStraightEightKingMissing = { false, false, false, false, false, false, false, false, true, true, true, true, false, false };
+	std::vector<bool> maskStraightNineAceMissing = { false, false, false, false, false, false, false, false, false, true, true, true, true, false };
+
+	// mask for InnerCards missing
+	std::vector<bool> maskStraightFiveMissing = { true, true, true, true, false, false, false, false, false, false, false, false, false, false };
+	std::vector<bool> maskStraightAceSixMissing = { false, true, true, true, true, false, false, false, false, false, false, false, false, false };
+	std::vector<bool> maskStraightTwoSevenMIssing = { false, false, true, true, true, true, false, false, false, false, false, false, false, false };
+	std::vector<bool> maskStraightThreeEightMissing = { false, false, false, true, true, true, true, false, false, false, false, false, false, false };
+	std::vector<bool> maskStraightFourNineMissing = { false, false, false, false, true, true, true, true, false, false, false, false, false, false };
+	std::vector<bool> maskStraightFiveTenMissing = { false, false, false, false, false, true, true, true, true, false, false, false, false, false };
+	std::vector<bool> maskStraightSixJackMissing = { false, false, false, false, false, false, true, true, true, true, false, false, false, false };
+	std::vector<bool> maskStraightSevenQueenMissing = { false, false, false, false, false, false, false, true, true, true, true, false, false, false };
+	std::vector<bool> maskStraightEightKingMissing = { false, false, false, false, false, false, false, false, true, true, true, true, false, false };
+	std::vector<bool> maskStraightNineAceMissing = { false, false, false, false, false, false, false, false, false, true, true, true, true, false };
+	*/
+
+	for (int i = 0; i < 13; ++i)
+	{
+		if (i > 0 && i < 9 &&
+			ownedValues[i] &&
+			ownedValues[i + 1] &&
+			ownedValues[i + 2] &&
+			ownedValues[i + 3])
+		{
+			outsOfStraight.push_back(Card());
+			outsOfStraight.push_back(Card());
+
+			return outsOfStraight;
+		}
+	}
 }
 
 void KICalculator::calcfinalCardOuts()

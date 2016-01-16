@@ -1,9 +1,8 @@
 To do:
 
 NEXT:
-_calcStraightOuts();
-_calcFlushOuts();
 _calcFullHouseOuts();
+_estimatedCombination abspeichern
 _sämtliche Berechungen der gekapselten KICalculator überlassen
 _Wahrscheinlichkeiten einer besseren Karte berechnen + outs
 	_Berechnung von P des Flops
