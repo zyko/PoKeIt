@@ -87,7 +87,7 @@ void KI::calculateOdds()
 
 float KI::percentageOpponentHigherPocketPair()
 {
-	int rankOwnedPocketPair = ownedCardCombinations[1].getComboValue();
+	int rankOwnedPocketPair = ownedCardCombinations[1].getComboCardPtrs()[0]->getValue();
 	int cardsOfHigherRank = (14 - rankOwnedPocketPair) * 4;
 	// float/int Pk
 

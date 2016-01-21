@@ -2,26 +2,27 @@
 
 #pragma once
 
+#include "Card.h"
+#include <vector>
+
 class POKEIT_API OwnedCardCombination
 {
 public:
-	OwnedCardCombination(int cardRank, bool owned = false, int value = NULL, int color = NULL);
+	OwnedCardCombination(int cardRank, bool owned = false,	Card *ptr_cardOne = NULL,
+															Card *ptr_cardTwo = NULL,
+															Card *ptr_cardThree = NULL,
+															Card *ptr_cardFour = NULL,
+															Card *ptr_cardFive = NULL);
 	~OwnedCardCombination();
-
-	// Setter
-	void setComboOwned(bool owned);
-	void setComboValue(int value);
-	void setComboColor(int color);
 
 	// Getter
 	int getComboCardRanking();
+	std::vector<Card*> getComboCardPtrs();
 	bool getComboOwned();
-	int getComboValue();
-	int getComboColor();
+	
 
 private:
 	int comboCardRank;
+	std::vector<Card*> comboCardsPtrs;
 	bool comboOwned;
-	int comboValue;
-	int comboColor;
 };

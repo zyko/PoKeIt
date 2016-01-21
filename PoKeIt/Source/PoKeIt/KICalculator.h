@@ -21,7 +21,7 @@ public:
 	float getProbabilityDrawingUsefulCard(int probForRound);
 
 private:
-	int currentRound, highestPairValue;
+	int currentRound, *ptr_highestPairValue;
 	bool owningPair, owningTriple, owningStraight, owningFlush, owningHighestValue;
 	Card *ptr_overcardOne, *ptr_overcardTwo;
 	std::vector<Card> usableCards, cardOuts;
@@ -57,9 +57,9 @@ private:
 	index:
 	1 = first pair
 	2 = second pair
-	3 = triple
 	*/
-	std::vector<Card> calcPairsOrTripleOuts(int index);
+	std::vector<Card> calcPairs(int index);
+	std::vector<Card> calcTriple();
 	std::vector<Card> calcStraightOuts();
 	std::vector<Card> calcFlushOuts();
 	std::vector<Card> calcFullHouseOuts();
