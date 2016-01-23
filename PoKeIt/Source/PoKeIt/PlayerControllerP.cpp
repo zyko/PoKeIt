@@ -18,14 +18,6 @@ APlayerControllerP::APlayerControllerP()
 	debugBlueprintFunc();
 }
 
-/*
-void APlayerControllerP::setAmountOfPlayers(int amount)
-{
-	amountOfPlayers = amount;
-	debugMessage("amountOfPlayers setter was called!");
-}
-*/
-
 void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
 {
 	debugMessage("spawnPlayers was called");

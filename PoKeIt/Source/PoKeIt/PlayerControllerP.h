@@ -103,12 +103,6 @@ public:
 
 	// UFunctions to be sent to blueprint
 
-	/*
-	// actually debug so far
-	UFUNCTION(BlueprintImplementableEvent, Category = "set amount of Players")
-		void setAmountOfPlayers(int32 amount);
-		*/
-
 	// actually debug so far
 	UFUNCTION(BlueprintImplementableEvent, Category = "updating HUD")
 		void debugBlueprintFunc();
