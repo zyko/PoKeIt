@@ -28,8 +28,8 @@ private:
 	int smallBlind;
 	int bigBlind;
 	int roundsPlayed = 0;
-	int amountOfPlayers;
-	int amountKI;
+	int amountOfPlayers = 4;
+	int amountKI = 2;
 
 
 public:
@@ -42,6 +42,7 @@ public:
 
 	// todo: obsolet?
 	void spawnCommunityCards(int roundStage);
+
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "dealerIndex")
@@ -118,8 +119,11 @@ public:
 
 	// UFunctions to be called from blueprint
 
+	UFUNCTION(BlueprintCallable, Category = "test function")
+		void setPlayerAmount(int32 amount);
+
 	UFUNCTION(BlueprintCallable, Category = "players")
-		void spawnPlayers(int32 amountOfPlayersSelected);
+		void spawnPlayers();//int32 amountOfPlayersSelected);
 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void foldRound();
@@ -138,6 +142,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "bets")
 		int32 getCurrentMaxBet();
+
 	UFUNCTION(BlueprintCallable, Category = "bets")
 		int32 getCurrentPlayersBetThisRound();
 

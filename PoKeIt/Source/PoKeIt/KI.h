@@ -17,6 +17,8 @@ public:
 
 	void updateKIInformations(RoundManager *ptr_manager);
 
+	int makeDecision();
+
 private:
 	RoundManager *ptr_roundManager;
 	KICalculator *ptr_kiCalculator;
@@ -64,8 +66,7 @@ private:
 	*/
 	std::vector<OwnedCardCombination> ownedCardCombinations;
 
-	// functions
-	void setRoundManager(RoundManager *ptr_manager);
+	
 	void setRemainingPlayers();
 	void setRoundIndex();
 	void setCommunityCards();
@@ -83,11 +84,16 @@ private:
 
 	void bluff();
 
-	void makeDecision();
+	
 
 	void folding();
 	void checking();
 	void betting(int betAmount);
 	void calling();
 	void raising(int raiseAmount);
+
+public:
+	// functions
+	void setRoundManager(RoundManager *ptr_manager);
+
 };

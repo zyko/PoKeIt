@@ -18,30 +18,45 @@ APlayerControllerP::APlayerControllerP()
 	debugBlueprintFunc();
 }
 
-void APlayerControllerP::spawnPlayers(int amountOfPlayersSelected)
+void APlayerControllerP::setPlayerAmount(int amount)
+{
+	amountOfPlayers = amount;
+}
+
+void APlayerControllerP::spawnPlayers()//int amountOfPlayersSelected)
 {
 	debugMessage("spawnPlayers was called");
 	int startingChips = 10000;
 	smallBlind = startingChips / 100;
 	bigBlind = smallBlind * 2;
 
-	amountOfPlayers = amountOfPlayersSelected;
+	//amountOfPlayers = amountOfPlayersSelected;
 
+#pragma region create human players
 	for (int i = 0; i < amountOfPlayers; ++i)
 	{
 		FString nameTMP = "Player " + FString::FromInt(i);
-		MyPlayerP *spawnedPlayer = new MyPlayerP(startingChips - i * 1000, nameTMP);
+		MyPlayerP *spawnedPlayer = new MyPlayerP(startingChips - i * 1000, nameTMP, true);
 		players[i] = spawnedPlayer;
 	}
+	#pragma endregion
 
-	roundManager = new RoundManager(players, this, amountOfPlayers, dealerIndex, smallBlind, bigBlind);
-
+#pragma region create KI
+	TArray<KI*> kitmp;
 	for (int i = 0; i < amountKI; ++i)
 	{
 		KI *kiPlayer = new KI(startingChips * 1000, "fhffh");
-
-		kiPlayer->updateKIInformations(roundManager);
+		kitmp.Add(kiPlayer);
+		players[amountOfPlayers + i] = kiPlayer;
 	}
+	#pragma endregion
+
+	roundManager = new RoundManager(players, this, amountOfPlayers + amountKI, dealerIndex, smallBlind, bigBlind);
+
+
+	for (KI* ki : kitmp)
+		ki->setRoundManager(roundManager);
+		
 
 	updateHUD();
 }

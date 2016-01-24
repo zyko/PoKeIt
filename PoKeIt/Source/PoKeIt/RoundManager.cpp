@@ -12,6 +12,8 @@ RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP*
 	
 	resetDeck();
 
+	players = std::vector<MyPlayerP*>(8);
+
 	for (int i = 0; i < amountOfPlayersRemaining; ++i)
 	{
 		players[i] = playersOfThisRound[i];
@@ -226,6 +228,16 @@ void RoundManager::finishTurn()
 
 	if (currentPlayerIndex >= amountOfPlayersRemaining)
 		currentPlayerIndex = 0;
+
+	if (!players[currentPlayerIndex]->isPlayer())
+	{
+
+		if (players[currentPlayerIndex]->makeDecision() == 3)
+			playerController->debugMessage("works");
+		else
+			playerController->debugMessage("aint workin");
+	}
+
 	playerController->finishTurn();
 }
 

@@ -3,9 +3,11 @@
 #pragma once
 
 #include "Card.h"
+#include "KI.h"
 #include "MyPlayerP.h"
 #include "PlayerControllerP.h"
 #include "Calculator.h"
+#include <vector>
 
 class APlayerControllerP;
 
@@ -46,8 +48,12 @@ private:
 
 public:
 
+
 	// must be public
-	MyPlayerP* players[8];
+
+
+
+	std::vector<MyPlayerP*> players;
 
 
 	// functions:

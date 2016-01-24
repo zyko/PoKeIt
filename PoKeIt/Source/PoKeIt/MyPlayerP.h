@@ -14,9 +14,11 @@ class POKEIT_API MyPlayerP
 private:
 
 	int potAssignment = -1;
+	bool boolIsPlayer;
+
+	
 
 public:
-
 
 	// variables:
 
@@ -27,7 +29,8 @@ public:
 
 	// functions: 
 
-
+	virtual int makeDecision();
+	bool isPlayer();
 	void increaseBetThisRound(int amount);
 	void initializeNewRound(int a, int b, int c, int d);
 	int getBetThisRound();
@@ -49,7 +52,7 @@ public:
 	int getPotAssignment();
 	void setPotAssignment(int i);
 
-	MyPlayerP(int givenChips, FString nameGiven);
+	MyPlayerP(int givenChips, FString nameGiven, bool boolIsPlayer = false);
 
 	void destroyCards();
 	~MyPlayerP();

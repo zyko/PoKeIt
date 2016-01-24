@@ -3,11 +3,17 @@
 #include "PoKeIt.h"
 #include "MyPlayerP.h"
 
-MyPlayerP::MyPlayerP(int chips, FString name)
+MyPlayerP::MyPlayerP(int chips, FString name, bool boolIsPlayer)
 {
+	this->boolIsPlayer = boolIsPlayer;
 	playerName = name;
 	this->chips = chips;
 	betThisRound = 0;
+}
+
+int MyPlayerP::makeDecision()
+{
+	return NULL;
 }
 
 Card* MyPlayerP::getCard0()
@@ -64,6 +70,11 @@ FString MyPlayerP::getName()
 int MyPlayerP::getPotAssignment()
 {
 	return potAssignment;
+}
+
+bool MyPlayerP::isPlayer()
+{
+	return boolIsPlayer;
 }
 
 void MyPlayerP::setPotAssignment(int i)

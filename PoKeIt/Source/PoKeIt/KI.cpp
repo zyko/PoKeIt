@@ -2,6 +2,7 @@
 
 #include "PoKeIt.h"
 #include "KI.h"
+#include <iostream>
 
 KI::KI(int givenChips, FString nameGiven)
 	: MyPlayerP(givenChips, nameGiven), ptr_roundManager(NULL), ptr_kiCalculator(NULL)
@@ -119,9 +120,9 @@ void KI::bluff()
 
 }
 
-void KI::makeDecision()
+int KI::makeDecision()
 {
-
+	return 3;
 }
 
 void KI::folding()
