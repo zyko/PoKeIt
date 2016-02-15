@@ -7,9 +7,6 @@
 #include "MyPlayerP.h"
 
 
-//todo:
-/* gotta update player HUD from players directly
-*/
 // since UE 4.6, constructor is not needed anymore
 APlayerControllerP::APlayerControllerP()
 {
@@ -20,11 +17,15 @@ APlayerControllerP::APlayerControllerP()
 
 void APlayerControllerP::setPlayerAmount(int amount)
 {
+	debugMessage("set Player Amount was called!!!!");
 	amountOfPlayers = amount;
 }
 
-void APlayerControllerP::spawnPlayers()//int amountOfPlayersSelected)
+void APlayerControllerP::spawnPlayers()
 {
+	//amountOfPlayers = amountOfPlayersSelected;
+
+
 	debugMessage("spawnPlayers was called");
 	int startingChips = 10000;
 	smallBlind = startingChips / 100;
@@ -32,51 +33,71 @@ void APlayerControllerP::spawnPlayers()//int amountOfPlayersSelected)
 
 	//amountOfPlayers = amountOfPlayersSelected;
 
-#pragma region create human players
+	#pragma region create human players
 	for (int i = 0; i < amountOfPlayers; ++i)
 	{
 		FString nameTMP = "Player " + FString::FromInt(i);
 		MyPlayerP *spawnedPlayer = new MyPlayerP(startingChips - i * 1000, nameTMP, true);
-		players[i] = spawnedPlayer;
+		
+		// former implementation
+		//players[i] = spawnedPlayer;
+		players.push_back(spawnedPlayer);
 	}
 	#pragma endregion
 
-#pragma region create KI
+	#pragma region create KI
 	TArray<KI*> kitmp;
 	for (int i = 0; i < amountKI; ++i)
 	{
-		KI *kiPlayer = new KI(startingChips * 1000, "fhffh");
+		KI *kiPlayer = new KI(startingChips * 1000, "fhffh (Samers Werk! :D)");
 		kitmp.Add(kiPlayer);
-		players[amountOfPlayers + i] = kiPlayer;
+
+		players.push_back(kiPlayer);
+
+		// former implementation
+		//players[amountOfPlayers + i] = kiPlayer;
 	}
+	amountOfPlayers += amountKI;
+
 	#pragma endregion
 
-	roundManager = new RoundManager(players, this, amountOfPlayers + amountKI, dealerIndex, smallBlind, bigBlind);
+
+	roundManager = new RoundManager(players, this, amountOfPlayers, dealerIndex, smallBlind, bigBlind);
 
 
 	for (KI* ki : kitmp)
 		ki->setRoundManager(roundManager);
-		
+	
 
 	updateHUD();
 }
 
 //todo:
-void APlayerControllerP::playerOut()
+void APlayerControllerP::checkForLeavingPlayers()
 {
-	
+	for (int i = 0; i < players.size(); ++i)
+	{
+		if (players[i]->getChips() <= 0)
+		{
+			players.erase(players.begin() + i);
+			amountOfPlayers--;
+		}
+	}
 }
 
+// this is triggered by HUDwidget.bp
 void APlayerControllerP::startNewRound()
 {
+	checkForLeavingPlayers();
+	roundManager->~RoundManager();
+	
 	roundManager = new RoundManager(players, this, amountOfPlayers, dealerIndex, smallBlind, bigBlind);
 	updateHUD();
 }
 
 void APlayerControllerP::roundFinished()
 {
-	roundManager->~RoundManager();
-	//FPlatformProcess::Sleep(10.0f);
+	//roundManager->~RoundManager();
 	roundsPlayed++;
 	adjustBlinds();
 	dealerIndex++;
@@ -189,6 +210,16 @@ void APlayerControllerP::checkRound()
 }
 
 // getters:
+
+bool APlayerControllerP::currentPlayerisAI()
+{
+	if (!players[roundManager->getCurrentPlayerIndex()]->isPlayer())
+	{
+		return true;
+	}
+	
+	return false;
+}
 
 int APlayerControllerP::getRoundstages()
 {

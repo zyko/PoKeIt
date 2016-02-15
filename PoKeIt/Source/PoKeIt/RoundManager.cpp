@@ -5,7 +5,7 @@
 #include "UnrealString.h"
 
 
-RoundManager::RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex, int smallBlind, int bigBlind)
+RoundManager::RoundManager(std::vector<MyPlayerP*> playersOfThisRound, APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex, int smallBlind, int bigBlind)
 {
 	playerController = pc;
 	this->amountOfPlayersRemaining = amountOfPlayersRemaining;
@@ -233,9 +233,9 @@ void RoundManager::finishTurn()
 	{
 
 		if (players[currentPlayerIndex]->makeDecision() == 3)
-			playerController->debugMessage("works");
+			playerController->debugMessage("AI's makeDecision() is called and returns 3");
 		else
-			playerController->debugMessage("aint workin");
+			playerController->debugMessage("AI's makeDecision() is called and does not return 3");
 	}
 
 	playerController->finishTurn();
@@ -299,9 +299,6 @@ void RoundManager::roundStateSwitch()
 		flop[1] = new Card(flop1[0], flop1[1]);
 		flop[2] = new Card(flop2[0], flop2[1]);
 
-		// todo: was testing blueprintimplementable
-		playerController->spawnCommunityCardsBP(PREFLOP);
-
 	}
 	else if (roundState == FLOP)
 	{
@@ -316,9 +313,6 @@ void RoundManager::roundStateSwitch()
 		}
 
 		turn = new Card(turnA[0], turnA[1]);
-
-		// todo: was testing blueprintimplementable
-		playerController->spawnCommunityCardsBP(FLOP);
 	}
 	else if (roundState == TURN)
 	{
@@ -333,9 +327,6 @@ void RoundManager::roundStateSwitch()
 		}
 
 		river = new Card(riverA[0], riverA[1]);
-
-		// todo: was testing blueprintimplementable
-		playerController->spawnCommunityCardsBP(TURN);
 	}
 	else if (roundState == RIVER)
 	{
@@ -492,9 +483,6 @@ void RoundManager::roundOver()
 		playerController->debugMessage("aaaaand the winner is: " + players[currentPlayerIndex]->getName() + " !");
 
 
-
-	// todo: missing: 
-	// highlighting winning cards
 
 	pots.Empty(); // should be redundant
 

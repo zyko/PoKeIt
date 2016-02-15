@@ -51,8 +51,6 @@ public:
 
 	// must be public
 
-
-
 	std::vector<MyPlayerP*> players;
 
 
@@ -88,7 +86,11 @@ public:
 
 	APlayerControllerP* playerController;
 
-	RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex, int smallBlind, int bigBlind);
+
+	RoundManager(std::vector<MyPlayerP*> players, APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex, int smallBlind, int bigBlind);
+
+	// former implementation
+	//RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex, int smallBlind, int bigBlind);
 	~RoundManager();
 
 	
