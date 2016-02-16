@@ -8,7 +8,9 @@
 #include "Card.h"
 #include "RoundManager.h"
 #include "KI.h"
+#include <vector>
 #include "PlayerControllerP.generated.h"
+
 
 
 class RoundManager;
@@ -22,6 +24,9 @@ class POKEIT_API APlayerControllerP : public APlayerController
 	GENERATED_BODY()
 
 private:
+	
+	// VARIABLES
+
 
 	AHUD *myAhud;
 	UBlueprint* myhud;
@@ -31,6 +36,7 @@ private:
 	int amountOfPlayers = 4;
 	int amountKI = 2;
 
+	// FUNCTIONS
 
 public:
 
@@ -39,11 +45,6 @@ public:
 	*/
 
 	// variables:
-
-	// todo: obsolet?
-	void spawnCommunityCards(int roundStage);
-
-
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "dealerIndex")
 		int32 dealerIndex=0;
@@ -94,7 +95,10 @@ public:
 #pragma endregion
 
 
-	MyPlayerP* players[8];
+	std::vector<MyPlayerP*> players;
+
+	// former implementation
+	//MyPlayerP* players[8];
 	RoundManager* roundManager;
 	Card* currentPlayersHand[2];
 
@@ -119,11 +123,14 @@ public:
 
 	// UFunctions to be called from blueprint
 
-	UFUNCTION(BlueprintCallable, Category = "test function")
+	UFUNCTION(BlueprintCallable, Category = "check if current player is AI")
+		bool currentPlayerisAI();
+
+	UFUNCTION(BlueprintCallable, Category = "set player amount")
 		void setPlayerAmount(int32 amount);
 
 	UFUNCTION(BlueprintCallable, Category = "players")
-		void spawnPlayers();//int32 amountOfPlayersSelected);
+		void spawnPlayers();// (int32 amountOfPlayersSelected);
 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void foldRound();
@@ -155,7 +162,7 @@ public:
 
 	// normal functions:
 
-	void playerOut();
+	void checkForLeavingPlayers();
 
 	void adjustBlinds();
 
