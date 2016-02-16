@@ -11,9 +11,9 @@ MyPlayerP::MyPlayerP(int chips, FString name, bool boolIsPlayer)
 	betThisRound = 0;
 }
 
-int MyPlayerP::makeDecision()
+void MyPlayerP::makeDecision()
 {
-	return NULL;
+	
 }
 
 Card* MyPlayerP::getCard0()

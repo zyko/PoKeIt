@@ -17,6 +17,6 @@ public:
 	void setInputC(float input);
 
 private:
-	float weight, axiompotencial, inputA, inputB, inputC, axiompotencial;
+	float weight, axiompotencial, inputA, inputB, inputC;
 	bool firing;
 };

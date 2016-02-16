@@ -231,11 +231,8 @@ void RoundManager::finishTurn()
 
 	if (!players[currentPlayerIndex]->isPlayer())
 	{
-
-		if (players[currentPlayerIndex]->makeDecision() == 3)
-			playerController->debugMessage("AI's makeDecision() is called and returns 3");
-		else
-			playerController->debugMessage("AI's makeDecision() is called and does not return 3");
+		players[currentPlayerIndex]->makeDecision();
+		playerController->debugMessage("AI's makeDecision() is called");		
 	}
 
 	playerController->finishTurn();

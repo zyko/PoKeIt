@@ -17,7 +17,7 @@ public:
 
 	void updateKIInformations(RoundManager *ptr_manager);
 
-	int makeDecision();
+	void makeDecision();
 
 private:
 	RoundManager *ptr_roundManager;

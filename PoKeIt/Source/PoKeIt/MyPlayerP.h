@@ -29,7 +29,7 @@ public:
 
 	// functions: 
 
-	virtual int makeDecision();
+	virtual void makeDecision();
 	bool isPlayer();
 	void increaseBetThisRound(int amount);
 	void initializeNewRound(int a, int b, int c, int d);

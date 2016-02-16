@@ -16,7 +16,7 @@ KI::~KI()
 
 void KI::updateKIInformations(RoundManager *ptr_manager)
 {
-	setRoundManager(ptr_manager);
+	//setRoundManager(ptr_manager);
 	setRemainingPlayers();
 	setRoundIndex();
 	setCommunityCards();
@@ -120,9 +120,9 @@ void KI::bluff()
 
 }
 
-int KI::makeDecision()
+void KI::makeDecision()
 {
-	return 3;
+	calling();
 }
 
 void KI::folding()
