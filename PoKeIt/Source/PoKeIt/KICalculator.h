@@ -52,14 +52,13 @@ private:
 	OwnedCardCombination checkForRoyalFlush();
 
 	std::vector<Card> calcOvercardOuts();
-
 	/*
 	index:
 	1 = first pair
 	2 = second pair
 	*/
-	std::vector<Card> calcPairs(int index);
-	std::vector<Card> calcTriple();
+	std::vector<Card> calcPairsOuts(int index);
+	std::vector<Card> calcTripleOuts();
 	std::vector<Card> calcStraightOuts();
 	std::vector<Card> calcFlushOuts();
 	std::vector<Card> calcFullHouseOuts();

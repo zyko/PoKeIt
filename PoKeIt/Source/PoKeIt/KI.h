@@ -16,7 +16,6 @@ public:
 	~KI();
 
 	void updateKIInformations(RoundManager *ptr_manager);
-
 	void makeDecision();
 
 private:
@@ -77,14 +76,12 @@ private:
 	void updateKICalculator();
 
 	// calculations
-	void calculateOdds();
+	float percentagePotOdds();
 	float percentageOpponentHigherPocketPair();
 
 	void checkOwnedCombinations();
 
 	void bluff();
-
-	
 
 	void folding();
 	void checking();

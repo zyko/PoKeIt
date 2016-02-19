@@ -75,15 +75,10 @@ void KI::updateKICalculator()
 	}
 }
 
-// calculate odds based on my own cards and the communityCards
-void KI::calculateOdds()
+// calculate PotOdds
+float KI::percentagePotOdds()
 {
-	float probability = 0;
 
-	if(ownedCardCombinations[1].getComboOwned())
-	{
-		probability = percentageOpponentHigherPocketPair();
-	}
 }
 
 float KI::percentageOpponentHigherPocketPair()

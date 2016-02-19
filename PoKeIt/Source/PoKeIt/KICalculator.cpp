@@ -310,7 +310,7 @@ std::vector<Card> KICalculator::calcOvercardOuts()
 	return outs;
 }
 
-std::vector<Card> KICalculator::calcPairs(int index)
+std::vector<Card> KICalculator::calcPairsOuts(int index)
 {
 	std::vector<Card> outs;
 	
@@ -338,7 +338,7 @@ std::vector<Card> KICalculator::calcPairs(int index)
 	return outs;
 }
 
-std::vector<Card> KICalculator::calcTriple()
+std::vector<Card> KICalculator::calcTripleOuts()
 {
 	std::vector<Card> outs;
 
@@ -506,12 +506,12 @@ std::vector<Card> KICalculator::calcFlushOuts()
 std::vector<Card> KICalculator::calcFullHouseOuts()
 {
 	std::vector<Card> tripleOuts, quadOuts;
-	quadOuts = calcTriple();
+	quadOuts = calcTripleOuts();
 
 	// triple is only useful, if it will be higher then owned triple
 	if (allCombinations[1].getComboCardPtrs()[0]->getValue() > allCombinations[3].getComboCardPtrs()[0]->getValue())
 	{
-		tripleOuts = calcPairs(1);
+		tripleOuts = calcPairsOuts(1);
 		quadOuts.insert(quadOuts.end(), tripleOuts.begin(), tripleOuts.end());
 	}
 	return quadOuts;
