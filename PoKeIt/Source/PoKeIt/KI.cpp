@@ -78,7 +78,7 @@ void KI::updateKICalculator()
 // calculate PotOdds
 float KI::percentagePotOdds()
 {
-
+	return 1.0f;
 }
 
 float KI::percentageOpponentHigherPocketPair()
@@ -117,7 +117,7 @@ void KI::bluff()
 
 void KI::makeDecision()
 {
-	calling();
+	folding();
 }
 
 void KI::folding()
