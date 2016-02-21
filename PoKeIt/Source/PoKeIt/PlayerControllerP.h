@@ -27,6 +27,7 @@ private:
 	
 	// VARIABLES
 
+	bool roundHasFinished = false;
 
 	AHUD *myAhud;
 	UBlueprint* myhud;
@@ -123,6 +124,11 @@ public:
 
 	// UFunctions to be called from blueprint
 
+	
+
+	UFUNCTION(BlueprintCallable, Category = "check if round is finished")
+		bool isRoundFinished();
+	
 	UFUNCTION(BlueprintCallable, Category = "check if current player is AI")
 		bool currentPlayerisAI();
 
