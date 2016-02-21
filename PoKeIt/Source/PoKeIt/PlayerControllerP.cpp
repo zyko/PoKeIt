@@ -97,11 +97,10 @@ void APlayerControllerP::startNewRound()
 
 void APlayerControllerP::roundFinished()
 {
-	//roundManager->~RoundManager();
+	roundHasFinished = true;
 	roundsPlayed++;
 	adjustBlinds();
 	dealerIndex++;
-	//spawnPlayers(5);
 }
 
 void APlayerControllerP::adjustBlinds()
@@ -210,6 +209,11 @@ void APlayerControllerP::checkRound()
 }
 
 // getters:
+
+bool APlayerControllerP::isRoundFinished()
+{
+	return roundHasFinished;
+}
 
 bool APlayerControllerP::currentPlayerisAI()
 {
