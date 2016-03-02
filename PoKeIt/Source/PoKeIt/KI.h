@@ -6,6 +6,10 @@
 #include "RoundManager.h"
 #include "KICalculator.h"
 #include <vector>
+#include <windows.h>
+
+// DEBUG
+#include <iostream>
 
 class RoundManager;
 
@@ -15,7 +19,6 @@ public:
 	KI(int givenChips, FString nameGiven);
 	~KI();
 
-	void updateKIInformations(RoundManager *ptr_manager);
 	void makeDecision();
 
 private:
@@ -64,8 +67,9 @@ private:
 	[9] = Royal Flush
 	*/
 	std::vector<OwnedCardCombination> ownedCardCombinations;
-
 	
+	void updateKIInformations();
+
 	void setRemainingPlayers();
 	void setRoundIndex();
 	void setCommunityCards();
@@ -76,18 +80,25 @@ private:
 	void updateKICalculator();
 
 	// calculations
-	float percentagePotOdds();
-	float percentageOpponentHigherPocketPair();
+	float getPercentagePotOdds();
+	//float percentageOpponentHigherPocketPair();
 
 	void checkOwnedCombinations();
 
 	void bluff();
+
+	void performPreFlop();
+	void performFlop();
+	void performTurn();
+	void performRiver();
 
 	void folding();
 	void checking();
 	void betting(int betAmount);
 	void calling();
 	void raising(int raiseAmount);
+
+	void sleepDuration();
 
 public:
 	// functions

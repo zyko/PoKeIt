@@ -34,8 +34,8 @@ private:
 	int smallBlind;
 	int bigBlind;
 	int roundsPlayed = 0;
-	int amountOfPlayers = 4;
-	int amountKI = 2;
+	int amountOfPlayers = 4; //4
+	int amountKI = 2; //2
 
 	// FUNCTIONS
 

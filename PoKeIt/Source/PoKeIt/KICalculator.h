@@ -12,19 +12,25 @@
 class POKEIT_API KICalculator
 {
 public:
-	KICalculator(const int round, Card *ownedCardOne, Card *ownedCardTwo, std::vector<Card> communityCards);
+	KICalculator(const int round, Card *handCardOne, Card *handCardTwo, std::vector<Card> communityCards);
 	~KICalculator();
 
-	std::vector<OwnedCardCombination> getVecOwnedCombinations(std::vector<Card> communityCards);
-	void updateInformation(std::vector<Card> newCommunityCards);
+	std::vector<OwnedCardCombination> getVecOwnedCombinations();
+	void updateInformation(Card *handOne, Card *handTwo, std::vector<Card> newCommunityCards);
 
 	float getProbabilityDrawingUsefulCard(int probForRound);
+	bool preFlopRaiseDecision();
 
 private:
-	int currentRound, *ptr_highestPairValue;
+	int currentRound, highestPairValue, tripleValue;
 	bool owningPair, owningTriple, owningStraight, owningFlush, owningHighestValue;
 	Card *ptr_overcardOne, *ptr_overcardTwo;
 	std::vector<Card> usableCards, cardOuts;
+
+	// DEBUG
+	Card debugCard_0;
+	Card debugCard_1;
+	// DEBUG END!
 
 	/*
 	[0] = High Card
@@ -42,7 +48,8 @@ private:
 	
 	// functions for checking cardCombinations
 	OwnedCardCombination checkForHighestCard();
-	OwnedCardCombination checkForPairs();
+	OwnedCardCombination checkForFirstPairs();
+	OwnedCardCombination checkForSecondPairs();
 	OwnedCardCombination checkForTriple();
 	OwnedCardCombination checkForStraight();
 	OwnedCardCombination checkForFlush();
@@ -51,17 +58,17 @@ private:
 	OwnedCardCombination checkForStraightFlush();
 	OwnedCardCombination checkForRoyalFlush();
 
-	std::vector<Card> calcOvercardOuts();
+	void calcOvercardOuts();
 	/*
 	index:
 	1 = first pair
 	2 = second pair
 	*/
-	std::vector<Card> calcPairsOuts(int index);
-	std::vector<Card> calcTripleOuts();
-	std::vector<Card> calcStraightOuts();
-	std::vector<Card> calcFlushOuts();
-	std::vector<Card> calcFullHouseOuts();
+	void calcPairsOuts(int index);
+	void calcTripleOuts();
+	void calcStraightOuts();
+	void calcFlushOuts();
+	void calcFullHouseOuts();
 
 	// poker-specific functions
 	void calcfinalCardOuts();
