@@ -109,14 +109,6 @@ public:
 
 	// UFunctions to be sent to blueprint
 
-	// actually debug so far
-	UFUNCTION(BlueprintImplementableEvent, Category = "updating HUD")
-		void debugBlueprintFunc();
-
-	// updating hand cards	
-	UFUNCTION(BlueprintImplementableEvent, Category = "updating HUD")
-		void updateHUDcardsBP();
-
 	// spawning community cards in blueprint
 	UFUNCTION(BlueprintImplementableEvent, Category = "updating HUD")
 		void spawnCommunityCardsBP(int32 roundStage);
@@ -136,7 +128,7 @@ public:
 		void setPlayerAmount(int32 amount);
 
 	UFUNCTION(BlueprintCallable, Category = "players")
-		void spawnPlayers();// (int32 amountOfPlayersSelected);
+		void spawnPlayers(int32 amountOfHumanPlayers, int32 amountOfAIplayers);// (int32 amountOfPlayersSelected);
 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void foldRound();
@@ -149,6 +141,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void callRound();
+
+	UFUNCTION(BlueprintCallable, Category = "playerAction")
+		void allIn();
 
 	UFUNCTION(BlueprintCallable, Category = "roundstage")
 		int32 getRoundstages();
