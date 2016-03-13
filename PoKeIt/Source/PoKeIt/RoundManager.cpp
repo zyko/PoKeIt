@@ -490,10 +490,8 @@ void RoundManager::roundOver()
 }
 
 
-// Setters or stuff similar to it
+// setters or similars
 
-// i dont like this method
-// todo: remove
 void RoundManager::increasePot(int amount)
 {
 	pots[pots.Num() - 1] += amount;
@@ -517,10 +515,10 @@ void RoundManager::resetDeck()
 // setting blinds for the players
 void RoundManager::settingBlinds()
 {
-	players[dealerIndex + 1]->decreaseChips(smallBlind);
-	players[dealerIndex + 1]->increaseBetThisRound(smallBlind);
-	players[dealerIndex + 2]->decreaseChips(bigBlind);
-	players[dealerIndex + 2]->increaseBetThisRound(bigBlind);
+	players[dealerIndex + 1 % players.size()]->decreaseChips(smallBlind);
+	players[dealerIndex + 1 % players.size()]->increaseBetThisRound(smallBlind);
+	players[dealerIndex + 2 % players.size()]->decreaseChips(bigBlind);
+	players[dealerIndex + 2 % players.size()]->increaseBetThisRound(bigBlind);
 
 	increasePot(smallBlind + bigBlind);
 }

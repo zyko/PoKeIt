@@ -34,8 +34,8 @@ private:
 	int smallBlind;
 	int bigBlind;
 	int roundsPlayed = 0;
-	int amountOfPlayers = 4;
-	int amountKI = 2;
+	int amountOfPlayers;
+	int amountKI;
 
 	// FUNCTIONS
 
@@ -49,6 +49,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "dealerIndex")
 		int32 dealerIndex=0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "turn management")
+		bool turnHasFinished = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
 		int32 chips;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
@@ -116,7 +118,11 @@ public:
 
 	// UFunctions to be called from blueprint
 
-	
+	UFUNCTION(BlueprintCallable, Category = "players")
+		int32 getAmountOfPlayers();
+
+	UFUNCTION(BlueprintCallable, Category = "players")
+		FString getSpecificPlayerName(int32 index);
 
 	UFUNCTION(BlueprintCallable, Category = "check if round is finished")
 		bool isRoundFinished();
@@ -147,6 +153,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "roundstage")
 		int32 getRoundstages();
+
+	UFUNCTION(BlueprintCallable, Category = "current player's index")
+		int32 getCurrentPlayerIndex();
 
 	UFUNCTION(BlueprintCallable, Category = "bets")
 		int32 getCurrentMaxBet();

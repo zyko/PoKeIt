@@ -60,6 +60,7 @@ void APlayerControllerP::spawnPlayers(int amountOfHumanPlayers, int amountOfAIpl
 	for (KI* ki : kitmp)
 		ki->setRoundManager(roundManager);
 	
+	roundManager->isAIstarting();
 
 	updateHUD();
 }
@@ -141,6 +142,7 @@ void APlayerControllerP::adjustBlinds()
 // todo: still necessary? could call updateHUD() directly
 void APlayerControllerP::finishTurn()
 {
+	turnHasFinished = true;
 	updateHUD();
 }
 
@@ -219,6 +221,16 @@ void APlayerControllerP::allIn()
 
 // getters:
 
+FString APlayerControllerP::getSpecificPlayerName(int32 index)
+{
+	return roundManager->players[index]->getName();
+}
+
+int APlayerControllerP::getAmountOfPlayers()
+{
+	return amountOfPlayers;
+}
+
 bool APlayerControllerP::isRoundFinished()
 {
 	return roundHasFinished;
@@ -247,6 +259,11 @@ int APlayerControllerP::getCurrentMaxBet()
 	}
 	else
 		return 0;
+}
+
+int APlayerControllerP::getCurrentPlayerIndex()
+{
+	return roundManager->getCurrentPlayerIndex();
 }
 
 int APlayerControllerP::getCurrentPlayersBetThisRound()
