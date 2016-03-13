@@ -34,13 +34,8 @@ private:
 	int smallBlind;
 	int bigBlind;
 	int roundsPlayed = 0;
-<<<<<<< HEAD
 	int amountOfPlayers;
 	int amountKI;
-=======
-	int amountOfPlayers;
-	int amountKI;
->>>>>>> origin/master
 
 	// FUNCTIONS
 
