@@ -5,16 +5,15 @@
 #include "UnrealString.h"
 
 
-RoundManager::RoundManager(std::vector<MyPlayerP*> playersOfThisRound, APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex, int smallBlind, int bigBlind)
+RoundManager::RoundManager(std::vector<MyPlayerP*> playersOfThisRound, APlayerControllerP* pc, int dealerIndex, int smallBlind, int bigBlind)
 {
 	playerController = pc;
-	this->amountOfPlayersRemaining = amountOfPlayersRemaining;
 	
 	resetDeck();
 
-	players = std::vector<MyPlayerP*>(8);
+	players = std::vector<MyPlayerP*>(playersOfThisRound.size());
 
-	for (int i = 0; i < amountOfPlayersRemaining; ++i)
+	for (int i = 0; i < players.size(); ++i)
 	{
 		players[i] = playersOfThisRound[i];
 
@@ -38,7 +37,7 @@ RoundManager::RoundManager(std::vector<MyPlayerP*> playersOfThisRound, APlayerCo
 
 
 	this->dealerIndex = dealerIndex;
-	currentPlayerIndex = (dealerIndex + 3 ) % amountOfPlayersRemaining;
+	currentPlayerIndex = (dealerIndex + 3 ) % players.size();
 	addPot();
 	pot = 0;
 	lastBet = bigBlind;
@@ -49,6 +48,17 @@ RoundManager::RoundManager(std::vector<MyPlayerP*> playersOfThisRound, APlayerCo
 	playersDidActions = 0;
 
 	settingBlinds();
+
+}
+
+// still testing this
+void RoundManager::isAIstarting()
+{
+	if (!players[currentPlayerIndex]->isPlayer())
+	{
+		players[currentPlayerIndex]->makeDecision();
+		playerController->debugMessage("AI's makeDecision() is called");
+	}
 }
 
 // player actions:
@@ -56,8 +66,6 @@ RoundManager::RoundManager(std::vector<MyPlayerP*> playersOfThisRound, APlayerCo
 
 void RoundManager::checkRound()
 {
-	//debug:
-	//playerController->debugMessage("pots.Num(): " + FString::FromInt(pots.Num()));
 	if (players[currentPlayerIndex]->getBetThisRound() >= currentMaxBet)
 		finishTurn();
 	else
@@ -89,7 +97,7 @@ void RoundManager::betRaise(int amount)
 		lastBet = amount;
 	}
 	else if (players[currentPlayerIndex]->getBetThisRound() <= currentMaxBet
-		&& players[currentPlayerIndex]->getBetThisRound() + amount >= currentMaxBet + lastBet)		// this is actually raising
+		&& players[currentPlayerIndex]->getBetThisRound() + amount >= currentMaxBet + lastBet)			// this is actually raising
 	{
 		raisingAllowed = true;
 		lastBet = (players[currentPlayerIndex]->getBetThisRound() + amount) - currentMaxBet;
@@ -116,7 +124,7 @@ void RoundManager::betRaise(int amount)
 	addPot();
 
 	// creating new side pot with old chip amounts from last pot
-	for (int i = 0; i < amountOfPlayersRemaining; ++i)
+	for (int i = 0; i < players.size(); ++i)
 	{
 	if (players[i]->getBetThisRound() > allInValue)
 	{
@@ -133,7 +141,7 @@ void RoundManager::betRaise(int amount)
 #pragma endregion
 
 	if (bettingAllowed || raisingAllowed)
-		for (int i = 0; i < amountOfPlayersRemaining; ++i)
+		for (int i = 0; i < players.size(); ++i)
 			if (players[i]->getChips() == 0 && players[i]->getPotAssignment() == pots.Num() - 1) // triggers once one has gone allin and another one bets / raises above
 			{
 		addPot();
@@ -167,19 +175,20 @@ void RoundManager::betRaise(int amount)
 void RoundManager::fold()
 {
 	/*
-	1. reduce amountOfPlayeresRemaining--
+	1. reduce amountOfPlayersRemaining--
 	2. adjust array to fill the gaps
 	3. check if theres more than 1 available
 	4. if so, keep going
 	5. if not, trigger roundOver();
 	*/
 
-	amountOfPlayersRemaining--;
+	players.erase(players.begin() + currentPlayerIndex);
 
-	if (amountOfPlayersRemaining > 1)
+	if (players.size() > 1)
 	{
-		for (int i = currentPlayerIndex; i < amountOfPlayersRemaining; ++i)
-			players[i] = players[i + 1];
+		/*for (int i = currentPlayerIndex; i < players.size(); ++i)
+			players[i] = players[i + 1];*/
+
 
 		playersDidActions--;
 		currentPlayerIndex--;
@@ -194,11 +203,16 @@ void RoundManager::fold()
 
 }
 
+void RoundManager::allIn()
+{
+	betRaise(players[currentPlayerIndex]->getChips());
+}
+
 // 2nd step in "casual round loop"
 void RoundManager::finishTurn()
 {
 	checkForCommunityCards();
-	currentPlayerIndex = ++currentPlayerIndex % amountOfPlayersRemaining;
+	currentPlayerIndex = ++currentPlayerIndex % players.size();
 
 
 	// there's the possibility, that there are a few players available, but all went all-in,
@@ -206,7 +220,7 @@ void RoundManager::finishTurn()
 	if (players[currentPlayerIndex]->getChips() == 0)
 	{
 		int playersRemainingWithChips = 0;
-		for (int i = 0; i < amountOfPlayersRemaining; ++i)
+		for (int i = 0; i < players.size(); ++i)
 		{
 			if (players[i]->getChips() != 0)
 			{
@@ -226,9 +240,10 @@ void RoundManager::finishTurn()
 		}
 	}
 
-	if (currentPlayerIndex >= amountOfPlayersRemaining)
+	if (currentPlayerIndex >= players.size())
 		currentPlayerIndex = 0;
 
+	
 	if (!players[currentPlayerIndex]->isPlayer())
 	{
 		players[currentPlayerIndex]->makeDecision();
@@ -243,10 +258,10 @@ void RoundManager::checkForCommunityCards()
 {
 	playersDidActions++;
 
-	if (playersDidActions >= amountOfPlayersRemaining)
+	if (playersDidActions >= players.size())
 	{
 		bool everyPlayerOnSameBet = false;
-		for (int i = 0; i < amountOfPlayersRemaining; ++i)
+		for (int i = 0; i < players.size(); ++i)
 		{
 			if (players[i]->getBetThisRound() == currentMaxBet)
 				everyPlayerOnSameBet = true;
@@ -268,7 +283,7 @@ void RoundManager::roundStateSwitch()
 {
 	if (roundState == PREFLOP)
 	{
-		currentPlayerIndex = (dealerIndex) % amountOfPlayersRemaining;
+		currentPlayerIndex = (dealerIndex) % players.size();
 
 		int flop0[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
 		int flop1[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
@@ -299,7 +314,7 @@ void RoundManager::roundStateSwitch()
 	}
 	else if (roundState == FLOP)
 	{
-		currentPlayerIndex = (dealerIndex) % amountOfPlayersRemaining;
+		currentPlayerIndex = (dealerIndex) % players.size();
 
 		int turnA[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
 
@@ -313,7 +328,7 @@ void RoundManager::roundStateSwitch()
 	}
 	else if (roundState == TURN)
 	{
-		currentPlayerIndex = (dealerIndex) % amountOfPlayersRemaining;
+		currentPlayerIndex = (dealerIndex) % players.size();
 
 		int riverA[2] = { FMath::RandRange(0, 3), FMath::RandRange(0, 12) };
 
@@ -356,24 +371,8 @@ bool RoundManager::controlDeck(int color, int value)
 // triggers winning calculation and manages winning pot(s) 
 void RoundManager::roundOver()
 {
-	// can be used for debugging calculator:
-	
 
-	//players[0]->initializeNewRound(3, 10, 3, 6);
-	//players[1]->initializeNewRound(2, 12, 1, 12);
-
-	//amountOfPlayersRemaining = 2;
-
-	//flop[0] = new Card(0,5);
-	//flop[1] = new Card(0,2);
-	//flop[2] = new Card(0,3);
-	//turn    = new Card(2,5);
-	//river   = new Card(1,9);
-
-	// -- debugging
-
-
-	if (amountOfPlayersRemaining > 1)
+	if (players.size() > 1)
 	{
 		Calculator* calc = new Calculator();
 
@@ -390,7 +389,7 @@ void RoundManager::roundOver()
 
 		for (int k = 0; k < pots.Num(); ++k)					// going throught this procedure for each pot
 		{
-			for (int i = 0; i < amountOfPlayersRemaining; ++i)	// checking each player
+			for (int i = 0; i < players.size(); ++i)	// checking each player
 			{
 				if (players[i]->getPotAssignment() >= k)		// checking to which pot player belongs to
 				{												// the player with the highest potAssignment, obviously plays for each pot available
@@ -477,7 +476,10 @@ void RoundManager::roundOver()
 		calc->~Calculator();
 	}
 	else
+	{
 		playerController->debugMessage("aaaaand the winner is: " + players[currentPlayerIndex]->getName() + " !");
+
+	}
 
 
 
@@ -488,10 +490,8 @@ void RoundManager::roundOver()
 }
 
 
-// Setters or stuff similar to it
+// setters or similars
 
-// i dont like this method
-// todo: remove
 void RoundManager::increasePot(int amount)
 {
 	pots[pots.Num() - 1] += amount;
@@ -515,10 +515,10 @@ void RoundManager::resetDeck()
 // setting blinds for the players
 void RoundManager::settingBlinds()
 {
-	players[dealerIndex + 1]->decreaseChips(smallBlind);
-	players[dealerIndex + 1]->increaseBetThisRound(smallBlind);
-	players[dealerIndex + 2]->decreaseChips(bigBlind);
-	players[dealerIndex + 2]->increaseBetThisRound(bigBlind);
+	players[dealerIndex + 1 % players.size()]->decreaseChips(smallBlind);
+	players[dealerIndex + 1 % players.size()]->increaseBetThisRound(smallBlind);
+	players[dealerIndex + 2 % players.size()]->decreaseChips(bigBlind);
+	players[dealerIndex + 2 % players.size()]->increaseBetThisRound(bigBlind);
 
 	increasePot(smallBlind + bigBlind);
 }
@@ -558,7 +558,7 @@ int RoundManager::getPot()
 
 int RoundManager::getAmountOfPlayersRemaining()
 {
-	return amountOfPlayersRemaining;
+	return players.size();
 }
 
 int RoundManager::getCurrentPlayerIndex()

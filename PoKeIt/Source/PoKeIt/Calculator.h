@@ -50,9 +50,6 @@ public:
 
 	// functions:
 
-	//debug stuff
-	void printKeyCards();
-
 
 	void fillKeyCards();
 

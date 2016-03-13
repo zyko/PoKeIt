@@ -25,7 +25,6 @@ private:
 	int currentPlayerIndex;
 	int currentMaxBet;
 	int lastBet;
-	int amountOfPlayersRemaining;
 	int playersDidActions;
 	int roundState;
 
@@ -60,6 +59,8 @@ public:
 	Card* getTurn();
 	Card* getRiver();
 
+	void isAIstarting();
+
 	void settingBlinds();
 	void increasePot(int amount);
 	void resetDeck();
@@ -80,6 +81,7 @@ public:
 	void callRound();
 	void betRaise(int amount);
 	void fold();
+	void allIn();
 
 	void roundStateSwitch();
 	void roundOver();
@@ -87,7 +89,7 @@ public:
 	APlayerControllerP* playerController;
 
 
-	RoundManager(std::vector<MyPlayerP*> players, APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex, int smallBlind, int bigBlind);
+	RoundManager(std::vector<MyPlayerP*> players, APlayerControllerP* pc, int dealerIndex, int smallBlind, int bigBlind);
 
 	// former implementation
 	//RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex, int smallBlind, int bigBlind);

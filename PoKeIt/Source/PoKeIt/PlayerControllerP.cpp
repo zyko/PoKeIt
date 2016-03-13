@@ -10,9 +10,7 @@
 // since UE 4.6, constructor is not needed anymore
 APlayerControllerP::APlayerControllerP()
 {
-	// trying to use blueprintimplementableevent
-	// got no fucking clue, why this shit works in constructor (only)
-	debugBlueprintFunc();
+
 }
 
 void APlayerControllerP::setPlayerAmount(int amount)
@@ -21,58 +19,53 @@ void APlayerControllerP::setPlayerAmount(int amount)
 	amountOfPlayers = amount;
 }
 
-void APlayerControllerP::spawnPlayers()
+void APlayerControllerP::spawnPlayers(int amountOfHumanPlayers, int amountOfAIplayers)
 {
-	//amountOfPlayers = amountOfPlayersSelected;
+	amountOfPlayers= amountOfHumanPlayers;
+	amountKI = amountOfAIplayers;
 
-
-	debugMessage("spawnPlayers was called");
 	int startingChips = 10000;
 	smallBlind = startingChips / 100;
 	bigBlind = smallBlind * 2;
 
-	//amountOfPlayers = amountOfPlayersSelected;
 
 	#pragma region create human players
 	for (int i = 0; i < amountOfPlayers; ++i)
 	{
 		FString nameTMP = "Player " + FString::FromInt(i);
-		MyPlayerP *spawnedPlayer = new MyPlayerP(startingChips - i * 1000, nameTMP, true);
-		
-		// former implementation
-		//players[i] = spawnedPlayer;
+		MyPlayerP *spawnedPlayer = new MyPlayerP(startingChips, nameTMP, true);
+
 		players.push_back(spawnedPlayer);
 	}
 	#pragma endregion
 
-	#pragma region create KI
+	#pragma region create AI
 	TArray<KI*> kitmp;
 	for (int i = 0; i < amountKI; ++i)
 	{
-		KI *kiPlayer = new KI(startingChips * 1000, "fhffh (Samers Werk! :D)");
+		KI *kiPlayer = new KI(startingChips, "KI " + FString::FromInt(i));
 		kitmp.Add(kiPlayer);
 
 		players.push_back(kiPlayer);
 
-		// former implementation
-		//players[amountOfPlayers + i] = kiPlayer;
 	}
 	amountOfPlayers += amountKI;
 
 	#pragma endregion
 
 
-	roundManager = new RoundManager(players, this, amountOfPlayers, dealerIndex, smallBlind, bigBlind);
+	roundManager = new RoundManager(players, this, dealerIndex, smallBlind, bigBlind);
 
 
 	for (KI* ki : kitmp)
 		ki->setRoundManager(roundManager);
 	
+	roundManager->isAIstarting();
 
 	updateHUD();
 }
 
-//todo:
+
 void APlayerControllerP::checkForLeavingPlayers()
 {
 	for (int i = 0; i < players.size(); ++i)
@@ -88,11 +81,27 @@ void APlayerControllerP::checkForLeavingPlayers()
 // this is triggered by HUDwidget.bp
 void APlayerControllerP::startNewRound()
 {
+	roundHasFinished = false;
 	checkForLeavingPlayers();
 	roundManager->~RoundManager();
 	
-	roundManager = new RoundManager(players, this, amountOfPlayers, dealerIndex, smallBlind, bigBlind);
+	roundManager = new RoundManager(players, this, dealerIndex, smallBlind, bigBlind);
+
+
+	for (int i = 0; i < players.size(); ++i)
+	{
+		if (!players[i]->isPlayer())
+		{
+			KI* kiPointer = (KI*) players[i];
+
+			kiPointer->setRoundManager(roundManager);
+		}
+	}
+
+	roundManager->isAIstarting();
+
 	updateHUD();
+
 }
 
 void APlayerControllerP::roundFinished()
@@ -133,6 +142,7 @@ void APlayerControllerP::adjustBlinds()
 // todo: still necessary? could call updateHUD() directly
 void APlayerControllerP::finishTurn()
 {
+	turnHasFinished = true;
 	updateHUD();
 }
 
@@ -153,10 +163,6 @@ void APlayerControllerP::updateHUDcards()
 	cardValue0 = currentPlayersHand[0]->getValue();
 	cardColor1 = currentPlayersHand[1]->getColor();
 	cardValue1 = currentPlayersHand[1]->getValue();
-
-
-	// todo: was testing blueprintimplementable
-	updateHUDcardsBP();
 
 	if (roundManager)
 	{
@@ -208,7 +214,22 @@ void APlayerControllerP::checkRound()
 	roundManager->checkRound();
 }
 
+void APlayerControllerP::allIn()
+{
+	roundManager->allIn();
+}
+
 // getters:
+
+FString APlayerControllerP::getSpecificPlayerName(int32 index)
+{
+	return roundManager->players[index]->getName();
+}
+
+int APlayerControllerP::getAmountOfPlayers()
+{
+	return amountOfPlayers;
+}
 
 bool APlayerControllerP::isRoundFinished()
 {
@@ -238,6 +259,11 @@ int APlayerControllerP::getCurrentMaxBet()
 	}
 	else
 		return 0;
+}
+
+int APlayerControllerP::getCurrentPlayerIndex()
+{
+	return roundManager->getCurrentPlayerIndex();
 }
 
 int APlayerControllerP::getCurrentPlayersBetThisRound()

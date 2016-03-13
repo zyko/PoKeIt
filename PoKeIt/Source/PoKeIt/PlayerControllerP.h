@@ -34,8 +34,13 @@ private:
 	int smallBlind;
 	int bigBlind;
 	int roundsPlayed = 0;
-	int amountOfPlayers = 4; //4
-	int amountKI = 2; //2
+<<<<<<< HEAD
+	int amountOfPlayers;
+	int amountKI;
+=======
+	int amountOfPlayers;
+	int amountKI;
+>>>>>>> origin/master
 
 	// FUNCTIONS
 
@@ -49,6 +54,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "dealerIndex")
 		int32 dealerIndex=0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "turn management")
+		bool turnHasFinished = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
 		int32 chips;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "chips")
@@ -109,14 +116,6 @@ public:
 
 	// UFunctions to be sent to blueprint
 
-	// actually debug so far
-	UFUNCTION(BlueprintImplementableEvent, Category = "updating HUD")
-		void debugBlueprintFunc();
-
-	// updating hand cards	
-	UFUNCTION(BlueprintImplementableEvent, Category = "updating HUD")
-		void updateHUDcardsBP();
-
 	// spawning community cards in blueprint
 	UFUNCTION(BlueprintImplementableEvent, Category = "updating HUD")
 		void spawnCommunityCardsBP(int32 roundStage);
@@ -124,7 +123,11 @@ public:
 
 	// UFunctions to be called from blueprint
 
-	
+	UFUNCTION(BlueprintCallable, Category = "players")
+		int32 getAmountOfPlayers();
+
+	UFUNCTION(BlueprintCallable, Category = "players")
+		FString getSpecificPlayerName(int32 index);
 
 	UFUNCTION(BlueprintCallable, Category = "check if round is finished")
 		bool isRoundFinished();
@@ -136,7 +139,7 @@ public:
 		void setPlayerAmount(int32 amount);
 
 	UFUNCTION(BlueprintCallable, Category = "players")
-		void spawnPlayers();// (int32 amountOfPlayersSelected);
+		void spawnPlayers(int32 amountOfHumanPlayers, int32 amountOfAIplayers);// (int32 amountOfPlayersSelected);
 
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void foldRound();
@@ -150,8 +153,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "playerAction")
 		void callRound();
 
+	UFUNCTION(BlueprintCallable, Category = "playerAction")
+		void allIn();
+
 	UFUNCTION(BlueprintCallable, Category = "roundstage")
 		int32 getRoundstages();
+
+	UFUNCTION(BlueprintCallable, Category = "current player's index")
+		int32 getCurrentPlayerIndex();
 
 	UFUNCTION(BlueprintCallable, Category = "bets")
 		int32 getCurrentMaxBet();

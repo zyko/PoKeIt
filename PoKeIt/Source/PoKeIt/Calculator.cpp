@@ -35,7 +35,6 @@ int Calculator::qualityOfCards(Card* hand1, Card* hand2, Card* flop0, Card* flop
 	int flushCheckValue = flushCheck();
 	if (flushCheckValue >= 0 && straightCheck(flushCheckValue) >= 0)
 	{
-		printKeyCards();
 		return STRAIGHTFLUSH;
 	}
 	keyCards.Empty();
@@ -58,7 +57,6 @@ int Calculator::qualityOfCards(Card* hand1, Card* hand2, Card* flop0, Card* flop
 		
 	if (flushCheck() >= 0)
 	{
-		printKeyCards();
 		return FLUSH;
 	}
 
@@ -66,7 +64,6 @@ int Calculator::qualityOfCards(Card* hand1, Card* hand2, Card* flop0, Card* flop
 		
 	if (straightCheck(-1) >= 0)
 	{
-		printKeyCards();
 		return STRAIGHT;
 	}
 		
@@ -118,26 +115,15 @@ void Calculator::fillKeyCards()
 			if (keyCards.Num() <= 4)
 			{
 				keyCards.Add(cards[i]);
-				playerController->debugMessage("called adding times: " + FString::FromInt(++x) + " --- (should be 2)");
 			}
 	}
 
-	printKeyCards();
 }
 
 // actually debugging stuff
 void Calculator::setPlayerController(APlayerControllerP* pc)
 {
 	this->playerController = pc;
-}
-
-// actually debugging stuff
-void Calculator::printKeyCards()
-{
-	//playerController->debugMessage("keyCardsNum is: " + FString::FromInt(keyCards.Num()));
-	for (int i = 0; i < keyCards.Num(); ++i)
-		playerController->debugMessage("keyCards[" + FString::FromInt(i) + "]: " + FString::FromInt(keyCards[i]->getValue()));
-
 }
 
 int Calculator::pairCheck(int pairCheckValue)
@@ -167,7 +153,6 @@ int Calculator::pairCheck(int pairCheckValue)
 				if (keyCards.Num() < 4)
 				{
 					returnValue = cards[i]->getValue();
-					playerController->debugMessage("cards[" + FString::FromInt(i) + "]: " + FString::FromInt(cards[i]->getValue()));
 					keyCards.Add(cards[i]);
 					keyCards.Add(cards[i + 1]);
 				}
