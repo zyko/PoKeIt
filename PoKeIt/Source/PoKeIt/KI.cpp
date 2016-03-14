@@ -2,10 +2,9 @@
 
 #include "PoKeIt.h"
 #include "KI.h"
-#include <iostream>
 
 KI::KI(int givenChips, FString nameGiven)
-	: MyPlayerP(givenChips, nameGiven), ptr_roundManager(NULL), ptr_kiCalculator(NULL)
+	: MyPlayerP(givenChips, nameGiven), ptr_roundManager(NULL), ptr_kiCalculator(NULL), communityCards(std::vector<Card>())
 {
 }
 
@@ -14,18 +13,18 @@ KI::~KI()
 	delete ptr_kiCalculator;
 }
 
-void KI::updateKIInformations(RoundManager *ptr_manager)
+void KI::setRoundManager(RoundManager *ptr_manager)
 {
-	//setRoundManager(ptr_manager);
+	ptr_roundManager = ptr_manager;
+	// updateKIInformations();
+}
+
+void KI::updateKIInformations()
+{
 	setRemainingPlayers();
 	setRoundIndex();
 	setCommunityCards();
 	updateKICalculator();
-}
-
-void KI::setRoundManager(RoundManager *ptr_manager)
-{
-	ptr_roundManager = ptr_manager;
 }
 
 void KI::setRemainingPlayers()
@@ -71,16 +70,26 @@ void KI::updateKICalculator()
 {
 	if (!ptr_kiCalculator)
 	{
-		ptr_kiCalculator->updateInformation(communityCards);
+		ptr_kiCalculator = new KICalculator(currentRound, cards[0], cards[1], communityCards);
+	}
+	else
+	{
+		ptr_kiCalculator->updateInformation(cards[0], cards[1], communityCards);
 	}
 }
 
 // calculate PotOdds
-float KI::percentagePotOdds()
+float KI::getPercentagePotOdds()
 {
-	return 1.0f;
+	int currentPotValue = ptr_roundManager->getPot();
+	int valueToCall = ptr_roundManager->getCurrentMaxBet();
+
+	int potOdds = currentPotValue + valueToCall;
+
+	return (float)valueToCall / (float)potOdds;
 }
 
+/*
 float KI::percentageOpponentHigherPocketPair()
 {
 	int rankOwnedPocketPair = ownedCardCombinations[1].getComboCardPtrs()[0]->getValue();
@@ -99,15 +108,11 @@ float KI::percentageOpponentHigherPocketPair()
 
 	return probability;
 }
+*/
 
 void KI::checkOwnedCombinations()
 {
-	if (!ptr_kiCalculator)
-	{
-		ptr_kiCalculator = new KICalculator(currentRound, cards[0], cards[1], communityCards);
-	}
-
-	ownedCardCombinations = ptr_kiCalculator->getVecOwnedCombinations(communityCards);
+	ownedCardCombinations = ptr_kiCalculator->getVecOwnedCombinations();
 }
 
 void KI::bluff()
@@ -117,30 +122,235 @@ void KI::bluff()
 
 void KI::makeDecision()
 {
-	folding();
+	updateKIInformations();
+
+
+	int debugRound = ptr_roundManager->getRoundstages();
+
+	switch (currentRound)
+	{
+	case 0:
+	{
+		performPreFlop();
+		break;
+	}
+	case 1:
+	{
+		performFlop();
+		break;
+	}
+	case 2:
+	{
+		performTurn();
+		break;
+	}
+	case 3:
+	{
+		performRiver();
+		break;
+	}
+	default:
+	{
+		break;
+	}
+	}
+}
+
+void KI::performPreFlop()
+{
+	if (ptr_kiCalculator->preFlopRaiseDecision())
+	{
+		// DEBUG
+		calling();
+		// DEBUG END!
+
+		// raising(ptr_roundManager->getCurrentMaxBet() * 2);
+	}
+	else
+	{
+		////// DEBUG //////
+		//
+		calling();
+		//
+		//// DEBUG END ////
+
+		// folding();
+	}
+}
+
+void KI::performFlop()
+{
+	checkOwnedCombinations();
+
+	int highestCardComboRank = 0;
+
+	for (int i = 0; i < 10; ++i)
+	{
+		if (ownedCardCombinations[i].getComboOwned())
+		{
+			highestCardComboRank = ownedCardCombinations[i].getComboCardRanking();
+		}
+	}
+
+	if (highestCardComboRank == 2)
+	{
+		raising(ptr_roundManager->getPot() * 2);
+	}
+	else if (highestCardComboRank > 2)
+	{
+		raising(ptr_roundManager->getPot() * 2);
+	}
+
+
+	// check cardOuts to the potOdds
+	if (getPercentagePotOdds() > ptr_kiCalculator->getProbabilityDrawingUsefulCard(currentRound + 1))
+	{
+		float differencePotOuts = getPercentagePotOdds() - ptr_kiCalculator->getProbabilityDrawingUsefulCard(currentRound + 1);
+
+		// DEBUG
+		std::cout << differencePotOuts << std::endl;
+
+		if (differencePotOuts >= 0.2f) // >= 20%
+		{
+			raising(ptr_roundManager->getCurrentMaxBet() * 2);
+		}
+		else if (differencePotOuts < 0.2f) // < 20%
+		{
+			calling();
+		}
+	}
+	else
+	{
+		folding();
+	}
+}
+
+void KI::performTurn()
+{
+	checkOwnedCombinations();
+
+	int highestCardComboRank = 0;
+
+	for (int i = 0; i < 10; ++i)
+	{
+		if (ownedCardCombinations[i].getComboOwned())
+		{
+			highestCardComboRank = ownedCardCombinations[i].getComboCardRanking();
+		}
+	}
+
+	if (highestCardComboRank == 2)
+	{
+		raising(ptr_roundManager->getPot() * 2);
+	}
+	else if (highestCardComboRank > 2)
+	{
+		raising(ptr_roundManager->getPot() * 2);
+	}
+
+
+	// check cardOuts to the potOdds
+	if (getPercentagePotOdds() > ptr_kiCalculator->getProbabilityDrawingUsefulCard(currentRound + 1))
+	{
+		float differencePotOuts = getPercentagePotOdds() - ptr_kiCalculator->getProbabilityDrawingUsefulCard(currentRound + 1);
+
+		// DEBUG
+		std::cout << differencePotOuts << std::endl;
+
+		if (differencePotOuts >= 0.2f) // >= 20%
+		{
+			raising(ptr_roundManager->getCurrentMaxBet() * 2);
+		}
+		else if (differencePotOuts < 0.2f) // < 20%
+		{
+			calling();
+		}
+	}
+	else
+	{
+		folding();
+	}
+}
+
+void KI::performRiver()
+{
+	checkOwnedCombinations();
+
+	int highestCardComboRank = 0;
+
+	for (int i = 0; i < 10; ++i)
+	{
+		if (ownedCardCombinations[i].getComboOwned())
+		{
+			highestCardComboRank = ownedCardCombinations[i].getComboCardRanking();
+		}
+	}
+
+	if (highestCardComboRank == 2)
+	{
+		raising(ptr_roundManager->getPot() * 2);
+	}
+	else if (highestCardComboRank > 2)
+	{
+		raising(ptr_roundManager->getPot() * 2);
+	}
+
+
+	// check cardOuts to the potOdds
+	if (getPercentagePotOdds() > ptr_kiCalculator->getProbabilityDrawingUsefulCard(currentRound + 1))
+	{
+		float differencePotOuts = getPercentagePotOdds() - ptr_kiCalculator->getProbabilityDrawingUsefulCard(currentRound + 1);
+
+		// DEBUG
+		std::cout << differencePotOuts << std::endl;
+
+		if (differencePotOuts >= 0.2f) // >= 20%
+		{
+			raising(ptr_roundManager->getCurrentMaxBet() * 2);
+		}
+		else if (differencePotOuts < 0.2f) // < 20%
+		{
+			calling();
+		}
+	}
+	else
+	{
+		folding();
+	}
 }
 
 void KI::folding()
 {
+	//sleepDuration();
 	ptr_roundManager->fold();
 }
 
 void KI::checking()
 {
+	//sleepDuration();
 	ptr_roundManager->checkRound();
 }
 
 void KI::betting(int betAmount)
 {
+	//sleepDuration();
 	ptr_roundManager->betRaise(betAmount);
 }
 
 void KI::calling()
 {
+	//sleepDuration();
 	ptr_roundManager->callRound();
 }
 
 void KI::raising(int raiseAmount)
 {
+	//sleepDuration();
 	ptr_roundManager->betRaise(raiseAmount);
+}
+
+void KI::sleepDuration()
+{
+	// 10 sec
+	Sleep(10);
 }
