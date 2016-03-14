@@ -51,7 +51,6 @@ RoundManager::RoundManager(std::vector<MyPlayerP*> playersOfThisRound, APlayerCo
 
 }
 
-// still testing this
 void RoundManager::isAIstarting()
 {
 	if (!players[currentPlayerIndex]->isPlayer())
@@ -481,7 +480,7 @@ void RoundManager::roundOver()
 
 	}
 
-
+	playerController->finishTurn();
 
 	pots.Empty(); // should be redundant
 

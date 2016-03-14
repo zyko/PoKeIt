@@ -139,7 +139,6 @@ void APlayerControllerP::adjustBlinds()
 	}
 }
 
-// todo: still necessary? could call updateHUD() directly
 void APlayerControllerP::finishTurn()
 {
 	turnHasFinished = true;
