@@ -117,7 +117,7 @@ void KI::checkOwnedCombinations()
 
 void KI::bluff()
 {
-
+	ptr_roundManager->callRound();
 }
 
 void KI::makeDecision()
@@ -160,21 +160,11 @@ void KI::performPreFlop()
 {
 	if (ptr_kiCalculator->preFlopRaiseDecision())
 	{
-		// DEBUG
 		calling();
-		// DEBUG END!
-
-		// raising(ptr_roundManager->getCurrentMaxBet() * 2);
 	}
 	else
 	{
-		////// DEBUG //////
-		//
-		calling();
-		//
-		//// DEBUG END ////
-
-		// folding();
+		folding();
 	}
 }
 
@@ -194,25 +184,34 @@ void KI::performFlop()
 
 	if (highestCardComboRank == 2)
 	{
-		raising(ptr_roundManager->getPot() * 2);
+		int moneyValue = std::rand() % 2 + 1;
+		raising(ptr_roundManager->getPot() * moneyValue);
 	}
 	else if (highestCardComboRank > 2)
 	{
-		raising(ptr_roundManager->getPot() * 2);
+		int moneyValue = std::rand() % 4 + 1;
+		raising(ptr_roundManager->getPot() * moneyValue);
 	}
+
+	float oddsProb = getPercentagePotOdds();
+	float outsProbFlop = ptr_kiCalculator->getProbabilityDrawingUsefulCard(3);
 
 
 	// check cardOuts to the potOdds
-	if (getPercentagePotOdds() > ptr_kiCalculator->getProbabilityDrawingUsefulCard(currentRound + 1))
+	if (oddsProb > outsProbFlop)
 	{
-		float differencePotOuts = getPercentagePotOdds() - ptr_kiCalculator->getProbabilityDrawingUsefulCard(currentRound + 1);
-
-		// DEBUG
-		std::cout << differencePotOuts << std::endl;
+		float differencePotOuts = oddsProb - outsProbFlop;
 
 		if (differencePotOuts >= 0.2f) // >= 20%
 		{
-			raising(ptr_roundManager->getCurrentMaxBet() * 2);
+			if (ptr_roundManager->getCurrentMaxBet() < this->chips)
+			{
+				raising(ptr_roundManager->getCurrentMaxBet() * 2);
+			}
+			else
+			{
+				ptr_roundManager->allIn();
+			}
 		}
 		else if (differencePotOuts < 0.2f) // < 20%
 		{
@@ -221,7 +220,15 @@ void KI::performFlop()
 	}
 	else
 	{
-		folding();
+		// 50% chance to bluff
+		if ((std::rand() % 100 + 1) > 50)
+		{
+			bluff();
+		}
+		else
+		{
+			folding();
+		}
 	}
 }
 
@@ -241,30 +248,60 @@ void KI::performTurn()
 
 	if (highestCardComboRank == 2)
 	{
-		raising(ptr_roundManager->getPot() * 2);
+		int moneyValue = std::rand() % 2 + 1;
+
+		if (ptr_roundManager->getPot() * moneyValue < this->chips)
+		{
+			ptr_roundManager->allIn();
+		}
+		else
+		{
+			raising(ptr_roundManager->getPot() * moneyValue);
+		}
 	}
 	else if (highestCardComboRank > 2)
 	{
-		raising(ptr_roundManager->getPot() * 2);
+		int moneyValue = std::rand() % 4 + 1;
+
+		if (ptr_roundManager->getPot() * moneyValue < this->chips)
+		{
+			ptr_roundManager->allIn();
+		}
+		else
+		{
+			raising(ptr_roundManager->getPot() * moneyValue);
+		}	
 	}
+
+	float oddsProb = getPercentagePotOdds();
+	float outsProbFlop = ptr_kiCalculator->getProbabilityDrawingUsefulCard(2);
 
 
 	// check cardOuts to the potOdds
-	if (getPercentagePotOdds() > ptr_kiCalculator->getProbabilityDrawingUsefulCard(currentRound + 1))
+	if (oddsProb > outsProbFlop)
 	{
-		float differencePotOuts = getPercentagePotOdds() - ptr_kiCalculator->getProbabilityDrawingUsefulCard(currentRound + 1);
-
-		// DEBUG
-		std::cout << differencePotOuts << std::endl;
+		float differencePotOuts = oddsProb - outsProbFlop;
 
 		if (differencePotOuts >= 0.2f) // >= 20%
 		{
-			raising(ptr_roundManager->getCurrentMaxBet() * 2);
+			if (ptr_roundManager->getCurrentMaxBet() < this->chips)
+			{
+				raising(ptr_roundManager->getCurrentMaxBet() * 2);
+			}
+			else
+			{
+				ptr_roundManager->allIn();
+			}
 		}
 		else if (differencePotOuts < 0.2f) // < 20%
 		{
 			calling();
 		}
+	}
+	// 30% chance to bluff
+	if ((std::rand() % 100 + 1) > 30)
+	{
+		bluff();
 	}
 	else
 	{
@@ -286,32 +323,20 @@ void KI::performRiver()
 		}
 	}
 
-	if (highestCardComboRank == 2)
+	if (highestCardComboRank > 3)
 	{
-		raising(ptr_roundManager->getPot() * 2);
-	}
-	else if (highestCardComboRank > 2)
-	{
-		raising(ptr_roundManager->getPot() * 2);
-	}
+		int moneyValue = std::rand() % 4 + 1;
 
-
-	// check cardOuts to the potOdds
-	if (getPercentagePotOdds() > ptr_kiCalculator->getProbabilityDrawingUsefulCard(currentRound + 1))
-	{
-		float differencePotOuts = getPercentagePotOdds() - ptr_kiCalculator->getProbabilityDrawingUsefulCard(currentRound + 1);
-
-		// DEBUG
-		std::cout << differencePotOuts << std::endl;
-
-		if (differencePotOuts >= 0.2f) // >= 20%
+		if (ptr_roundManager->getPot() * moneyValue > this->chips)
 		{
-			raising(ptr_roundManager->getCurrentMaxBet() * 2);
+			raising(ptr_roundManager->getPot() * moneyValue);
 		}
-		else if (differencePotOuts < 0.2f) // < 20%
-		{
-			calling();
-		}
+	}
+
+	// bluff? 30%
+	if ((std::rand() % 100 + 1) > 30)
+	{
+		bluff();
 	}
 	else
 	{

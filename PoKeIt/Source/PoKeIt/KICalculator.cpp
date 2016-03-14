@@ -385,13 +385,13 @@ void KICalculator::calcOvercardOuts()
 		{
 			if (ptr_overcardOne->getColor() != i)
 			{
-				outs.push_back(Card(ptr_overcardOne->getValue(), i));
+				outs.push_back(Card(i, ptr_overcardOne->getValue()));
 			}
 
 			// check if second overcard available
 			if (ptr_overcardTwo && ptr_overcardTwo->getColor() != i)
 			{
-				outs.push_back(Card(ptr_overcardTwo->getValue(), i));
+				outs.push_back(Card(i, ptr_overcardTwo->getValue()));
 			}
 		}
 	}
@@ -409,19 +409,19 @@ void KICalculator::calcPairsOuts(int index)
 
 	if (colorCardOne != 0 || colorCardTwo != 0)
 	{
-		outs.push_back(Card(pairValue, 0));
+		outs.push_back(Card(0, pairValue));
 	}
 	if (colorCardOne != 1 || colorCardTwo != 1)
 	{
-		outs.push_back(Card(pairValue, 1));
+		outs.push_back(Card(1, pairValue));
 	}
 	if (colorCardOne != 2|| colorCardTwo != 2)
 	{
-		outs.push_back(Card(pairValue, 2));
+		outs.push_back(Card(2, pairValue));
 	}
 	if (colorCardOne != 3 || colorCardTwo != 3)
 	{
-		outs.push_back(Card(pairValue, 3));
+		outs.push_back(Card(3, pairValue));
 	}
 
 	cardOuts.insert(cardOuts.end(), outs.begin(), outs.end());
@@ -438,19 +438,19 @@ void KICalculator::calcTripleOuts()
 
 	if (colorCardOne != 0 || colorCardTwo != 0 || colorCardThree != 0)
 	{
-		outs.push_back(Card(tripleValue, 0));
+		outs.push_back(Card(0, tripleValue));
 	}
 	if (colorCardOne != 1 || colorCardTwo != 1 || colorCardThree != 1)
 	{
-		outs.push_back(Card(tripleValue, 1));
+		outs.push_back(Card(1, tripleValue));
 	}
 	if (colorCardOne != 2 || colorCardTwo != 2 || colorCardThree != 2)
 	{
-		outs.push_back(Card(tripleValue, 2));
+		outs.push_back(Card(2, tripleValue));
 	}
 	if (colorCardOne != 3 || colorCardTwo != 3 || colorCardThree != 3)
 	{
-		outs.push_back(Card(tripleValue, 3));
+		outs.push_back(Card(3, tripleValue));
 	}
 
 	cardOuts.insert(cardOuts.end(), outs.begin(), outs.end());
@@ -488,20 +488,20 @@ void KICalculator::calcStraightOuts()
 			{
 				for (int j = 0; j < 4; ++j)
 				{
-					outs.push_back(Card(12, j));
+					outs.push_back(Card(j, 12));
 				}
 			}
 			else
 			{
 				for (int j = 0; j < 4; ++j)
 				{
-					outs.push_back(Card(i - 1, j));
+					outs.push_back(Card(j, i - 1));
 				}
 			}
 
 			for (int j = 0; j < 4; ++j)
 			{
-				outs.push_back(Card(i + 4, j));
+				outs.push_back(Card(j, i + 4));
 			}
 		}
 		// Missing 4 Cards in 2nd place of Straight
@@ -513,7 +513,7 @@ void KICalculator::calcStraightOuts()
 		{
 			for (int j = 0; j < 4; ++j)
 			{
-				outs.push_back(Card(i + 1, j));
+				outs.push_back(Card(j, i + 1));
 			}
 		}
 		// Missing 4 Cards in 3rd place of Straight
@@ -525,7 +525,7 @@ void KICalculator::calcStraightOuts()
 		{
 			for (int j = 0; j < 4; ++j)
 			{
-				outs.push_back(Card(i + 2, j));
+				outs.push_back(Card(j, i + 2));
 			}
 		}
 		// Missing 4 Cards in 4th place of Straight
@@ -537,7 +537,7 @@ void KICalculator::calcStraightOuts()
 		{
 			for (int j = 0; j < 4; ++j)
 			{
-				outs.push_back(Card(i + 3, j));
+				outs.push_back(Card(j, i + 3));
 			}
 		}
 	}
@@ -604,19 +604,19 @@ void KICalculator::calcFullHouseOuts()
 
 	if (colorCardOne != 0 || colorCardTwo != 0 || colorCardThree != 0)
 	{
-		quadOuts.push_back(Card(tripleValue, 0));
+		quadOuts.push_back(Card(0, tripleValue));
 	}
 	if (colorCardOne != 1 || colorCardTwo != 1 || colorCardThree != 1)
 	{
-		quadOuts.push_back(Card(tripleValue, 1));
+		quadOuts.push_back(Card(1, tripleValue));
 	}
 	if (colorCardOne != 2 || colorCardTwo != 2 || colorCardThree != 2)
 	{
-		quadOuts.push_back(Card(tripleValue, 2));
+		quadOuts.push_back(Card(2, tripleValue));
 	}
 	if (colorCardOne != 3 || colorCardTwo != 3 || colorCardThree != 3)
 	{
-		quadOuts.push_back(Card(tripleValue, 3));
+		quadOuts.push_back(Card(3, tripleValue));
 	}
 
 	// triple is only useful, if it will be higher then owned triple
@@ -628,19 +628,19 @@ void KICalculator::calcFullHouseOuts()
 
 		if (colorCardOne != 0 || colorCardTwo != 0)
 		{
-			tripleOuts.push_back(Card(pairValue, 0));
+			tripleOuts.push_back(Card(0, pairValue));
 		}
 		if (colorCardOne != 1 || colorCardTwo != 1)
 		{
-			tripleOuts.push_back(Card(pairValue, 1));
+			tripleOuts.push_back(Card(1, pairValue));
 		}
 		if (colorCardOne != 2 || colorCardTwo != 2)
 		{
-			tripleOuts.push_back(Card(pairValue, 2));
+			tripleOuts.push_back(Card(2, pairValue));
 		}
 		if (colorCardOne != 3 || colorCardTwo != 3)
 		{
-			tripleOuts.push_back(Card(pairValue, 3));
+			tripleOuts.push_back(Card(3, pairValue));
 		}
 
 		quadOuts.insert(quadOuts.end(), tripleOuts.begin(), tripleOuts.end());
@@ -649,17 +649,12 @@ void KICalculator::calcFullHouseOuts()
 	cardOuts.insert(cardOuts.end(), quadOuts.begin(), quadOuts.end());
 }
 
-void KICalculator::calcfinalCardOuts() // TO DO
+void KICalculator::calcfinalCardOuts()
 {
 	calcOvercardOuts();
 	if (allCombinations[1].getComboOwned())
 	{
 		calcPairsOuts(1);
-	}
-
-	if (allCombinations[2].getComboOwned())
-	{
-		calcPairsOuts(2);
 	}
 
 	if (allCombinations[3].getComboOwned())
@@ -670,9 +665,20 @@ void KICalculator::calcfinalCardOuts() // TO DO
 	calcStraightOuts();
 	calcFlushOuts();
 
-	if (allCombinations[1].getComboOwned() && allCombinations[3].getComboOwned())
+	if (allCombinations[2].getComboOwned())
 	{
 		calcFullHouseOuts();
+	}
+
+	for (size_t i = 0; i < usableCards.size(); ++i)
+	{
+		for (size_t j = 0; j < cardOuts.size(); ++j)
+		{
+			if (cardOuts[j] == usableCards[i])
+			{
+				cardOuts.erase(cardOuts.begin() + j);
+			}
+		}
 	}
 
 	std::sort(cardOuts.begin(), cardOuts.end());
