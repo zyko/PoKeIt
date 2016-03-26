@@ -19,7 +19,8 @@ KICalculator::KICalculator(const int round, Card *handCardOne, Card *handCardTwo
 	usableCards.push_back(*handCardOne);
 	usableCards.push_back(*handCardTwo);
 
-	std::sort(usableCards.begin(), usableCards.end(), std::greater<Card>());
+	//std::sort(usableCards.begin(), usableCards.end(), std::greater<Card>());
+	bubbleSortByValueCardOuts(false);
 }
 
 KICalculator::~KICalculator()
@@ -142,7 +143,8 @@ void KICalculator::updateInformation(Card *handOne, Card *handTwo, std::vector<C
 	
 
 	// sort cards by descending value for faster cardCombinationCheck
-	std::sort(usableCards.begin(), usableCards.end(), std::greater<Card>());
+	//	std::sort(usableCards.begin(), usableCards.end(), std::greater<Card>());
+	bubbleSortByValueCardOuts(false);
 
 	++currentRound;
 }
@@ -681,8 +683,10 @@ void KICalculator::calcfinalCardOuts()
 		}
 	}
 
-	std::sort(cardOuts.begin(), cardOuts.end());
-	cardOuts.erase(std::unique(cardOuts.begin(), cardOuts.end()), cardOuts.end());
+	//std::sort(cardOuts.begin(), cardOuts.end());
+	bubbleSortByValueCardOuts(true);
+	//cardOuts.erase(std::unique(cardOuts.begin(), cardOuts.end()), cardOuts.end());
+	deleteDuplicatesInCardOuts();
 }
 
 float KICalculator::calcProbabilityDrawingUsefulCard(int probForRound)
@@ -751,4 +755,54 @@ int KICalculator::factorial(int n)
 float KICalculator::binomialKoefficient(int n, int k)
 {
 	return (factorial(n)) / (factorial(k) * (factorial(n - k)));
+}
+
+void KICalculator::bubbleSortByValueCardOuts(bool ascendingOrder)
+{
+	if (cardOuts.size() > 0)
+	{
+		Card tmp = cardOuts[0];
+
+		bool unsorted = true;
+
+		while (unsorted)
+		{
+			unsorted = false;
+			for (int i = 0; i < cardOuts.size() - 1; ++i)
+			{
+				if (ascendingOrder)
+				{
+					if (cardOuts[i].getValue() > cardOuts[i + 1].getValue())
+					{
+						tmp = cardOuts[i];
+						cardOuts[i] = cardOuts[i + 1];
+						cardOuts[i + 1] = tmp;
+						unsorted = true;
+					}
+				}
+				else if (!ascendingOrder)
+				{
+					if (cardOuts[i].getValue() < cardOuts[i + 1].getValue())
+					{
+						tmp = cardOuts[i];
+						cardOuts[i] = cardOuts[i + 1];
+						cardOuts[i + 1] = tmp;
+						unsorted = true;
+					}
+				}
+			}
+		}
+	}
+}
+
+void KICalculator::deleteDuplicatesInCardOuts()
+{
+	for (int i = 0; i < cardOuts.size() - 1; ++i)
+	{
+		if (cardOuts[i].getColor() == cardOuts[i + 1].getColor() &&
+			cardOuts[i].getValue() == cardOuts[i + 1].getValue())
+		{
+			cardOuts.erase(cardOuts.begin() + i);
+		}
+	}	
 }

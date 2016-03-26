@@ -78,4 +78,8 @@ private:
 	// mathematical functions
 	int factorial(int n);
 	float binomialKoefficient(int n, int k);
+
+	// miscellaneous
+	void bubbleSortByValueCardOuts(bool ascendingOrder);
+	void deleteDuplicatesInCardOuts();
 };
