@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "PoKeIt.h"
 #include "Card.h"
 #include "UnrealString.h"
 
@@ -13,47 +14,44 @@ class POKEIT_API MyPlayerP
 
 private:
 
-	int potAssignment = -1;
+	/* VARIABLES */
+
+	FString playerName;
+	int betThisRound;
+	int chips;
+
+	int potAssignment;
 	bool boolIsPlayer;
 
 	
 
 public:
 
-	// variables:
-
-	FString playerName;
-	int betThisRound;
-	int chips;
+	//should actually be private, but AI..
 	Card* cards[2];
 
-	// functions: 
+
+	/* FUNCTIONS */
 
 	virtual void makeDecision();
-	bool isPlayer();
 	void increaseBetThisRound(int amount);
 	void initializeNewRound(int a, int b, int c, int d);
-	int getBetThisRound();
-
-	FString getName();
-
-	void debugFunc();
-
 	void fold();
 
 	void increaseChips(int amount);
 	void decreaseChips(int amount);
 
+
 	Card* getCard0();
 	Card* getCard1();
+	FString getName();
 
+	int getBetThisRound();
 	int getChips();
-
 	int getPotAssignment();
 	void setPotAssignment(int i);
+	bool isPlayer();
 
 	MyPlayerP(int givenChips, FString nameGiven, bool boolIsPlayer = false);
-
-	void destroyCards();
 	~MyPlayerP();
 };

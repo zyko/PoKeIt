@@ -7,9 +7,9 @@ class POKEIT_API Card
 private:
 	/*
 	0 = clubs
-	1 = spades
+	1 = hearts
 	2 = diamonds
-	3 = hearts
+	3 = spades
 	*/
 	int color;
 

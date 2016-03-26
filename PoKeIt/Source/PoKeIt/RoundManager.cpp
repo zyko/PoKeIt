@@ -2,7 +2,7 @@
 
 #include "PoKeIt.h"
 #include "RoundManager.h"
-#include "UnrealString.h"
+
 
 
 RoundManager::RoundManager(std::vector<MyPlayerP*> playersOfThisRound, APlayerControllerP* pc, int dealerIndex, int smallBlind, int bigBlind)
@@ -38,8 +38,13 @@ RoundManager::RoundManager(std::vector<MyPlayerP*> playersOfThisRound, APlayerCo
 
 	this->dealerIndex = dealerIndex;
 	currentPlayerIndex = (dealerIndex + 3 ) % players.size();
+	
+
+	
+	pots.Empty();
+
+
 	addPot();
-	pot = 0;
 	lastBet = bigBlind;
 	roundState = PREFLOP;
 	this->smallBlind = smallBlind;
@@ -51,15 +56,6 @@ RoundManager::RoundManager(std::vector<MyPlayerP*> playersOfThisRound, APlayerCo
 
 }
 
-void RoundManager::isAIstarting()
-{
-	if (!players[currentPlayerIndex]->isPlayer())
-	{
-		players[currentPlayerIndex]->makeDecision();
-		playerController->debugMessage("AI's makeDecision() is called");
-	}
-}
-
 // player actions:
 // 1st step in "casual round loop"
 
@@ -68,7 +64,7 @@ void RoundManager::checkRound()
 	if (players[currentPlayerIndex]->getBetThisRound() >= currentMaxBet)
 		finishTurn();
 	else
-		playerController->debugMessage("not enough bet to check this round");
+		playerController->debugMessage("you haven't bet enough to check this round!\nyou need to bet " + FString::FromInt((currentMaxBet - players[currentPlayerIndex]->getBetThisRound())));
 }
 
 void RoundManager::callRound()
@@ -76,118 +72,171 @@ void RoundManager::callRound()
 	if ((players[currentPlayerIndex]->getChips()) >= (currentMaxBet - players[currentPlayerIndex]->getBetThisRound()))
 		betRaise(currentMaxBet - players[currentPlayerIndex]->getBetThisRound());
 	else
-		playerController->debugMessage("couldnt call, because too less chips available");
+		playerController->debugMessage("you can't call, because you have too less chips available!\nyou need to either go all in or fold.");
 }
 
-void RoundManager::betRaise(int amount)
+void RoundManager::betRaise(int amountToBet)
 {
-	bool callingAllowed = false;
-	bool bettingAllowed = false;
-	bool raisingAllowed = false;
-	bool allIn = false;
-
-	if ((players[currentPlayerIndex]->getBetThisRound() + amount) == currentMaxBet)						// this is actually calling
+	if (players[currentPlayerIndex]->getChips() >= amountToBet)
 	{
-		callingAllowed = true;
-	}
-	else if (players[currentPlayerIndex]->getBetThisRound() == currentMaxBet && amount >= bigBlind)		// this is actually betting
-	{
-		bettingAllowed = true;
-		lastBet = amount;
-	}
-	else if (players[currentPlayerIndex]->getBetThisRound() <= currentMaxBet
-		&& players[currentPlayerIndex]->getBetThisRound() + amount >= currentMaxBet + lastBet)			// this is actually raising
-	{
-		raisingAllowed = true;
-		lastBet = (players[currentPlayerIndex]->getBetThisRound() + amount) - currentMaxBet;
-	}
+		bool callingAllowed = false;
+		bool bettingAllowed = false;
+		bool raisingAllowed = false;
+		bool allInAllowed = false;
+		bool allInWithTooLessChips = false;
 
-#pragma region not enough chips / allin
-	/* TODO
-	few probs about this occur:
-	1st: p1 bets, p2 allin with half bet, p3 wants to call p1's bet.
-	2nd: what is int last bett be set to ?
-	3rd: p1 allin, p2 raises above p1's allin
+		if ((players[currentPlayerIndex]->getBetThisRound() + amountToBet) == currentMaxBet)						// this is actually calling
+		{
+			callingAllowed = true;
+		}
+		else if (players[currentPlayerIndex]->getBetThisRound() == currentMaxBet && amountToBet >= bigBlind)		// this is actually betting, MIGHT be allin
+		{
+			bettingAllowed = true;
+			lastBet = amountToBet;
+		}
+		else if (players[currentPlayerIndex]->getBetThisRound() <= currentMaxBet
+			&& players[currentPlayerIndex]->getBetThisRound() + amountToBet >= currentMaxBet + lastBet)				// this is actually raising
+		{
+			raisingAllowed = true;
+			lastBet = (players[currentPlayerIndex]->getBetThisRound() + amountToBet) - currentMaxBet;
+		}
+		else if (amountToBet == players[currentPlayerIndex]->getChips())											// allIn
+		{
+			allInAllowed = true;
+		}
 
-	else if (amount == players[currentPlayerIndex]->getChips()											// not enough chips to call / ALLIN
-	&& (players[currentPlayerIndex]->getBetThisRound() + amount) < currentMaxBet)
-	{
 
-	allIn = true;
-	int allInValue = players[currentPlayerIndex]->getBetThisRound() + amount;
 
-	players[currentPlayerIndex]->decreaseChips(amount);
-	players[currentPlayerIndex]->increaseBetThisRound(amount);
-	players[currentPlayerIndex]->setPotAssignment(pots.Num() - 1);
-	pots[pots.Num() - 1] += amount;
-	addPot();
-
-	// creating new side pot with old chip amounts from last pot
-	for (int i = 0; i < players.size(); ++i)
-	{
-	if (players[i]->getBetThisRound() > allInValue)
-	{
-	int moreThanAllIn = players[i]->getBetThisRound() > allInValue;
-	pots[pots.Num() - 2] -= moreThanAllIn;
-	pots[pots.Num() - 1] += moreThanAllIn;
-	players[currentPlayerIndex]->setPotAssignment(pots.Num() - 1);
-	}
-	}
-
-	finishTurn();
-	}
-	*/
-#pragma endregion
-
-	if (bettingAllowed || raisingAllowed)
-		for (int i = 0; i < players.size(); ++i)
-			if (players[i]->getChips() == 0 && players[i]->getPotAssignment() == pots.Num() - 1) // triggers once one has gone allin and another one bets / raises above
+		if (callingAllowed || bettingAllowed || raisingAllowed || allInAllowed)
+		{
+			while (players[currentPlayerIndex]->getPotAssignment() < (pots.Num() - 1))	// player is assigned to previous pot
 			{
-		addPot();
-		break;
+				// check if there's any player on the same potassignment as currentPlayer
+				for (MyPlayerP* p : players)
+				{
+					if (p->getPotAssignment() == players[currentPlayerIndex]->getPotAssignment())
+					{
+						
+						int bettingDifference = players[currentPlayerIndex]->getBetThisRound() + amountToBet - p->getBetThisRound();
+
+						playerController->debugMessage("bettingDifference: " + FString::FromInt(bettingDifference) + "\n");
+
+
+						if (bettingDifference >= 0)		// player's about to bet more than a player before him did ( because he went allin ) or equal.
+						{
+							int amountToBetToCallThisPot = p->getBetThisRound() - players[currentPlayerIndex]->getBetThisRound();
+
+							players[currentPlayerIndex]->decreaseChips(amountToBetToCallThisPot);
+							players[currentPlayerIndex]->increaseBetThisRound(amountToBetToCallThisPot);
+
+							amountToBet -= amountToBetToCallThisPot;
+
+							pots[p->getPotAssignment()] += amountToBetToCallThisPot;
+
+							players[currentPlayerIndex]->setPotAssignment(players[currentPlayerIndex]->getPotAssignment() + 1);	// increment pot assignment
+						}
+						else if (bettingDifference < 0)		// player goes allin with less chips than necessary to call
+						{
+							// adding new pot and relocating chips between pots
+							allInWithTooLessChips = true;
+
+							players[currentPlayerIndex]->decreaseChips(amountToBet);
+							players[currentPlayerIndex]->increaseBetThisRound(amountToBet);
+
+							int amountOfPlayersInFirstPot = 0;
+
+							for (MyPlayerP* p : players)
+								if (p->getPotAssignment() >= players[currentPlayerIndex]->getPotAssignment() + 1)
+									amountOfPlayersInFirstPot++;
+
+
+							int subtractFromPot = amountOfPlayersInFirstPot * amountToBet;
+
+
+							pots[players[currentPlayerIndex]->getPotAssignment() + 1] -= subtractFromPot;
+
+							pots.Insert(0, players[currentPlayerIndex]->getPotAssignment());
+
+							pots[players[currentPlayerIndex]->getPotAssignment()] += subtractFromPot + amountToBet;
+
+							amountToBet = 0;
+
+						}
+					}
+				}
 			}
 
+			if (amountToBet > 0 && players[currentPlayerIndex]->getBetThisRound() + amountToBet < lastBet) // player goes allin with less chips than necessary to call
+			{
+				allInWithTooLessChips = true;
 
-	if (callingAllowed || bettingAllowed || raisingAllowed)
-	{
-		players[currentPlayerIndex]->decreaseChips(amount);
-		players[currentPlayerIndex]->increaseBetThisRound(amount);
-		players[currentPlayerIndex]->setPotAssignment(pots.Num() - 1);
+				players[currentPlayerIndex]->decreaseChips(amountToBet);
+				players[currentPlayerIndex]->increaseBetThisRound(amountToBet);
 
-		currentMaxBet = players[currentPlayerIndex]->getBetThisRound();
-		increasePot(amount);
-		finishTurn();
-	}
-	else if (!allIn)
-	{
-		FString a = "bet / raise has failed!";
-		FString b = "in case of betting, you have to bet at least the big blind amount, which is " + FString::FromInt(bigBlind)
-			+ " for the moment!";
-		FString c = "in case of raising, you have to bet at least raise the amount of the last bet, which is " + FString::FromInt(lastBet)
-			+ " for the moment!";
-		playerController->debugMessage(a);
-		playerController->debugMessage(b);
-		playerController->debugMessage(c);
+				players[currentPlayerIndex]->getBetThisRound();
+
+				int amountOfPlayersInFirstPot = 0;
+
+				pots[pots.Num() - 1] += amountToBet;
+				pots.Add(0);
+				int amountToTransfer;
+
+				for (MyPlayerP* p : players)
+				{
+					if (p->getPotAssignment() == players[currentPlayerIndex]->getPotAssignment() && p->getBetThisRound() > players[currentPlayerIndex]->getBetThisRound())
+					{
+						amountToTransfer = p->getBetThisRound() - players[currentPlayerIndex]->getBetThisRound();
+						pots[pots.Num() - 2] -= amountToTransfer;
+						pots[pots.Num() - 1] += amountToTransfer;
+
+						p->setPotAssignment(p->getPotAssignment() + 1);
+					}
+				}
+				amountToBet = 0;
+			}
+
+			// now betting with remaining amount (if some is remaining)
+			if (amountToBet > 0)
+			{
+				if (players[currentPlayerIndex]->getBetThisRound() + amountToBet > currentMaxBet) // disable creating a new pot when calling another one's allin
+				{
+					// if one player went allin, other players call this and one player bets another amount, then you have to add another pot
+					for (int i = 0; i < players.size(); ++i)
+					{
+						if (players[i]->getChips() == 0 && players[i]->getPotAssignment() == pots.Num() - 1)	// check if one is assigned to current pot but has 0 chips
+						{
+							addPot();
+							break;
+						}
+					}
+				}				
+
+				players[currentPlayerIndex]->decreaseChips(amountToBet);
+				players[currentPlayerIndex]->increaseBetThisRound(amountToBet);
+				increasePot(amountToBet);
+
+				if (!allInWithTooLessChips)
+					currentMaxBet = players[currentPlayerIndex]->getBetThisRound();
+
+				finishTurn();
+			}
+			if (amountToBet == 0)
+				finishTurn();
+		}
+		else
+		{
+			playerController->debugMessage("you can't bet this amount!\n press 'help' to see the rules for betting.");
+		}
+
 	}
 }
 
 void RoundManager::fold()
 {
-	/*
-	1. reduce amountOfPlayersRemaining--
-	2. adjust array to fill the gaps
-	3. check if theres more than 1 available
-	4. if so, keep going
-	5. if not, trigger roundOver();
-	*/
-
 	players.erase(players.begin() + currentPlayerIndex);
 
 	if (players.size() > 1)
 	{
-		/*for (int i = currentPlayerIndex; i < players.size(); ++i)
-			players[i] = players[i + 1];*/
-
 
 		playersDidActions--;
 		currentPlayerIndex--;
@@ -195,11 +244,11 @@ void RoundManager::fold()
 		finishTurn();
 	}
 	else
+	{
+		currentPlayerIndex = 0;
 		roundOver();
 
-
-
-
+	}
 }
 
 void RoundManager::allIn()
@@ -215,29 +264,37 @@ void RoundManager::finishTurn()
 
 
 	// there's the possibility, that there are a few players available, but all went all-in,
-	// so the round must come to an end. this if-branch checks it and triggers remaining communitycards if necesary
-	if (players[currentPlayerIndex]->getChips() == 0)
+	// so the round must come to an end. this if-branch checks it and triggers remaining communitycards if necessary
+	int playersRemainingWithChips = 0;
+	int indexOfPlayerWithChips;
+	for (int i = 0; i < players.size(); ++i)
 	{
-		int playersRemainingWithChips = 0;
-		for (int i = 0; i < players.size(); ++i)
+		if (players[i]->getChips() != 0)
 		{
-			if (players[i]->getChips() != 0)
-			{
-				playersRemainingWithChips++;
-			}
-		}
-		if (playersRemainingWithChips <= 1)
-		{
-			roundStateSwitch();
-			roundStateSwitch();
-			roundStateSwitch();
-			roundStateSwitch();
-		}
-		else
-		{
-			finishTurn();
+			playersRemainingWithChips++;
+			indexOfPlayerWithChips = i;
 		}
 	}
+	if (playersRemainingWithChips <= 1)
+	{
+		int highestAllinAmount = 0;
+		for (MyPlayerP* p : players)
+		{
+			if (p->getChips() == 0 && p->getBetThisRound() > highestAllinAmount)
+			{
+				highestAllinAmount = p->getBetThisRound();
+			}
+		}
+		if (players[indexOfPlayerWithChips]->getBetThisRound() >= highestAllinAmount)
+		{
+			roundStateSwitch();
+			roundStateSwitch();
+			roundStateSwitch();
+			roundStateSwitch();
+		}
+		
+	}
+
 
 	if (currentPlayerIndex >= players.size())
 		currentPlayerIndex = 0;
@@ -370,12 +427,11 @@ bool RoundManager::controlDeck(int color, int value)
 // triggers winning calculation and manages winning pot(s) 
 void RoundManager::roundOver()
 {
+	FString winningMessage;
 
 	if (players.size() > 1)
 	{
 		Calculator* calc = new Calculator();
-
-		// debugging:
 		calc->setPlayerController(playerController);
 
 		int value = -1;
@@ -386,9 +442,9 @@ void RoundManager::roundOver()
 		int comparisonKeyCardsArray[5];
 		TArray<int> splitPotCandidates;
 
-		for (int k = 0; k < pots.Num(); ++k)					// going throught this procedure for each pot
+		for (int k = 0; k < pots.Num(); ++k)					// going through this procedure for each pot
 		{
-			for (int i = 0; i < players.size(); ++i)	// checking each player
+			for (int i = 0; i < players.size(); ++i)			// checking each player
 			{
 				if (players[i]->getPotAssignment() >= k)		// checking to which pot player belongs to
 				{												// the player with the highest potAssignment, obviously plays for each pot available
@@ -458,27 +514,38 @@ void RoundManager::roundOver()
 
 			if (splitPotCandidates.Num() > 0) // that means split pot
 			{
-				playerController->debugMessage("split pot ! splitting pot " + FString::FromInt(k) + " with: ");
+				winningMessage = "split pot ! splitting pot with: \n";
 				for (int i = 0; i < splitPotCandidates.Num(); ++i)
 				{
 					players[splitPotCandidates[i]]->increaseChips(pots[k] / splitPotCandidates.Num());
 
-					playerController->debugMessage("" + players[splitPotCandidates[i]]->getName() + " (" + winner + ")");
+					winningMessage += "" + players[splitPotCandidates[i]]->getName() + " (" + winner + ")\n";
 				}
 			}
 			else
 			{
-				playerController->debugMessage("" + players[player]->getName() +" with: " + winner + "wins pot " + FString::FromInt(k));
-				players[player]->increaseChips(pots[k]);
+				if (pots.Num() > 1)
+				{
+					winningMessage += "Pot number " + FString::FromInt(k);
+					winningMessage += ", containing " + FString::FromInt(pots[k]) + " chips wins " + players[highestPlayerSoFar[1]]->getName() + " with: " + winner + "\n";
+				}
+				else
+				{
+					winningMessage = " " + players[highestPlayerSoFar[1]]->getName() + " wins pot, containing " + FString::FromInt(pots[k]) + " chips " + " with: " + winner + "\n";
+				}
+
+				players[highestPlayerSoFar[1]]->increaseChips(pots[k]);
 			}
 		}
 		calc->~Calculator();
 	}
 	else
 	{
-		playerController->debugMessage("aaaaand the winner is: " + players[currentPlayerIndex]->getName() + " !");
-
+		winningMessage = "aaaaand the winner is: " + players[currentPlayerIndex]->getName() + " !";
+		players[currentPlayerIndex]->increaseChips(pots[0]);
 	}
+
+	playerController->debugMessage(winningMessage);
 
 	playerController->finishTurn();
 
@@ -494,7 +561,6 @@ void RoundManager::roundOver()
 void RoundManager::increasePot(int amount)
 {
 	pots[pots.Num() - 1] += amount;
-	pot = pots[pots.Num() - 1];	// for debugging reasons / showing nooby interface stuff
 }
 
 // add one more side pot
@@ -522,7 +588,30 @@ void RoundManager::settingBlinds()
 	increasePot(smallBlind + bigBlind);
 }
 
+
 // Getters:
+
+int RoundManager::getAmountOfPots()
+{
+	return pots.Num();
+}
+
+int RoundManager::getSpecificPotSize(int index)
+{
+	if (index >= pots.Num())
+		return -1;
+	else
+		return pots[index];
+}
+
+void RoundManager::isAIstarting()
+{
+	if (!players[currentPlayerIndex]->isPlayer())
+	{
+		players[currentPlayerIndex]->makeDecision();
+		playerController->debugMessage("AI's makeDecision() is called");
+	}
+}
 
 Card* RoundManager::getFlop(int index)
 {
@@ -552,7 +641,7 @@ int RoundManager::getRoundstages()
 
 int RoundManager::getPot()
 {
-	return pot;
+	return pots[pots.Num() - 1];
 }
 
 int RoundManager::getAmountOfPlayersRemaining()

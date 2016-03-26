@@ -2,21 +2,14 @@
 
 #include "PoKeIt.h"
 #include "PlayerControllerP.h"
-#include "PoKeItGameMode.h"
-#include "Card.h"
-#include "MyPlayerP.h"
 
 
 // since UE 4.6, constructor is not needed anymore
 APlayerControllerP::APlayerControllerP()
 {
-
-}
-
-void APlayerControllerP::setPlayerAmount(int amount)
-{
-	debugMessage("set Player Amount was called!!!!");
-	amountOfPlayers = amount;
+	/* initialize pots */
+	for (int i = 0; i < 8; ++i)
+		pots.Add(0);
 }
 
 void APlayerControllerP::spawnPlayers(int amountOfHumanPlayers, int amountOfAIplayers)
@@ -29,17 +22,18 @@ void APlayerControllerP::spawnPlayers(int amountOfHumanPlayers, int amountOfAIpl
 	bigBlind = smallBlind * 2;
 
 
-	#pragma region create human players
+	// creating human players
 	for (int i = 0; i < amountOfPlayers; ++i)
 	{
 		FString nameTMP = "Player " + FString::FromInt(i);
+
 		MyPlayerP *spawnedPlayer = new MyPlayerP(startingChips, nameTMP, true);
+
 
 		players.push_back(spawnedPlayer);
 	}
-	#pragma endregion
 
-	#pragma region create AI
+	// creating AI
 	TArray<KI*> kitmp;
 	for (int i = 0; i < amountKI; ++i)
 	{
@@ -50,8 +44,6 @@ void APlayerControllerP::spawnPlayers(int amountOfHumanPlayers, int amountOfAIpl
 
 	}
 	amountOfPlayers += amountKI;
-
-	#pragma endregion
 
 
 	roundManager = new RoundManager(players, this, dealerIndex, smallBlind, bigBlind);
@@ -97,6 +89,10 @@ void APlayerControllerP::startNewRound()
 			kiPointer->setRoundManager(roundManager);
 		}
 	}
+
+	/* reset PlayerController's pots for UI displaying */
+	for (int i = 0; i < pots.Num() - 1; ++i)
+		pots[i] = 0;
 
 	roundManager->isAIstarting();
 
@@ -149,20 +145,15 @@ void APlayerControllerP::updateHUD()
 {
 	currentPlayersChips = roundManager->players[roundManager->getCurrentPlayerIndex()]->getChips();
 	currentPlayerName = roundManager->players[roundManager->getCurrentPlayerIndex()]->getName();
-	potSize = roundManager->getPot();
+	
+	for (int i = 0; i < roundManager->getAmountOfPots(); ++i)
+		pots[i] = roundManager->getSpecificPotSize(i);
+
 	updateHUDcards();
 }
 
 void APlayerControllerP::updateHUDcards()
 {
-	currentPlayersHand[0] = roundManager->players[roundManager->getCurrentPlayerIndex()]->getCard0();
-	currentPlayersHand[1] = roundManager->players[roundManager->getCurrentPlayerIndex()]->getCard1();
-
-	cardColor0 = currentPlayersHand[0]->getColor();
-	cardValue0 = currentPlayersHand[0]->getValue();
-	cardColor1 = currentPlayersHand[1]->getColor();
-	cardValue1 = currentPlayersHand[1]->getValue();
-
 	if (roundManager)
 	{
 		if (roundManager->getFlop(0) != NULL)
@@ -220,6 +211,37 @@ void APlayerControllerP::allIn()
 
 // getters:
 
+int32 APlayerControllerP::getAmountOfPots()
+{
+	return roundManager->getAmountOfPots();
+}
+
+int32 APlayerControllerP::getSpecificPotSize(int32 index)
+{
+	return roundManager->getSpecificPotSize(index);
+}
+
+TArray<int32> APlayerControllerP::getSpecificPlayerCardData(int32 playerIndex)
+{
+	/* unreal blueprints can't handle 2d arrays, therefore:
+		vector contains at:
+		[0] card0 color
+		[1] card0 value
+		[2] card1 color
+		[3] card1 value
+	*/
+
+	TArray<int32> cardData;
+
+	cardData.Add(roundManager->players[playerIndex]->getCard0()->getColor());
+	cardData.Add(roundManager->players[playerIndex]->getCard0()->getValue());
+	cardData.Add(roundManager->players[playerIndex]->getCard1()->getColor());
+	cardData.Add(roundManager->players[playerIndex]->getCard1()->getValue());
+
+
+	return cardData;
+}
+
 FString APlayerControllerP::getSpecificPlayerName(int32 index)
 {
 	return roundManager->players[index]->getName();
@@ -235,6 +257,15 @@ bool APlayerControllerP::isRoundFinished()
 	return roundHasFinished;
 }
 
+bool APlayerControllerP::isPlayerNameStillInGame(FString playerName)
+{
+	for (MyPlayerP* p : roundManager->players)
+		if (p->getName() == playerName)
+			return true;
+
+	return false;
+}
+
 bool APlayerControllerP::currentPlayerisAI()
 {
 	if (!players[roundManager->getCurrentPlayerIndex()]->isPlayer())
@@ -243,6 +274,11 @@ bool APlayerControllerP::currentPlayerisAI()
 	}
 	
 	return false;
+}
+
+bool APlayerControllerP::isSpecificPlayerAI(int32 playerIndex)
+{
+	return  (!roundManager->players[playerIndex]->isPlayer());
 }
 
 int APlayerControllerP::getRoundstages()
@@ -278,6 +314,10 @@ int APlayerControllerP::getCurrentPlayersBetThisRound()
 
 void APlayerControllerP::debugMessage(FString s)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, s);
+	// using debug message now for displaying a game message on the screen
+	gameMessage = s;
+
+	//this is for debug only
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, s);
 }
 

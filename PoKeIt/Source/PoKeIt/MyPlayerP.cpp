@@ -9,11 +9,12 @@ MyPlayerP::MyPlayerP(int chips, FString name, bool boolIsPlayer)
 	playerName = name;
 	this->chips = chips;
 	betThisRound = 0;
+	potAssignment = 0;
 }
 
 void MyPlayerP::makeDecision()
 {
-	
+
 }
 
 Card* MyPlayerP::getCard0()
@@ -82,16 +83,10 @@ void MyPlayerP::setPotAssignment(int i)
 	potAssignment = i;
 }
 
-void MyPlayerP::destroyCards()
+MyPlayerP::~MyPlayerP()
 {
 	cards[0]->~Card();
 	cards[1]->~Card();
 	cards[0] = 0;
 	cards[1] = 0;
-}
-
-MyPlayerP::~MyPlayerP()
-{
-	cards[0]->~Card();
-	cards[1]->~Card();
 }

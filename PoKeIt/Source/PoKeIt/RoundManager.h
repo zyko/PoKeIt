@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "PoKeIt.h"
+#include "UnrealString.h"
 #include "Card.h"
 #include "KI.h"
 #include "MyPlayerP.h"
@@ -20,7 +22,6 @@ private:
 
 	int smallBlind;
 	int bigBlind;
-	int pot;
 	int dealerIndex;
 	int currentPlayerIndex;
 	int currentMaxBet;
@@ -48,12 +49,10 @@ private:
 public:
 
 
-	// must be public
-
 	std::vector<MyPlayerP*> players;
 
 
-	// functions:
+	/* functions */
 
 	Card* getFlop(int index);
 	Card* getTurn();
@@ -69,6 +68,8 @@ public:
 
 	int getRoundstages();
 	int getPot();
+	int getAmountOfPots();
+	int getSpecificPotSize(int index);
 	int getAmountOfPlayersRemaining();
 	int getCurrentPlayerIndex();
 	int getCurrentMaxBet();
@@ -88,12 +89,6 @@ public:
 
 	APlayerControllerP* playerController;
 
-
 	RoundManager(std::vector<MyPlayerP*> players, APlayerControllerP* pc, int dealerIndex, int smallBlind, int bigBlind);
-
-	// former implementation
-	//RoundManager(MyPlayerP* playersOfThisRound[8], APlayerControllerP* pc, int amountOfPlayersRemaining, int dealerIndex, int smallBlind, int bigBlind);
 	~RoundManager();
-
-	
 };

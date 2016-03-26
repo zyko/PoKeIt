@@ -8,6 +8,12 @@ Calculator::Calculator()
 	keyCards.Empty();
 }
 
+// actually debugging stuff
+void Calculator::setPlayerController(APlayerControllerP* pc)
+{
+	this->playerController = pc;
+}
+
 int Calculator::qualityOfCards(Card* hand1, Card* hand2, Card* flop0, Card* flop1, Card* flop2, Card* turn, Card* river)
 {
 	cards[0] = hand1;
@@ -93,7 +99,6 @@ int Calculator::qualityOfCards(Card* hand1, Card* hand2, Card* flop0, Card* flop
 	keyCards.Empty();
 	
 
-	//if (returnValue == HIGHCARD)
 	fillKeyCards();
 
 	return HIGHCARD;
@@ -102,9 +107,6 @@ int Calculator::qualityOfCards(Card* hand1, Card* hand2, Card* flop0, Card* flop
 
 void Calculator::fillKeyCards()
 {
-	// debugging:
-	int x = 0;
-
 	for (int i = amountOfCards-1; i >= 0; --i)
 	{
 		bool elementAlreadyWithin = false;
@@ -117,13 +119,11 @@ void Calculator::fillKeyCards()
 				keyCards.Add(cards[i]);
 			}
 	}
-
 }
 
-// actually debugging stuff
-void Calculator::setPlayerController(APlayerControllerP* pc)
+Card* Calculator::getKeyCard(int index)
 {
-	this->playerController = pc;
+	return keyCards[index];
 }
 
 int Calculator::pairCheck(int pairCheckValue)
@@ -439,11 +439,6 @@ void Calculator::bubbleSortByValue()
 			}
 		}
 	}
-}
-
-Card* Calculator::getKeyCard(int index)
-{
-	return keyCards[index];
 }
 
 Calculator::~Calculator()
