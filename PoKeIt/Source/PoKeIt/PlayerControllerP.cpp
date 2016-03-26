@@ -60,7 +60,7 @@ void APlayerControllerP::spawnPlayers(int amountOfHumanPlayers, int amountOfAIpl
 
 void APlayerControllerP::checkForLeavingPlayers()
 {
-	for (int i = 0; i < players.size(); ++i)
+	for (unsigned int i = 0; i < players.size(); ++i)
 	{
 		if (players[i]->getChips() <= 0)
 		{
@@ -80,7 +80,7 @@ void APlayerControllerP::startNewRound()
 	roundManager = new RoundManager(players, this, dealerIndex, smallBlind, bigBlind);
 
 
-	for (int i = 0; i < players.size(); ++i)
+	for (unsigned int i = 0; i < players.size(); ++i)
 	{
 		if (!players[i]->isPlayer())
 		{

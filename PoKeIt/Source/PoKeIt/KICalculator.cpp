@@ -114,9 +114,9 @@ void KICalculator::updateInformation(Card *handOne, Card *handTwo, std::vector<C
 	if (currentRound != 0)
 	{
 		// check for first Overcard
-		if (*handOne > newCommunityCards[0] &&
-			*handOne > newCommunityCards[1] &&
-			*handOne > newCommunityCards[2])
+		if (handOne->getValue() > newCommunityCards[0].getValue() &&	// changed from overloaded comparison operators
+			handOne->getValue() > newCommunityCards[1].getValue() &&	// changed from overloaded comparison operators
+			handOne->getValue() > newCommunityCards[2].getValue())		// changed from overloaded comparison operators
 		{
 			ptr_overcardOne = handOne;
 		}
@@ -126,9 +126,9 @@ void KICalculator::updateInformation(Card *handOne, Card *handTwo, std::vector<C
 		}
 
 		// check for second Overcard
-		if (*handTwo > newCommunityCards[0] &&
-			*handTwo > newCommunityCards[1] &&
-			*handTwo > newCommunityCards[2])
+		if (handTwo->getValue() > newCommunityCards[0].getValue() &&	// changed from overloaded comparison operators
+			handTwo->getValue() > newCommunityCards[1].getValue() &&	// changed from overloaded comparison operators
+			handTwo->getValue() > newCommunityCards[2].getValue())		// changed from overloaded comparison operators
 		{
 			ptr_overcardTwo = handTwo;
 		}
@@ -160,7 +160,7 @@ OwnedCardCombination KICalculator::checkForHighestCard()
 OwnedCardCombination KICalculator::checkForFirstPairs()
 {
 	// check for first pair
-	for (int i = 0; i < usableCards.size(); ++i)
+	for (int i = 0; i < (signed int) usableCards.size(); ++i)
 	{
 		// two identical values found
 		if (usableCards[i].getValue() == usableCards[i + 1].getValue())
@@ -178,7 +178,7 @@ OwnedCardCombination KICalculator::checkForFirstPairs()
 OwnedCardCombination KICalculator::checkForSecondPairs()
 {
 	// check for first pair
-	for (int i = 0; i < usableCards.size(); ++i)
+	for (int i = 0; i < (signed int) usableCards.size(); ++i)
 	{
 		// two identical values found
 		if (usableCards[i].getValue() == usableCards[i + 1].getValue())
@@ -202,7 +202,7 @@ OwnedCardCombination KICalculator::checkForSecondPairs()
 
 OwnedCardCombination KICalculator::checkForTriple()
 {
-	for (int i = 0; i < usableCards.size() - 1; ++i)
+	for (int i = 0; i < (signed int) usableCards.size() - 1; ++i)
 	{
 		// three identical values found
 		if (usableCards[i].getValue() == usableCards[i + 1].getValue() &&
@@ -338,7 +338,7 @@ OwnedCardCombination KICalculator::checkForFullHouse()
 
 OwnedCardCombination KICalculator::checkForQuads()
 {
-	for (int i = 0; i < usableCards.size() - 1; ++i)
+	for (int i = 0; i < (signed int) usableCards.size() - 1; ++i)
 	{
 		// four identical values found
 		if (usableCards[i].getValue() == usableCards[i + 1].getValue() &&
@@ -674,7 +674,7 @@ void KICalculator::calcfinalCardOuts()
 	{
 		for (size_t j = 0; j < cardOuts.size(); ++j)
 		{
-			if (cardOuts[j] == usableCards[i])
+			if (cardOuts[j].getColor() == usableCards[i].getColor() && cardOuts[j].getValue() == usableCards[i].getValue()) // changed from overloaded comparison operators
 			{
 				cardOuts.erase(cardOuts.begin() + j);
 			}

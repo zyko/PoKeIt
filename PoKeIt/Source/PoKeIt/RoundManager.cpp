@@ -13,7 +13,7 @@ RoundManager::RoundManager(std::vector<MyPlayerP*> playersOfThisRound, APlayerCo
 
 	players = std::vector<MyPlayerP*>(playersOfThisRound.size());
 
-	for (int i = 0; i < players.size(); ++i)
+	for (unsigned int i = 0; i < players.size(); ++i)
 	{
 		players[i] = playersOfThisRound[i];
 
@@ -201,7 +201,7 @@ void RoundManager::betRaise(int amountToBet)
 				if (players[currentPlayerIndex]->getBetThisRound() + amountToBet > currentMaxBet) // disable creating a new pot when calling another one's allin
 				{
 					// if one player went allin, other players call this and one player bets another amount, then you have to add another pot
-					for (int i = 0; i < players.size(); ++i)
+					for (unsigned int i = 0; i < players.size(); ++i)
 					{
 						if (players[i]->getChips() == 0 && players[i]->getPotAssignment() == pots.Num() - 1)	// check if one is assigned to current pot but has 0 chips
 						{
@@ -267,7 +267,7 @@ void RoundManager::finishTurn()
 	// so the round must come to an end. this if-branch checks it and triggers remaining communitycards if necessary
 	int playersRemainingWithChips = 0;
 	int indexOfPlayerWithChips;
-	for (int i = 0; i < players.size(); ++i)
+	for (unsigned int i = 0; i < players.size(); ++i)
 	{
 		if (players[i]->getChips() != 0)
 		{
@@ -296,7 +296,7 @@ void RoundManager::finishTurn()
 	}
 
 
-	if (currentPlayerIndex >= players.size())
+	if (currentPlayerIndex >= (signed int) players.size())
 		currentPlayerIndex = 0;
 
 	
@@ -314,10 +314,10 @@ void RoundManager::checkForCommunityCards()
 {
 	playersDidActions++;
 
-	if (playersDidActions >= players.size())
+	if (playersDidActions >= (signed int) players.size())
 	{
 		bool everyPlayerOnSameBet = false;
-		for (int i = 0; i < players.size(); ++i)
+		for (unsigned int i = 0; i < players.size(); ++i)
 		{
 			if (players[i]->getBetThisRound() == currentMaxBet)
 				everyPlayerOnSameBet = true;
@@ -444,7 +444,7 @@ void RoundManager::roundOver()
 
 		for (int k = 0; k < pots.Num(); ++k)					// going through this procedure for each pot
 		{
-			for (int i = 0; i < players.size(); ++i)			// checking each player
+			for (unsigned int i = 0; i < players.size(); ++i)	// checking each player
 			{
 				if (players[i]->getPotAssignment() >= k)		// checking to which pot player belongs to
 				{												// the player with the highest potAssignment, obviously plays for each pot available

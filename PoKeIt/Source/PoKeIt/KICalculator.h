@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "PoKeIt.h"
 #include "Card.h"
 #include "OwnedCardCombination.h"
 #include <vector>
