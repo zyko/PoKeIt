@@ -263,7 +263,7 @@ void RoundManager::finishTurn()
 	currentPlayerIndex = ++currentPlayerIndex % players.size();
 
 
-	// there's the possibility, that there are a few players available, but all went all-in,
+	// there's the possibility, that there are a few players available, but all went all-in (mb except for one),
 	// so the round must come to an end. this if-branch checks it and triggers remaining communitycards if necessary
 	int playersRemainingWithChips = 0;
 	int indexOfPlayerWithChips;
