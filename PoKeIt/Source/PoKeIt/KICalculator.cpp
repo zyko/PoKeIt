@@ -19,7 +19,6 @@ KICalculator::KICalculator(const int round, Card *handCardOne, Card *handCardTwo
 	usableCards.push_back(*handCardOne);
 	usableCards.push_back(*handCardTwo);
 
-	//std::sort(usableCards.begin(), usableCards.end(), std::greater<Card>());
 	bubbleSortByValueCardOuts(false);
 }
 
@@ -143,7 +142,6 @@ void KICalculator::updateInformation(Card *handOne, Card *handTwo, std::vector<C
 	
 
 	// sort cards by descending value for faster cardCombinationCheck
-	//	std::sort(usableCards.begin(), usableCards.end(), std::greater<Card>());
 	bubbleSortByValueCardOuts(false);
 
 	++currentRound;
@@ -683,9 +681,7 @@ void KICalculator::calcfinalCardOuts()
 		}
 	}
 
-	//std::sort(cardOuts.begin(), cardOuts.end());
 	bubbleSortByValueCardOuts(true);
-	//cardOuts.erase(std::unique(cardOuts.begin(), cardOuts.end()), cardOuts.end());
 	deleteDuplicatesInCardOuts();
 }
 

@@ -28,33 +28,3 @@ int Card::getValue()
 {
 	return value;
 }
-
-//inline bool Card::operator==(const Card& card) const
-//{
-//	return (value == card.value && color == card.color);
-//}
-//
-//inline bool Card::operator!=(const Card& card) const
-//{
-//	return !operator==(card);
-//}
-//
-//inline bool Card::operator< (const Card& card) const
-//{
-//	return (value < card.value);
-//}
-//
-//inline bool Card::operator> (const Card& card) const
-//{
-//	return (value > card.value);
-//}
-//
-//inline bool Card::operator<=(const Card& card) const
-//{
-//	return !operator> (card);
-//}
-//
-//inline bool Card::operator>=(const Card& card) const
-//{
-//	return !operator< (card);
-//}

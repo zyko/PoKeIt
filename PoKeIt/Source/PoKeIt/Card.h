@@ -38,13 +38,4 @@ public:
 	int getColor();
 	int getValue();
 
-	
-	//// overloaded comparison operators
-	//inline bool operator==(const Card& card) const;
-	//inline bool operator!=(const Card& card) const;
-	//inline bool operator< (const Card& card) const;
-	//inline bool operator> (const Card& card) const;
-	//inline bool operator<=(const Card& card) const;
-	//inline bool operator>=(const Card& card) const;
-	
 };
