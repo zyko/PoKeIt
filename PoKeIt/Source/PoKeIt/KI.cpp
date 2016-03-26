@@ -204,7 +204,7 @@ void KI::performFlop()
 
 		if (differencePotOuts >= 0.2f) // >= 20%
 		{
-			if (ptr_roundManager->getCurrentMaxBet() < this->chips)
+			if (ptr_roundManager->getCurrentMaxBet() < this->getChips())
 			{
 				raising(ptr_roundManager->getCurrentMaxBet() * 2);
 			}
@@ -250,7 +250,7 @@ void KI::performTurn()
 	{
 		int moneyValue = std::rand() % 2 + 1;
 
-		if (ptr_roundManager->getPot() * moneyValue < this->chips)
+		if (ptr_roundManager->getPot() * moneyValue < this->getChips())
 		{
 			ptr_roundManager->allIn();
 		}
@@ -263,7 +263,7 @@ void KI::performTurn()
 	{
 		int moneyValue = std::rand() % 4 + 1;
 
-		if (ptr_roundManager->getPot() * moneyValue < this->chips)
+		if (ptr_roundManager->getPot() * moneyValue < this->getChips())
 		{
 			ptr_roundManager->allIn();
 		}
@@ -284,7 +284,7 @@ void KI::performTurn()
 
 		if (differencePotOuts >= 0.2f) // >= 20%
 		{
-			if (ptr_roundManager->getCurrentMaxBet() < this->chips)
+			if (ptr_roundManager->getCurrentMaxBet() < this->getChips())
 			{
 				raising(ptr_roundManager->getCurrentMaxBet() * 2);
 			}
@@ -327,7 +327,7 @@ void KI::performRiver()
 	{
 		int moneyValue = std::rand() % 4 + 1;
 
-		if (ptr_roundManager->getPot() * moneyValue > this->chips)
+		if (ptr_roundManager->getPot() * moneyValue > this->getChips())
 		{
 			raising(ptr_roundManager->getPot() * moneyValue);
 		}
