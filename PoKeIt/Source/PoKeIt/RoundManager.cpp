@@ -233,6 +233,12 @@ void RoundManager::betRaise(int amountToBet)
 
 void RoundManager::fold()
 {
+	playerController->debugMessage("fold is called");
+	if (!players[currentPlayerIndex]->isPlayer())
+	{
+		addFoldedAI(currentPlayerIndex);
+	}
+
 	players.erase(players.begin() + currentPlayerIndex);
 
 	if (players.size() > 1)
@@ -301,10 +307,8 @@ void RoundManager::finishTurn()
 
 	
 	if (!players[currentPlayerIndex]->isPlayer())
-	{
 		players[currentPlayerIndex]->makeDecision();
-		playerController->debugMessage("AI's makeDecision() is called");		
-	}
+
 
 	playerController->finishTurn();
 }
@@ -553,8 +557,13 @@ void RoundManager::roundOver()
 
 	resetDeck();
 	playerController->roundFinished();
+	foldedAI.Empty();
 }
 
+void RoundManager::addFoldedAI(int AIplayerIndex)
+{
+	foldedAI.Add(AIplayerIndex);
+}
 
 // setters or similars
 
@@ -591,6 +600,11 @@ void RoundManager::settingBlinds()
 
 // Getters:
 
+TArray<int32> RoundManager::getFoldedAIindices()
+{
+	return foldedAI;
+}
+
 int RoundManager::getAmountOfPots()
 {
 	return pots.Num();
@@ -607,10 +621,7 @@ int RoundManager::getSpecificPotSize(int index)
 void RoundManager::isAIstarting()
 {
 	if (!players[currentPlayerIndex]->isPlayer())
-	{
 		players[currentPlayerIndex]->makeDecision();
-		playerController->debugMessage("AI's makeDecision() is called");
-	}
 }
 
 Card* RoundManager::getFlop(int index)

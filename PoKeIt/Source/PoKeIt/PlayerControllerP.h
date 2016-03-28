@@ -104,14 +104,13 @@ public:
 #pragma endregion
 
 
-
-
-
 	/* FUNCTIONS */
 
 
 	// UFunctions to be called from blueprint
 
+	UFUNCTION(BlueprintCallable, Category = "AI folding")
+		TArray<int32> checkForFoldedAI();
 
 	/* unreal blueprints can't handle 2d arrays, therefore:
 	vector contains at:

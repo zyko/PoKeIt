@@ -40,14 +40,15 @@ private:
 	int deck[4][13];
 
 	TArray<int> pots;
+	TArray<int32> foldedAI;
 
 	Card* flop[3];
 	Card* turn;
 	Card* river;
 
+	void addFoldedAI(int AIplayerIndex);
 
 public:
-
 
 	std::vector<MyPlayerP*> players;
 
@@ -74,6 +75,7 @@ public:
 	int getCurrentPlayerIndex();
 	int getCurrentMaxBet();
 	int getCurrentPlayersBetThisRound();
+	TArray<int32> getFoldedAIindices();
 	
 	void checkForCommunityCards();
 	void finishTurn();

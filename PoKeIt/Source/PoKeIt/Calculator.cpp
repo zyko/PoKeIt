@@ -8,7 +8,6 @@ Calculator::Calculator()
 	keyCards.Empty();
 }
 
-// actually debugging stuff
 void Calculator::setPlayerController(APlayerControllerP* pc)
 {
 	this->playerController = pc;
@@ -115,9 +114,7 @@ void Calculator::fillKeyCards()
 				elementAlreadyWithin = true;
 		if (!elementAlreadyWithin)
 			if (keyCards.Num() <= 4)
-			{
 				keyCards.Add(cards[i]);
-			}
 	}
 }
 

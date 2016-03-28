@@ -211,6 +211,11 @@ void APlayerControllerP::allIn()
 
 // getters:
 
+TArray<int32> APlayerControllerP::checkForFoldedAI()
+{
+	return roundManager->getFoldedAIindices();
+}
+
 int32 APlayerControllerP::getAmountOfPots()
 {
 	return roundManager->getAmountOfPots();

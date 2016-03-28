@@ -27,17 +27,18 @@ ToDo:
 
 // IMPORTANT TODO / NEXT
 
-- STARTING CHIPS!!!
 - control Deck umschreiben
 - allin sidepots debugging
 - camera debug when switching to same player
+- players array should be changed, that it has always size 8 and points to same players all the time.
 
 // known bugs
+- foldedAI stuff is completely broke
 - dealer button when one player leaves table forever
+- camera debug when switching to same player (goes around the whole table)
 
 // STRETCH GOALS
 
-- dealer button (debugging)
 - actually need chips to display visually who has won
 - highlighting winning cards
 - improved help button (thinking of highlighting various things in interface and pointing at with arrows)
