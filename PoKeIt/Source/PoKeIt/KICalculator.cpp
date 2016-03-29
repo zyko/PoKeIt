@@ -764,7 +764,7 @@ void KICalculator::bubbleSortByValueCardOuts(bool ascendingOrder)
 		while (unsorted)
 		{
 			unsorted = false;
-			for (int i = 0; i < cardOuts.size() - 1; ++i)
+			for (int i = 0; i < (signed int) cardOuts.size() - 1; ++i)
 			{
 				if (ascendingOrder)
 				{
@@ -793,7 +793,7 @@ void KICalculator::bubbleSortByValueCardOuts(bool ascendingOrder)
 
 void KICalculator::deleteDuplicatesInCardOuts()
 {
-	for (int i = 0; i < cardOuts.size() - 1; ++i)
+	for (int i = 0; i < (signed int) cardOuts.size() - 1; ++i)
 	{
 		if (cardOuts[i].getColor() == cardOuts[i + 1].getColor() &&
 			cardOuts[i].getValue() == cardOuts[i + 1].getValue())
